@@ -1,0 +1,2550 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="theme-color" content="#0c0d0b">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Iselman">
+<meta name="description" content="Iselman ⵉⵙⴻⵍⵎⴰⵏ — Guide de pêche du Maroc. Atlantique, Méditerranée, eaux douces.">
+<title>Iselman ⵉⵙⴻⵍⵎⴰⵏ · Guide Pêche Maroc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Noto+Sans+Tifinagh&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0d0b;
+  --surface: #141510;
+  --surface2: #1c1e18;
+  --border: rgba(255,255,255,0.07);
+  --gold: #c9a44a;
+  --gold-dim: rgba(201,164,74,0.15);
+  --gold-glow: rgba(201,164,74,0.08);
+  --teal: #2a8f7e;
+  --teal-dim: rgba(42,143,126,0.15);
+  --crimson: #a83232;
+  --crimson-dim: rgba(168,50,50,0.15);
+  --text: #e8e4da;
+  --text-muted: #8a8578;
+  --text-dim: #5a5750;
+  --font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
+  --font-tifinagh: 'Noto Sans Tifinagh', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --nav-h: 64px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --radius: 8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  min-height:100%;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+[lang="ar"] body,[dir="rtl"] body{font-family:var(--font-arabic)}
+
+/* ── LAYOUT ── */
+#app{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+#main-content{flex:1;overflow-y:auto;padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 16px)}
+.page{display:none;padding:0 0 8px}
+.page.active{display:block}
+
+/* ── NAV ── */
+#bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:calc(var(--nav-h) + var(--safe-bottom));
+  background:rgba(14,15,11,0.96);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);
+  display:flex;overflow-x:auto;overflow-y:hidden;
+  scrollbar-width:none;z-index:100;
+  padding-bottom:var(--safe-bottom);
+}
+#bottom-nav::-webkit-scrollbar{display:none}
+.nav-item{
+  flex:0 0 auto;min-width:58px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:8px 10px;
+  background:none;border:none;cursor:pointer;
+  color:var(--text-dim);font-family:var(--font-body);
+  transition:color 0.18s;-webkit-tap-highlight-color:transparent;
+}
+.nav-item .nav-icon{font-size:20px;line-height:1}
+.nav-item .nav-label{font-size:9.5px;font-weight:600;letter-spacing:0.04em;white-space:nowrap;text-transform:uppercase}
+.nav-item.active{color:var(--gold)}
+.nav-item:hover{color:var(--text)}
+.lang-bar{
+  display:flex;align-items:center;gap:6px;padding:10px 16px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:50;
+}
+.lang-bar::-webkit-scrollbar{display:none}
+.lang-btn{
+  padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  background:none;color:var(--text-muted);cursor:pointer;
+  font-size:12px;font-weight:600;letter-spacing:0.05em;white-space:nowrap;
+  font-family:var(--font-body);transition:all 0.18s;
+}
+.lang-btn.active{background:var(--gold);border-color:var(--gold);color:#0c0d0b}
+.lang-btn[data-lang="ar"]{font-family:var(--font-arabic)}
+.lang-btn[data-lang="zgh"]{font-family:var(--font-tifinagh)}
+
+/* ── TYPOGRAPHY ── */
+.display{font-family:var(--font-display);letter-spacing:0.03em;line-height:0.95}
+.mono{font-family:var(--font-mono)}
+[lang="ar"] .page-title,[dir="rtl"] .section-title{font-family:var(--font-arabic)}
+
+/* ── PAGE HEADER ── */
+.page-header{
+  padding:20px 16px 12px;
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+}
+.page-title{
+  font-family:var(--font-display);
+  font-size:clamp(28px,6vw,38px);
+  letter-spacing:0.04em;
+  color:var(--gold);
+  line-height:1;
+}
+.page-subtitle{
+  font-size:13px;color:var(--text-muted);
+  margin-top:4px;line-height:1.4;
+}
+
+/* ── CARDS ── */
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+}
+.card+.card{margin-top:8px}
+.section{padding:16px}
+.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(16px,3.5vw,20px);
+  letter-spacing:0.06em;
+  color:var(--text-muted);
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+.section-body{padding:0 16px 16px}
+
+/* ── GRID ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+
+/* ── TAGS / BADGES ── */
+.tag{
+  display:inline-block;padding:3px 8px;
+  border-radius:4px;font-size:11px;font-weight:600;
+  letter-spacing:0.05em;text-transform:uppercase;
+  font-family:var(--font-mono);
+}
+.tag-gold{background:var(--gold-dim);color:var(--gold)}
+.tag-teal{background:var(--teal-dim);color:var(--teal)}
+.tag-crimson{background:var(--crimson-dim);color:var(--crimson)}
+.tag-dim{background:rgba(255,255,255,0.06);color:var(--text-muted)}
+
+/* ── PILL FILTERS ── */
+.filter-bar{
+  display:flex;gap:6px;padding:10px 16px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.filter-bar::-webkit-scrollbar{display:none}
+.pill{
+  flex:0 0 auto;padding:6px 14px;border-radius:20px;
+  border:1px solid var(--border);background:none;
+  color:var(--text-muted);cursor:pointer;
+  font-size:12px;font-weight:600;letter-spacing:0.04em;
+  font-family:var(--font-body);transition:all 0.18s;
+  -webkit-tap-highlight-color:transparent;
+}
+.pill.active{background:var(--gold);border-color:var(--gold);color:#0c0d0b}
+.pill:hover{border-color:var(--text-dim);color:var(--text)}
+
+/* ── SPECIES CARDS ── */
+.species-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:8px;padding:8px 16px;
+}
+.species-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;cursor:pointer;
+  transition:border-color 0.18s,transform 0.18s;
+  -webkit-tap-highlight-color:transparent;position:relative;overflow:hidden;
+}
+.species-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--gold);opacity:0;transition:opacity 0.18s;
+}
+.species-card:hover{border-color:rgba(201,164,74,0.3);transform:translateY(-1px)}
+.species-card:hover::before{opacity:1}
+.species-card.saltwater::before{background:var(--teal)}
+.species-card.freshwater::before{background:var(--gold)}
+.species-icon{font-size:28px;margin-bottom:8px;display:block}
+.species-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:2px}
+.species-local{font-size:11px;color:var(--text-muted);font-family:var(--font-mono)}
+.species-sci{font-size:10px;color:var(--text-dim);font-style:italic;margin-top:4px}
+
+/* ── SPECIES OVERLAY ── */
+#species-overlay{
+  position:fixed;inset:0;z-index:200;
+  display:none;flex-direction:column;
+  background:var(--bg);overflow-y:auto;
+  transform:translateX(100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);
+}
+#species-overlay.open{display:flex;transform:translateX(0)}
+.overlay-header{
+  padding:16px;display:flex;align-items:center;gap:12px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:5;
+}
+.overlay-back{
+  background:none;border:1px solid var(--border);
+  border-radius:6px;padding:8px 12px;
+  color:var(--text);cursor:pointer;font-size:13px;
+  font-family:var(--font-body);
+}
+.overlay-title{font-family:var(--font-display);font-size:28px;color:var(--gold);letter-spacing:0.04em}
+.overlay-body{padding:16px}
+.overlay-section{margin-bottom:20px}
+.overlay-section-title{
+  font-size:10px;font-family:var(--font-mono);
+  color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;
+  margin-bottom:8px;padding-bottom:6px;
+  border-bottom:1px solid var(--border);
+}
+.detail-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)}
+.detail-label{font-size:12px;color:var(--text-muted);font-family:var(--font-mono)}
+.detail-value{font-size:12px;color:var(--text);text-align:right;max-width:60%}
+
+/* ── SEASON BAR ── */
+.season-bar{display:flex;gap:2px;margin-top:4px}
+.month-cell{
+  flex:1;height:18px;border-radius:2px;
+  background:var(--surface2);position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.month-cell.peak{background:var(--gold)}
+.month-cell.good{background:var(--teal)}
+.month-cell.poor{background:rgba(255,255,255,0.05)}
+.season-legend{display:flex;gap:12px;margin-top:6px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted);font-family:var(--font-mono)}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+
+/* ── SPOTS ── */
+.spots-list{padding:8px 16px}
+.spot-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;margin-bottom:8px;
+  cursor:pointer;transition:border-color 0.18s;
+}
+.spot-card:hover{border-color:rgba(201,164,74,0.3)}
+.spot-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.spot-name{font-size:14px;font-weight:600;color:var(--text)}
+.spot-region-tag{font-size:10px;font-family:var(--font-mono);color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em}
+.spot-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.spot-species{font-size:11px;color:var(--text-muted);line-height:1.5}
+.permit-warning{
+  background:var(--crimson-dim);border:1px solid rgba(168,50,50,0.3);
+  border-radius:6px;padding:8px 10px;margin-top:8px;
+  font-size:11px;color:var(--crimson);font-family:var(--font-mono);
+  display:flex;align-items:center;gap:6px;
+}
+.spot-distance{font-size:11px;font-family:var(--font-mono);color:var(--teal)}
+
+/* ── CONDITIONS ── */
+.conditions-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:8px 16px}
+.cond-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;
+}
+.cond-value{
+  font-family:var(--font-display);
+  font-size:clamp(28px,7vw,40px);
+  color:var(--gold);letter-spacing:0.02em;
+  line-height:1;
+}
+.cond-unit{font-size:14px;color:var(--text-muted);margin-left:3px}
+.cond-label{font-size:11px;font-family:var(--font-mono);color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px}
+.bite-score{
+  grid-column:1/-1;
+  padding:16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);
+}
+.bite-bar{
+  height:8px;background:var(--surface2);border-radius:4px;
+  overflow:hidden;margin:8px 0;
+}
+.bite-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width 1s ease}
+
+/* ── TIDE TABLE ── */
+.tide-table{width:100%;border-collapse:collapse;font-size:12px;font-family:var(--font-mono)}
+.tide-table th{
+  padding:8px;text-align:left;color:var(--text-dim);
+  font-size:10px;text-transform:uppercase;letter-spacing:0.08em;
+  border-bottom:1px solid var(--border);
+}
+.tide-table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.tide-high{color:var(--teal)}
+.tide-low{color:var(--text-muted)}
+.tide-station-select{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);font-family:var(--font-mono);font-size:12px;
+  padding:8px 12px;border-radius:6px;width:100%;margin-bottom:12px;
+}
+
+/* ── FORECAST STRIP ── */
+.forecast-strip{display:flex;gap:6px;overflow-x:auto;padding:8px 16px 4px;scrollbar-width:none}
+.forecast-strip::-webkit-scrollbar{display:none}
+.forecast-day{
+  flex:0 0 auto;min-width:64px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:10px 8px;text-align:center;
+}
+.forecast-day.today{border-color:var(--gold-dim)}
+.fday-name{font-size:10px;font-family:var(--font-mono);color:var(--text-dim);text-transform:uppercase;letter-spacing:0.06em}
+.fday-icon{font-size:22px;margin:6px 0}
+.fday-temp{font-family:var(--font-display);font-size:20px;color:var(--text)}
+.fday-wind{font-size:10px;font-family:var(--font-mono);color:var(--text-muted)}
+
+/* ── RIGS ── */
+.rig-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);margin:8px 16px;overflow:hidden;
+}
+.rig-header{
+  padding:14px 16px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background 0.18s;
+}
+.rig-header:hover{background:var(--surface2)}
+.rig-title{font-size:14px;font-weight:600;color:var(--text)}
+.rig-subtitle{font-size:11px;color:var(--text-muted);margin-top:3px;font-family:var(--font-mono)}
+.rig-chevron{color:var(--text-dim);font-size:12px;transition:transform 0.22s}
+.rig-body{
+  display:none;border-top:1px solid var(--border);
+  padding:16px;
+}
+.rig-body.open{display:block}
+.rig-diagram{
+  width:100%;max-width:360px;display:block;
+  margin:0 auto 16px;
+}
+.rig-steps{list-style:none;counter-reset:step}
+.rig-steps li{
+  counter-increment:step;padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:13px;color:var(--text-muted);line-height:1.5;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.rig-steps li::before{
+  content:counter(step);
+  font-family:var(--font-mono);font-size:11px;
+  color:var(--gold);min-width:20px;margin-top:1px;
+}
+.affiliate-link{
+  display:flex;align-items:center;gap:8px;
+  background:var(--gold-glow);border:1px solid var(--gold-dim);
+  border-radius:6px;padding:10px 12px;margin-top:12px;
+  text-decoration:none;color:var(--gold);font-size:12px;
+  font-family:var(--font-mono);transition:background 0.18s;
+}
+.affiliate-link:hover{background:var(--gold-dim)}
+
+/* ── KNOTS ── */
+.knot-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);margin:8px 16px;overflow:hidden;
+}
+.knot-header{
+  padding:14px 16px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.knot-title{font-size:14px;font-weight:600;color:var(--text)}
+.knot-use{font-size:11px;color:var(--text-muted);font-family:var(--font-mono);margin-top:3px}
+.knot-body{display:none;border-top:1px solid var(--border);padding:16px}
+.knot-body.open{display:block}
+.knot-svg{display:block;width:100%;max-width:320px;margin:0 auto 16px}
+.knot-steps{list-style:none;counter-reset:kstep}
+.knot-steps li{
+  counter-increment:kstep;padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:13px;color:var(--text-muted);line-height:1.5;
+  display:flex;gap:10px;
+}
+.knot-steps li::before{
+  content:counter(kstep);font-family:var(--font-mono);
+  font-size:11px;color:var(--teal);min-width:20px;margin-top:1px;
+}
+
+/* ── TIPS ── */
+.tips-list{padding:8px 16px}
+.tip-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;margin-bottom:8px;
+}
+.tip-category{
+  font-size:10px;font-family:var(--font-mono);
+  color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;
+  margin-bottom:6px;
+}
+.tip-body{font-size:13px;color:var(--text);line-height:1.6}
+
+/* ── REGS ── */
+.reg-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;margin:0 16px 8px;
+}
+.reg-species{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px}
+.reg-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px}
+.reg-key{color:var(--text-muted);font-family:var(--font-mono)}
+.reg-val{color:var(--text)}
+.reg-warning{color:var(--crimson)}
+.reg-ok{color:var(--teal)}
+.source-link{
+  display:inline-flex;align-items:center;gap:5px;
+  color:var(--teal);font-size:11px;font-family:var(--font-mono);
+  text-decoration:none;margin-top:8px;
+}
+.source-link:hover{color:var(--text)}
+.reg-authority-block{
+  background:var(--surface2);border-radius:6px;padding:12px;
+  margin:8px 16px;font-size:12px;color:var(--text-muted);line-height:1.6;
+}
+
+/* ── TRIP LOG ── */
+.trip-form{padding:8px 16px}
+.trip-form-row{margin-bottom:12px}
+.trip-label{font-size:11px;font-family:var(--font-mono);color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px;display:block}
+.trip-input,.trip-select,.trip-textarea{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);font-family:var(--font-body);font-size:13px;
+  padding:9px 12px;border-radius:6px;outline:none;
+  transition:border-color 0.18s;
+}
+.trip-input:focus,.trip-select:focus,.trip-textarea:focus{border-color:var(--gold)}
+.trip-textarea{resize:vertical;min-height:80px}
+.trip-select{-webkit-appearance:none;appearance:none}
+.trip-btn{
+  width:100%;padding:12px;border-radius:var(--radius);
+  border:none;cursor:pointer;font-size:14px;font-weight:600;
+  letter-spacing:0.04em;font-family:var(--font-body);
+  transition:all 0.18s;
+}
+.trip-btn-primary{background:var(--gold);color:#0c0d0b}
+.trip-btn-primary:hover{filter:brightness(1.1)}
+.trip-btn-secondary{background:var(--surface2);color:var(--text-muted);border:1px solid var(--border);margin-top:8px}
+.trip-entries{padding:8px 16px}
+.trip-entry{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:12px;margin-bottom:8px;
+}
+.trip-entry-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.trip-entry-date{font-size:11px;font-family:var(--font-mono);color:var(--text-dim)}
+.trip-entry-species{font-size:13px;font-weight:600;color:var(--gold)}
+.trip-entry-details{font-size:12px;color:var(--text-muted);line-height:1.5}
+.trip-entry-delete{
+  background:none;border:1px solid var(--border);border-radius:4px;
+  color:var(--text-dim);cursor:pointer;font-size:11px;padding:3px 8px;
+}
+.trip-entry-delete:hover{border-color:var(--crimson);color:var(--crimson)}
+
+/* ── HOME ── */
+.home-hero{
+  padding:24px 16px 20px;
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);
+  border-bottom:1px solid var(--border);
+}
+.hero-logo{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.hero-logo-img{width:56px;height:56px;object-fit:contain}
+.hero-logo-text{display:flex;flex-direction:column}
+.hero-app-name{font-family:var(--font-display);font-size:36px;color:var(--gold);letter-spacing:0.06em;line-height:1}
+.hero-tifinagh{font-family:var(--font-tifinagh);font-size:16px;color:var(--text-muted);margin-top:2px}
+.hero-tagline{font-size:13px;color:var(--text-muted);line-height:1.5;margin-top:4px}
+.big5-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:12px 16px}
+.big5-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:10px 6px;text-align:center;cursor:pointer;
+  transition:border-color 0.18s;
+}
+.big5-card:hover{border-color:var(--gold-dim)}
+.big5-icon{font-size:22px}
+.big5-name{font-size:10px;font-family:var(--font-mono);color:var(--text-muted);margin-top:4px;line-height:1.2}
+
+/* ── SEASONAL CALENDAR ── */
+.cal-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:2px;padding:0 16px 12px}
+.cal-month-label{
+  text-align:center;font-size:9px;font-family:var(--font-mono);
+  color:var(--text-dim);text-transform:uppercase;padding:4px 0;
+}
+.cal-species-row{
+  display:contents;
+}
+.cal-species-row .cal-name{
+  grid-column:1/-1;font-size:11px;color:var(--text-muted);
+  padding:6px 0 2px;font-family:var(--font-mono);
+  border-top:1px solid var(--border);margin-top:4px;
+}
+.cal-cell{
+  height:14px;border-radius:2px;
+}
+.cal-cell.peak{background:var(--gold)}
+.cal-cell.good{background:var(--teal)}
+.cal-cell.off{background:var(--surface2)}
+
+/* ── NEAR ME ── */
+.near-me-btn{
+  display:flex;align-items:center;gap:8px;
+  background:var(--teal-dim);border:1px solid rgba(42,143,126,0.3);
+  border-radius:var(--radius);padding:12px 16px;margin:8px 16px;
+  cursor:pointer;color:var(--teal);font-size:13px;font-weight:600;
+  font-family:var(--font-body);transition:background 0.18s;
+}
+.near-me-btn:hover{background:rgba(42,143,126,0.25)}
+
+/* ── NEWSLETTER BAND ── */
+.newsletter-band{
+  margin:16px;background:var(--surface);
+  border:1px solid var(--gold-dim);border-radius:var(--radius);
+  padding:16px;
+}
+.newsletter-title{font-family:var(--font-display);font-size:22px;color:var(--gold);letter-spacing:0.04em;margin-bottom:4px}
+.newsletter-sub{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:12px}
+.newsletter-form{display:flex;gap:8px;flex-wrap:wrap}
+.newsletter-input{
+  flex:1;min-width:180px;background:var(--surface2);
+  border:1px solid var(--border);color:var(--text);
+  font-size:13px;padding:9px 12px;border-radius:6px;
+  font-family:var(--font-body);outline:none;
+}
+.newsletter-input:focus{border-color:var(--gold)}
+.newsletter-submit{
+  padding:9px 16px;background:var(--gold);border:none;
+  border-radius:6px;color:#0c0d0b;font-weight:600;font-size:13px;
+  cursor:pointer;font-family:var(--font-body);
+}
+
+/* ── GUIDE MONETIZATION BLOCK ── */
+.guides-band{
+  margin:16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+}
+.guides-band-header{
+  padding:12px 16px;background:var(--surface2);
+  border-bottom:1px solid var(--border);
+}
+.guides-band-title{font-family:var(--font-display);font-size:20px;color:var(--text);letter-spacing:0.04em}
+.guide-listing{
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  display:flex;gap:12px;align-items:flex-start;
+}
+.guide-listing:last-child{border-bottom:none}
+.guide-badge{
+  width:40px;height:40px;border-radius:8px;
+  background:var(--gold-dim);border:1px solid var(--gold-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.guide-info{flex:1}
+.guide-name{font-size:13px;font-weight:600;color:var(--text)}
+.guide-region{font-size:11px;font-family:var(--font-mono);color:var(--text-muted);margin-top:2px}
+.guide-contact{
+  display:inline-block;margin-top:6px;padding:5px 10px;
+  background:var(--gold);border-radius:4px;
+  color:#0c0d0b;font-size:11px;font-weight:700;
+  text-decoration:none;font-family:var(--font-mono);
+}
+
+/* ── LICENSE BLOCK ── */
+.license-block{
+  margin:0 16px 8px;background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px;
+}
+.license-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px}
+.license-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:12px;
+}
+.license-row:last-child{border-bottom:none}
+.license-key{color:var(--text-muted);font-family:var(--font-mono)}
+.license-link{color:var(--teal);text-decoration:none}
+.license-link:hover{text-decoration:underline}
+
+/* ── LOADING / ERROR ── */
+.loading{
+  padding:32px;text-align:center;
+  font-size:12px;font-family:var(--font-mono);color:var(--text-dim);
+}
+.loading-spinner{
+  width:24px;height:24px;border:2px solid var(--border);
+  border-top-color:var(--gold);border-radius:50%;
+  animation:spin 0.8s linear infinite;margin:0 auto 12px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-msg{
+  background:var(--crimson-dim);border:1px solid rgba(168,50,50,0.3);
+  border-radius:6px;padding:12px;margin:16px;
+  font-size:12px;color:var(--crimson);font-family:var(--font-mono);
+}
+
+/* ── DIVIDERS ── */
+.divider{height:1px;background:var(--border);margin:0 16px}
+
+/* ── RTL SUPPORT ── */
+[dir="rtl"] .overlay-back{margin-right:0;margin-left:auto}
+[dir="rtl"] .detail-value{text-align:left}
+[dir="rtl"] .spot-header,[dir="rtl"] .reg-row,[dir="rtl"] .trip-entry-header{flex-direction:row-reverse}
+[dir="rtl"] .tag,[dir="rtl"] .spot-distance{margin-right:0;margin-left:0}
+[dir="rtl"] .rig-steps li::before,[dir="rtl"] .knot-steps li::before{margin-left:6px;margin-right:0}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+
+/* ── RESPONSIVE ── */
+@media(min-width:600px){
+  .species-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+  .conditions-grid{grid-template-columns:repeat(4,1fr)}
+  .big5-grid{grid-template-columns:repeat(5,1fr)}
+}
+@media(min-width:900px){
+  .spots-list,.species-grid{max-width:800px;margin-left:auto;margin-right:auto}
+  .conditions-grid{max-width:800px;margin-left:auto;margin-right:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<!-- LANG BAR -->
+<div class="lang-bar" id="lang-bar">
+  <button class="lang-btn active" data-lang="fr">FR</button>
+  <button class="lang-btn" data-lang="ar" lang="ar">العربية</button>
+  <button class="lang-btn" data-lang="es">ES</button>
+  <button class="lang-btn" data-lang="en">EN</button>
+  <button class="lang-btn" data-lang="zgh" lang="zgh">ⵜⴰⵎⴰⵣⵉⵖⵜ</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main-content">
+
+  <!-- ══ HOME ══ -->
+  <div class="page active" id="page-home">
+    <div class="home-hero">
+      <div class="hero-logo">
+        <img src="/icons/Main_Logo.png" class="hero-logo-img" alt="Iselman logo" onerror="this.style.display='none'">
+        <div class="hero-logo-text">
+          <div class="hero-app-name">ISELMAN</div>
+          <div class="hero-tifinagh">ⵉⵙⴻⵍⵎⴰⵏ</div>
+        </div>
+      </div>
+      <p class="hero-tagline" id="hero-tagline">Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces</p>
+    </div>
+
+    <div style="padding:8px 16px 4px">
+      <div class="section-title" id="big5-title" style="margin-bottom:8px">LES 5 DU MOMENT</div>
+    </div>
+    <div class="big5-grid" id="big5-grid">
+      <div class="big5-card" onclick="showSpeciesById('daurade')"><div class="big5-icon">🐠</div><div class="big5-name" id="b5-daurade">Daurade</div></div>
+      <div class="big5-card" onclick="showSpeciesById('loup')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-loup">Loup</div></div>
+      <div class="big5-card" onclick="showSpeciesById('maquereau')"><div class="big5-icon">🐡</div><div class="big5-name" id="b5-maquereau">Maquereau</div></div>
+      <div class="big5-card" onclick="showSpeciesById('carpe')"><div class="big5-icon">🎣</div><div class="big5-name" id="b5-carpe">Carpe</div></div>
+      <div class="big5-card" onclick="showSpeciesById('truite')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-truite">Truite</div></div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="padding:12px 16px 4px">
+      <div class="section-title" id="home-conditions-title">CONDITIONS LIVE</div>
+    </div>
+    <div id="home-conditions-preview" style="padding:0 16px 8px">
+      <div class="loading"><div class="loading-spinner"></div><span id="loading-text">Chargement...</span></div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="padding:12px 16px 4px">
+      <div class="section-title" id="seasonal-title">CALENDRIER SAISONNIER</div>
+    </div>
+    <div id="seasonal-cal" style="padding:0 4px 4px"></div>
+
+    <div class="newsletter-band">
+      <div class="newsletter-title" id="newsletter-title">LE RAPPORT DE TERRAIN</div>
+      <p class="newsletter-sub" id="newsletter-sub">Conditions, espèces, spots — un email par mois. Aucune pub.</p>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" id="newsletter-email" placeholder="votre@email.com">
+        <button class="newsletter-submit" onclick="subscribeNewsletter()" id="newsletter-btn">S'inscrire</button>
+      </div>
+    </div>
+
+    <div class="guides-band">
+      <div class="guides-band-header">
+        <div class="guides-band-title" id="guides-title">GUIDES &amp; CHARTERS</div>
+      </div>
+      <div class="guide-listing">
+        <div class="guide-badge">🚤</div>
+        <div class="guide-info">
+          <div class="guide-name">Dakhla Surf Fishing</div>
+          <div class="guide-region" id="guide1-region">Sahara Atlantique — Surf &amp; Bateau</div>
+          <a href="mailto:guides@iselman.ma" class="guide-contact" id="guide-contact-btn">Contact</a>
+        </div>
+      </div>
+      <div class="guide-listing">
+        <div class="guide-badge">🎣</div>
+        <div class="guide-info">
+          <div class="guide-name">Atlas Trout Guides</div>
+          <div class="guide-region" id="guide2-region">Moyen Atlas — Truite &amp; Barbeau</div>
+          <a href="mailto:guides@iselman.ma" class="guide-contact" id="guide-contact-btn2">Contact</a>
+        </div>
+      </div>
+      <div class="guide-listing" style="border-bottom:none">
+        <div class="guide-badge">⚡</div>
+        <div class="guide-info">
+          <div class="guide-name" id="list-your-boat">Listez votre bateau</div>
+          <div class="guide-region" id="list-your-boat-sub">Votre charter ici — guides@iselman.ma</div>
+          <a href="mailto:guides@iselman.ma" class="guide-contact" id="list-btn">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CONDITIONS ══ -->
+  <div class="page" id="page-conditions">
+    <div class="page-header">
+      <div class="page-title" id="nav-conditions-title">CONDITIONS</div>
+      <div class="page-subtitle" id="conditions-subtitle">Météo, marées &amp; score de morsure</div>
+    </div>
+
+    <div style="padding:12px 16px 4px">
+      <div class="section-title" id="forecast-title">PRÉVISIONS 7 JOURS</div>
+    </div>
+    <div class="forecast-strip" id="forecast-strip">
+      <div class="loading"><div class="loading-spinner"></div></div>
+    </div>
+
+    <div style="padding:4px 16px">
+      <div class="section-title" id="live-weather-title">MÉTÉO EN DIRECT</div>
+    </div>
+    <div class="conditions-grid" id="conditions-grid">
+      <div class="loading" style="grid-column:1/-1"><div class="loading-spinner"></div></div>
+    </div>
+
+    <div style="padding:8px 16px 4px">
+      <div class="section-title" id="tide-title">MARÉES</div>
+      <select class="tide-station-select" id="tide-station-select" onchange="loadTides()">
+        <option value="tanger">Tanger</option>
+        <option value="casablanca">Casablanca</option>
+        <option value="agadir">Agadir</option>
+        <option value="dakhla">Dakhla</option>
+        <option value="nador">Nador / Méditerranée</option>
+      </select>
+    </div>
+    <div style="padding:0 16px 12px">
+      <div class="card" style="overflow:hidden">
+        <div id="tide-content" style="padding:12px">
+          <div class="loading"><div class="loading-spinner"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:4px 16px 4px">
+      <div class="section-title" id="science-title">SCIENCE DE LA MORSURE</div>
+    </div>
+    <div style="padding:0 16px 12px">
+      <div class="card"><div style="padding:14px">
+        <div id="bite-science-content">
+          <div class="detail-row"><span class="detail-label" id="sci-pressure-label">Pression</span><span class="detail-value" id="sci-pressure-val">—</span></div>
+          <div class="detail-row"><span class="detail-label" id="sci-wind-label">Vent</span><span class="detail-value" id="sci-wind-val">—</span></div>
+          <div class="detail-row"><span class="detail-label" id="sci-temp-label">Temp. eau estimée</span><span class="detail-value" id="sci-temp-val">—</span></div>
+          <div class="detail-row"><span class="detail-label" id="sci-moon-label">Phase lunaire</span><span class="detail-value" id="sci-moon-val">—</span></div>
+          <div class="detail-row"><span class="detail-label" id="sci-time-label">Meilleure heure</span><span class="detail-value" id="sci-time-val">—</span></div>
+        </div>
+        <div class="bite-score" style="margin-top:12px;padding:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <span class="section-title" style="margin:0;font-size:12px" id="bite-score-label">SCORE MORSURE</span>
+            <span style="font-family:var(--font-display);font-size:24px;color:var(--gold)" id="bite-score-val">—</span>
+          </div>
+          <div class="bite-bar"><div class="bite-fill" id="bite-fill" style="width:0%"></div></div>
+          <p style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)" id="bite-advice">Chargement des données...</p>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ══ SPECIES ══ -->
+  <div class="page" id="page-species">
+    <div class="page-header">
+      <div class="page-title" id="nav-species-title">ESPÈCES</div>
+      <div class="page-subtitle" id="species-subtitle">20 espèces · Atlantique · Méditerranée · Eaux douces</div>
+    </div>
+    <div class="filter-bar">
+      <button class="pill active" data-filter="all" id="filter-all">Toutes</button>
+      <button class="pill" data-filter="saltwater" id="filter-salt">Mer</button>
+      <button class="pill" data-filter="freshwater" id="filter-fresh">Eau douce</button>
+    </div>
+    <div class="species-grid" id="species-grid"></div>
+  </div>
+
+  <!-- ══ SPOTS ══ -->
+  <div class="page" id="page-spots">
+    <div class="page-header">
+      <div class="page-title" id="nav-spots-title">SPOTS</div>
+      <div class="page-subtitle" id="spots-subtitle">20 spots · 8 régions</div>
+    </div>
+    <button class="near-me-btn" id="near-me-btn" onclick="findNearMe()">
+      <span>📍</span><span id="near-me-text">Spots à proximité</span>
+    </button>
+    <div class="filter-bar" id="region-filter-bar">
+      <button class="pill active" data-region="all" id="region-all">Toutes</button>
+      <button class="pill" data-region="nord-atl">Nord Atl.</button>
+      <button class="pill" data-region="gibraltar">Gibraltar</button>
+      <button class="pill" data-region="med">Méditerranée</button>
+      <button class="pill" data-region="centrale">Côte Centrale</button>
+      <button class="pill" data-region="sud">Côte Sud</button>
+      <button class="pill" data-region="agadir">Agadir</button>
+      <button class="pill" data-region="sahara">Sahara</button>
+      <button class="pill" data-region="interieur">Intérieur</button>
+    </div>
+    <div class="spots-list" id="spots-list"></div>
+  </div>
+
+  <!-- ══ REGS ══ -->
+  <div class="page" id="page-regs">
+    <div class="page-header">
+      <div class="page-title" id="nav-regs-title">RÉGLEMENTS</div>
+      <div class="page-subtitle" id="regs-subtitle">Tailles, saisons, permis — vérifiez toujours les textes officiels</div>
+    </div>
+    <div class="reg-authority-block" id="reg-authority-block">
+      <strong>Sources officielles:</strong> Direction des Pêches Maritimes (côtier) ·
+      Département des Eaux &amp; Forêts (intérieur). Données indicatives — toujours vérifier la réglementation en vigueur.
+    </div>
+    <div id="regs-list"></div>
+    <div class="license-block">
+      <div class="license-title" id="license-title">PERMIS &amp; LICENCES</div>
+      <div class="license-row"><span class="license-key" id="lic-coastal">Pêche côtière</span><span><a href="https://www.mpm.gov.ma" class="license-link" target="_blank">DPM →</a></span></div>
+      <div class="license-row"><span class="license-key" id="lic-inland">Eaux douces &amp; barrages</span><span><a href="https://www.eauxetforets.gov.ma" class="license-link" target="_blank">Eaux &amp; Forêts →</a></span></div>
+      <div class="license-row"><span class="license-key" id="lic-tuna">Grands pélagiques</span><span><a href="https://www.iccat.int" class="license-link" target="_blank">ICCAT →</a></span></div>
+    </div>
+  </div>
+
+  <!-- ══ RIGS ══ -->
+  <div class="page" id="page-rigs">
+    <div class="page-header">
+      <div class="page-title" id="nav-rigs-title">MONTAGES</div>
+      <div class="page-subtitle" id="rigs-subtitle">Techniques et montages illustrés</div>
+    </div>
+    <div id="rigs-list"></div>
+  </div>
+
+  <!-- ══ KNOTS ══ -->
+  <div class="page" id="page-knots">
+    <div class="page-header">
+      <div class="page-title" id="nav-knots-title">NŒUDS</div>
+      <div class="page-subtitle" id="knots-subtitle">Les nœuds essentiels du pêcheur marocain</div>
+    </div>
+    <div id="knots-list"></div>
+  </div>
+
+  <!-- ══ TIPS ══ -->
+  <div class="page" id="page-tips">
+    <div class="page-header">
+      <div class="page-title" id="nav-tips-title">CONSEILS</div>
+      <div class="page-subtitle" id="tips-subtitle">Terrain · Sécurité · Technique</div>
+    </div>
+    <div class="tips-list" id="tips-list"></div>
+  </div>
+
+  <!-- ══ TRIP LOG ══ -->
+  <div class="page" id="page-triplog">
+    <div class="page-header">
+      <div class="page-title" id="nav-triplog-title">JOURNAL</div>
+      <div class="page-subtitle" id="triplog-subtitle">Vos sorties, enregistrées localement</div>
+    </div>
+    <div class="trip-form">
+      <div class="trip-form-row">
+        <label class="trip-label" id="tl-date-label">Date</label>
+        <input type="date" class="trip-input" id="tl-date">
+      </div>
+      <div class="trip-form-row">
+        <label class="trip-label" id="tl-spot-label">Spot / Lieu</label>
+        <input type="text" class="trip-input" id="tl-spot" placeholder="Ex: Plage de Mehdia">
+      </div>
+      <div class="trip-form-row">
+        <label class="trip-label" id="tl-species-label">Espèce</label>
+        <select class="trip-select" id="tl-species">
+          <option value="">— Sélectionner —</option>
+        </select>
+      </div>
+      <div class="trip-form-row">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div>
+            <label class="trip-label" id="tl-count-label">Nombre</label>
+            <input type="number" class="trip-input" id="tl-count" min="0" placeholder="0">
+          </div>
+          <div>
+            <label class="trip-label" id="tl-size-label">Taille (cm)</label>
+            <input type="number" class="trip-input" id="tl-size" min="0" placeholder="0">
+          </div>
+        </div>
+      </div>
+      <div class="trip-form-row">
+        <label class="trip-label" id="tl-rig-label">Montage utilisé</label>
+        <input type="text" class="trip-input" id="tl-rig" placeholder="Ex: Surfcasting, plomb 100g">
+      </div>
+      <div class="trip-form-row">
+        <label class="trip-label" id="tl-notes-label">Notes</label>
+        <textarea class="trip-textarea" id="tl-notes" placeholder="Conditions, appâts, observations..."></textarea>
+      </div>
+      <button class="trip-btn trip-btn-primary" id="tl-save-btn" onclick="saveTrip()">Enregistrer la sortie</button>
+      <button class="trip-btn trip-btn-secondary" id="tl-export-btn" onclick="exportTrips()">Exporter CSV</button>
+    </div>
+    <div class="divider" style="margin:8px 0"></div>
+    <div style="padding:12px 16px 4px">
+      <div class="section-title" id="tl-history-title">HISTORIQUE</div>
+    </div>
+    <div class="trip-entries" id="trip-entries"></div>
+  </div>
+
+</div><!-- end #main-content -->
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <button class="nav-item active" data-page="home" onclick="showPage('home')">
+    <span class="nav-icon">🏠</span><span class="nav-label" id="nav-home">Accueil</span>
+  </button>
+  <button class="nav-item" data-page="conditions" onclick="showPage('conditions')">
+    <span class="nav-icon">🌊</span><span class="nav-label" id="nav-conditions">Météo</span>
+  </button>
+  <button class="nav-item" data-page="species" onclick="showPage('species')">
+    <span class="nav-icon">🐟</span><span class="nav-label" id="nav-species">Espèces</span>
+  </button>
+  <button class="nav-item" data-page="spots" onclick="showPage('spots')">
+    <span class="nav-icon">📍</span><span class="nav-label" id="nav-spots">Spots</span>
+  </button>
+  <button class="nav-item" data-page="regs" onclick="showPage('regs')">
+    <span class="nav-icon">📋</span><span class="nav-label" id="nav-regs">Règles</span>
+  </button>
+  <button class="nav-item" data-page="rigs" onclick="showPage('rigs')">
+    <span class="nav-icon">🪝</span><span class="nav-label" id="nav-rigs">Montages</span>
+  </button>
+  <button class="nav-item" data-page="knots" onclick="showPage('knots')">
+    <span class="nav-icon">🔗</span><span class="nav-label" id="nav-knots">Nœuds</span>
+  </button>
+  <button class="nav-item" data-page="tips" onclick="showPage('tips')">
+    <span class="nav-icon">💡</span><span class="nav-label" id="nav-tips">Conseils</span>
+  </button>
+  <button class="nav-item" data-page="triplog" onclick="showPage('triplog')">
+    <span class="nav-icon">📓</span><span class="nav-label" id="nav-triplog">Journal</span>
+  </button>
+</nav>
+
+<!-- SPECIES OVERLAY -->
+<div id="species-overlay">
+  <div class="overlay-header">
+    <button class="overlay-back" onclick="closeOverlay()" id="overlay-back-btn">← Retour</button>
+    <div class="overlay-title" id="overlay-species-name"></div>
+  </div>
+  <div class="overlay-body" id="overlay-body"></div>
+</div>
+<script>
+const I18N = {
+  fr:{
+    nav_home:'Accueil',nav_conditions:'Météo',nav_species:'Espèces',nav_spots:'Spots',
+    nav_regs:'Règles',nav_rigs:'Montages',nav_knots:'Nœuds',nav_tips:'Conseils',nav_triplog:'Journal',
+    hero_tagline:'Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces',
+    big5_title:'LES 5 DU MOMENT',home_conditions_title:'CONDITIONS LIVE',
+    seasonal_title:'CALENDRIER SAISONNIER',
+    newsletter_title:'LE RAPPORT DE TERRAIN',newsletter_sub:'Conditions, espèces, spots — un email par mois. Aucune pub.',
+    newsletter_btn:'S\'inscrire',newsletter_placeholder:'votre@email.com',
+    guides_title:'GUIDES & CHARTERS',guide1_region:'Sahara Atlantique — Surf & Bateau',
+    guide2_region:'Moyen Atlas — Truite & Barbeau',list_your_boat:'Listez votre bateau',
+    list_your_boat_sub:'Votre charter ici — guides@iselman.ma',guide_contact:'Contact',list_btn:'Nous écrire',
+    conditions_subtitle:'Météo, marées & score de morsure',forecast_title:'PRÉVISIONS 7 JOURS',
+    live_weather_title:'MÉTÉO EN DIRECT',tide_title:'MARÉES',science_title:'SCIENCE DE LA MORSURE',
+    sci_pressure_label:'Pression atmosphérique',sci_wind_label:'Vent',sci_temp_label:'Temp. eau estimée',
+    sci_moon_label:'Phase lunaire',sci_time_label:'Meilleure heure',
+    bite_score_label:'SCORE MORSURE',
+    species_subtitle:'20 espèces · Atlantique · Méditerranée · Eaux douces',
+    filter_all:'Toutes',filter_salt:'Mer',filter_fresh:'Eau douce',
+    overlay_back:'← Retour',species_title:'ESPÈCES',
+    spots_subtitle:'20 spots · 8 régions',near_me_text:'Spots à proximité',region_all:'Toutes',
+    regs_subtitle:'Tailles, saisons, permis — vérifiez toujours les textes officiels',
+    reg_authority:'Sources officielles: Direction des Pêches Maritimes (côtier) · Département des Eaux & Forêts (intérieur).',
+    license_title:'PERMIS & LICENCES',lic_coastal:'Pêche côtière',lic_inland:'Eaux douces & barrages',lic_tuna:'Grands pélagiques',
+    rigs_subtitle:'Techniques et montages illustrés',
+    knots_subtitle:'Les nœuds essentiels du pêcheur marocain',
+    tips_subtitle:'Terrain · Sécurité · Technique',
+    triplog_subtitle:'Vos sorties, enregistrées localement',
+    tl_date_label:'Date',tl_spot_label:'Spot / Lieu',tl_species_label:'Espèce',
+    tl_count_label:'Nombre',tl_size_label:'Taille (cm)',tl_rig_label:'Montage utilisé',
+    tl_notes_label:'Notes',tl_save_btn:'Enregistrer la sortie',tl_export_btn:'Exporter CSV',
+    tl_history_title:'HISTORIQUE',
+    loading:'Chargement...',overlay_habitat:'Habitat',overlay_bait:'Appâts',overlay_rig:'Montage conseillé',
+    overlay_season:'Meilleure saison',overlay_legal_size:'Taille légale',overlay_limit:'Limite',
+    overlay_notes:'Notes',overlay_type:'Type',permit_required:'Permis requis',
+    permit_inland:'Permis Eaux & Forêts obligatoire',
+    buy_gear:'Acheter matériel — Decathlon Maroc',
+    no_trips:'Aucune sortie enregistrée.',delete:'Supprimer',
+    bite_excellent:'Excellent — conditions idéales',bite_good:'Bon — conditions favorables',
+    bite_fair:'Moyen — tentez votre chance',bite_poor:'Faible — conditions difficiles',
+    moon_new:'Nouvelle lune',moon_waxing:'Premier quartier',moon_full:'Pleine lune',moon_waning:'Dernier quartier',
+    best_time:'Aube & crépuscule',nav_conditions_title:'CONDITIONS',nav_species_title:'ESPÈCES',
+    nav_spots_title:'SPOTS',nav_regs_title:'RÉGLEMENTS',nav_rigs_title:'MONTAGES',
+    nav_knots_title:'NŒUDS',nav_tips_title:'CONSEILS',nav_triplog_title:'JOURNAL',
+    page_conditions_title:'CONDITIONS',page_species_title:'ESPÈCES',
+  },
+  en:{
+    nav_home:'Home',nav_conditions:'Weather',nav_species:'Species',nav_spots:'Spots',
+    nav_regs:'Regs',nav_rigs:'Rigs',nav_knots:'Knots',nav_tips:'Tips',nav_triplog:'Log',
+    hero_tagline:'Morocco Fishing Guide — Atlantic · Mediterranean · Freshwater',
+    big5_title:'BIG 5 RIGHT NOW',home_conditions_title:'LIVE CONDITIONS',
+    seasonal_title:'SEASONAL CALENDAR',
+    newsletter_title:'THE FIELD REPORT',newsletter_sub:'Conditions, species, spots — one email a month. No ads.',
+    newsletter_btn:'Subscribe',newsletter_placeholder:'your@email.com',
+    guides_title:'GUIDES & CHARTERS',guide1_region:'Atlantic Sahara — Surf & Boat',
+    guide2_region:'Middle Atlas — Trout & Barbel',list_your_boat:'List your boat',
+    list_your_boat_sub:'Your charter here — guides@iselman.ma',guide_contact:'Contact',list_btn:'Get in touch',
+    conditions_subtitle:'Weather, tides & bite score',forecast_title:'7-DAY FORECAST',
+    live_weather_title:'LIVE WEATHER',tide_title:'TIDES',science_title:'BITE SCIENCE',
+    sci_pressure_label:'Barometric pressure',sci_wind_label:'Wind',sci_temp_label:'Est. water temp',
+    sci_moon_label:'Moon phase',sci_time_label:'Best time of day',
+    bite_score_label:'BITE SCORE',
+    species_subtitle:'20 species · Atlantic · Mediterranean · Freshwater',
+    filter_all:'All',filter_salt:'Saltwater',filter_fresh:'Freshwater',
+    overlay_back:'← Back',
+    spots_subtitle:'20 spots · 8 regions',near_me_text:'Spots near me',region_all:'All',
+    regs_subtitle:'Sizes, seasons, permits — always verify official regulations',
+    reg_authority:'Official sources: Direction des Pêches Maritimes (coastal) · Département des Eaux & Forêts (inland).',
+    license_title:'PERMITS & LICENCES',lic_coastal:'Coastal fishing',lic_inland:'Freshwater & reservoirs',lic_tuna:'Big pelagics',
+    rigs_subtitle:'Illustrated rigs and techniques',
+    knots_subtitle:'Essential knots for Morocco fishing',
+    tips_subtitle:'Field · Safety · Technique',
+    triplog_subtitle:'Your trips, stored locally',
+    tl_date_label:'Date',tl_spot_label:'Spot / Location',tl_species_label:'Species',
+    tl_count_label:'Count',tl_size_label:'Size (cm)',tl_rig_label:'Rig used',
+    tl_notes_label:'Notes',tl_save_btn:'Save trip',tl_export_btn:'Export CSV',
+    tl_history_title:'HISTORY',
+    loading:'Loading...',overlay_habitat:'Habitat',overlay_bait:'Bait',overlay_rig:'Recommended rig',
+    overlay_season:'Best season',overlay_legal_size:'Legal size',overlay_limit:'Bag limit',
+    overlay_notes:'Notes',overlay_type:'Type',permit_required:'Permit required',
+    permit_inland:'Eaux & Forêts permit required',
+    buy_gear:'Buy gear — Decathlon Morocco',
+    no_trips:'No trips logged yet.',delete:'Delete',
+    bite_excellent:'Excellent — ideal conditions',bite_good:'Good — favourable conditions',
+    bite_fair:'Fair — worth a try',bite_poor:'Poor — tough conditions',
+    moon_new:'New moon',moon_waxing:'First quarter',moon_full:'Full moon',moon_waning:'Last quarter',
+    best_time:'Dawn & dusk',
+    page_conditions_title:'CONDITIONS',page_species_title:'SPECIES',
+  },
+  es:{
+    nav_home:'Inicio',nav_conditions:'Tiempo',nav_species:'Especies',nav_spots:'Zonas',
+    nav_regs:'Normas',nav_rigs:'Montajes',nav_knots:'Nudos',nav_tips:'Consejos',nav_triplog:'Diario',
+    hero_tagline:'Guía de pesca de Marruecos — Atlántico · Mediterráneo · Agua dulce',
+    big5_title:'LOS 5 AHORA',home_conditions_title:'CONDICIONES EN VIVO',
+    seasonal_title:'CALENDARIO ESTACIONAL',
+    newsletter_title:'EL INFORME DE CAMPO',newsletter_sub:'Condiciones, especies, zonas — un correo al mes. Sin publicidad.',
+    newsletter_btn:'Suscribirse',newsletter_placeholder:'tu@email.com',
+    guides_title:'GUÍAS & CHARTERS',guide1_region:'Sáhara Atlántico — Surf & Barco',
+    guide2_region:'Atlas Medio — Trucha & Barbo',list_your_boat:'Publica tu barco',
+    list_your_boat_sub:'Tu charter aquí — guides@iselman.ma',guide_contact:'Contacto',list_btn:'Escríbenos',
+    conditions_subtitle:'Tiempo, mareas & puntuación de mordida',forecast_title:'PREVISIÓN 7 DÍAS',
+    live_weather_title:'TIEMPO EN DIRECTO',tide_title:'MAREAS',science_title:'CIENCIA DE LA MORDIDA',
+    sci_pressure_label:'Presión barométrica',sci_wind_label:'Viento',sci_temp_label:'Temp. agua est.',
+    sci_moon_label:'Fase lunar',sci_time_label:'Mejor hora',
+    bite_score_label:'PUNTUACIÓN MORDIDA',
+    species_subtitle:'20 especies · Atlántico · Mediterráneo · Agua dulce',
+    filter_all:'Todas',filter_salt:'Mar',filter_fresh:'Dulce',
+    overlay_back:'← Volver',
+    spots_subtitle:'20 zonas · 8 regiones',near_me_text:'Zonas cercanas',region_all:'Todas',
+    regs_subtitle:'Tallas, vedas, permisos — verificar siempre la normativa oficial',
+    reg_authority:'Fuentes oficiales: Direction des Pêches Maritimes (costera) · Département des Eaux & Forêts (interior).',
+    license_title:'PERMISOS & LICENCIAS',lic_coastal:'Pesca costera',lic_inland:'Aguas dulces y embalses',lic_tuna:'Grandes pelágicos',
+    rigs_subtitle:'Montajes y técnicas ilustradas',
+    knots_subtitle:'Nudos esenciales del pescador en Marruecos',
+    tips_subtitle:'Campo · Seguridad · Técnica',
+    triplog_subtitle:'Tus salidas, guardadas localmente',
+    tl_date_label:'Fecha',tl_spot_label:'Zona / Lugar',tl_species_label:'Especie',
+    tl_count_label:'Cantidad',tl_size_label:'Talla (cm)',tl_rig_label:'Montaje usado',
+    tl_notes_label:'Notas',tl_save_btn:'Guardar salida',tl_export_btn:'Exportar CSV',
+    tl_history_title:'HISTORIAL',
+    loading:'Cargando...',overlay_habitat:'Hábitat',overlay_bait:'Cebo',overlay_rig:'Montaje recomendado',
+    overlay_season:'Mejor temporada',overlay_legal_size:'Talla legal',overlay_limit:'Cupo',
+    overlay_notes:'Notas',overlay_type:'Tipo',permit_required:'Permiso requerido',
+    permit_inland:'Permiso Eaux & Forêts obligatorio',
+    buy_gear:'Comprar material — Decathlon Marruecos',
+    no_trips:'Sin salidas registradas.',delete:'Eliminar',
+    bite_excellent:'Excelente — condiciones ideales',bite_good:'Bueno — condiciones favorables',
+    bite_fair:'Regular — vale la pena intentar',bite_poor:'Malo — condiciones difíciles',
+    moon_new:'Luna nueva',moon_waxing:'Cuarto creciente',moon_full:'Luna llena',moon_waning:'Cuarto menguante',
+    best_time:'Amanecer y atardecer',
+    page_conditions_title:'CONDICIONES',page_species_title:'ESPECIES',
+  },
+  ar:{
+    nav_home:'الرئيسية',nav_conditions:'الطقس',nav_species:'الأسماك',nav_spots:'الأماكن',
+    nav_regs:'الأنظمة',nav_rigs:'التجهيزات',nav_knots:'العقد',nav_tips:'نصائح',nav_triplog:'اليومية',
+    hero_tagline:'دليل الصيد في المغرب — المحيط الأطلسي · البحر الأبيض المتوسط · المياه العذبة',
+    big5_title:'أفضل 5 الآن',home_conditions_title:'الأحوال الآن',
+    seasonal_title:'التقويم الموسمي',
+    newsletter_title:'تقرير الميدان',newsletter_sub:'الأحوال والأسماك والأماكن — بريد إلكتروني واحد شهرياً. بدون إعلانات.',
+    newsletter_btn:'اشتراك',newsletter_placeholder:'بريدك@الإلكتروني.com',
+    guides_title:'المرشدون والتأجير',guide1_region:'الصحراء الأطلسية — صيد الشاطئ والقوارب',
+    guide2_region:'الأطلس المتوسط — سمك التراوت والبربوط',list_your_boat:'أضف قاربك',
+    list_your_boat_sub:'طرتشاركك هنا — guides@iselman.ma',guide_contact:'تواصل',list_btn:'راسلنا',
+    conditions_subtitle:'الطقس والمد والجزر ومؤشر العض',forecast_title:'توقعات 7 أيام',
+    live_weather_title:'الطقس المباشر',tide_title:'المد والجزر',science_title:'علم الصيد',
+    sci_pressure_label:'الضغط الجوي',sci_wind_label:'الرياح',sci_temp_label:'درجة حرارة الماء (تقديرية)',
+    sci_moon_label:'مرحلة القمر',sci_time_label:'أفضل وقت',
+    bite_score_label:'مؤشر العض',
+    species_subtitle:'20 نوع · الأطلسي · المتوسط · المياه العذبة',
+    filter_all:'الكل',filter_salt:'البحر',filter_fresh:'المياه العذبة',
+    overlay_back:'→ رجوع',
+    spots_subtitle:'20 مكان · 8 مناطق',near_me_text:'أماكن قريبة',region_all:'الكل',
+    regs_subtitle:'الأحجام والمواسم والتصاريح — تحقق دائماً من الأنظمة الرسمية',
+    reg_authority:'المصادر الرسمية: إدارة الصيد البحري (السواحل) · قسم المياه والغابات (الداخل).',
+    license_title:'التصاريح والرخص',lic_coastal:'الصيد الساحلي',lic_inland:'المياه العذبة والسدود',lic_tuna:'الأسماك الكبيرة',
+    rigs_subtitle:'تجهيزات وتقنيات مصورة',
+    knots_subtitle:'العقد الأساسية لصيادي المغرب',
+    tips_subtitle:'الميدان · السلامة · التقنية',
+    triplog_subtitle:'جلساتك، محفوظة محلياً',
+    tl_date_label:'التاريخ',tl_spot_label:'المكان',tl_species_label:'النوع',
+    tl_count_label:'العدد',tl_size_label:'الحجم (سم)',tl_rig_label:'التجهيز المستخدم',
+    tl_notes_label:'ملاحظات',tl_save_btn:'حفظ الجلسة',tl_export_btn:'تصدير CSV',
+    tl_history_title:'السجل',
+    loading:'جارٍ التحميل...',overlay_habitat:'الموطن',overlay_bait:'الطعم',overlay_rig:'التجهيز الموصى به',
+    overlay_season:'أفضل موسم',overlay_legal_size:'الحجم القانوني',overlay_limit:'الحد',
+    overlay_notes:'ملاحظات',overlay_type:'النوع',permit_required:'يلزم تصريح',
+    permit_inland:'تصريح المياه والغابات إلزامي',
+    buy_gear:'شراء المعدات — ديكاتلون المغرب',
+    no_trips:'لا توجد جلسات مسجلة.',delete:'حذف',
+    bite_excellent:'ممتاز — ظروف مثالية',bite_good:'جيد — ظروف مواتية',
+    bite_fair:'متوسط — يستحق المحاولة',bite_poor:'ضعيف — ظروف صعبة',
+    moon_new:'محاق',moon_waxing:'الربع الأول',moon_full:'بدر',moon_waning:'الربع الأخير',
+    best_time:'الفجر والغروب',
+    page_conditions_title:'الأحوال',page_species_title:'الأسماك',
+  },
+  zgh:{
+    nav_home:'ⵜⵉⵣⵡⵓⵔⵉ',nav_conditions:'ⵜⴰⵏⵣⵣⴰⵢⵜ',nav_species:'ⵉⵙⵍⵎⴰⵏ',nav_spots:'ⵉⵖⵔⵎⴰⵏ',
+    nav_regs:'ⵉⵙⴼⴽⴰ',nav_rigs:'ⵜⵓⴽⴽⵉⵡⵉⵏ',nav_knots:'ⵉⴽⴽⴰⵛⵏ',nav_tips:'ⵜⵉⵙⵙⵏⵉⵡⵉⵏ',nav_triplog:'ⵜⴰⴼⵙⵏⴰⵢⵜ',
+    hero_tagline:'ⴰⵏⵙⵙⵉⵅⴼ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵜⵎⵓⵔⵜ ⵏ ⵍⵎⵖⵔⵉⴱ',
+    big5_title:'5 ⵉⵙⵍⵎⴰⵏ ⵏ ⵜⵉⵣⵉ ⴰⴷ',home_conditions_title:'ⵜⴰⵏⵣⵣⴰⵢⵜ ⵜⴰⵎⵥⵍⴰⵢⵜ',
+    seasonal_title:'ⵜⴰⴼⵍⵡⵉⵜ ⵏ ⵉⵎⴰⵍⴰⵙⵏ',
+    newsletter_title:'ⴰⵏⵛⵛⵓ ⵏ ⵓⴽⴰⵍ',newsletter_sub:'ⵜⴰⵏⵣⵣⴰⵢⵜ ⴷ ⵉⵙⵍⵎⴰⵏ — ⵢⴰⵏ ⵓⴱⵔⵉⴷ ⴳ ⵡⴰⵢⵢⵓⵔ.',
+    newsletter_btn:'ⴽⵛⵎ',newsletter_placeholder:'ⵉⵎⴰⵢⵍⴽ@...',
+    guides_title:'ⵉⵎⵙⵍⵉⵖⵏ',guide1_region:'ⵜⵉⵏⴰⵔⵉⵔⵉⵏ — ⵓⵍⵄⴱ ⴷ ⵜⴰⴱⵔⵉⴷⵜ',
+    guide2_region:'ⴰⵟⵍⴰⵙ ⴰⵎⵥⵢⴰⵏ — ⵜⵔⵓⵜⵜⴰ ⴷ ⴱⴰⵔⴱⵓ',list_your_boat:'ⵔⵣⵓ ⵜⴰⴱⵔⴽⵓⴽⵜ ⵉⴽ',
+    list_your_boat_sub:'guides@iselman.ma',guide_contact:'ⵎⵢⴰⵡⴰⴹ',list_btn:'ⴽⵛⵎ ⴰⵖ',
+    conditions_subtitle:'ⵜⴰⵏⵣⵣⴰⵢⵜ ⴷ ⵉⴼⴰⵔⵙⵏ',forecast_title:'7 ⵡⴰⵙⵙⴰⵜⵏ',
+    live_weather_title:'ⵜⴰⵏⵣⵣⴰⵢⵜ ⴷⴰⴷⴷⴰⵏ',tide_title:'ⵉⴼⴰⵔⵙⵏ',science_title:'ⵜⴰⵙⵏⴰ ⵏ ⵓⵙⵍⵎⴷ',
+    sci_pressure_label:'ⴰⴷⴷⴰⴷ',sci_wind_label:'ⴰⴼⵓⵍⵍⵓ',sci_temp_label:'ⵜⴰⴼⴰⵡⵜ ⵏ ⵡⴰⵎⴰⵏ',
+    sci_moon_label:'ⴰⵡⵔⴰⴽ',sci_time_label:'ⴰⵙⵉⵔⴰ ⴰⵎⵣⵡⴰⵔⵓ',
+    bite_score_label:'ⴰⵙⴷⴰⵡ ⵏ ⵓⵙⵍⵎⴷ',
+    species_subtitle:'20 ⵏ ⵉⵙⵍⵎⴰⵏ',
+    filter_all:'ⴰⴽⴽ',filter_salt:'ⴰⵍⵍⵓⵙ',filter_fresh:'ⵡⴰⵎⴰⵏ ⴰⵎⴰⵍⵓ',
+    overlay_back:'→ ⴳⵓⵜ',
+    spots_subtitle:'20 ⵏ ⵉⵖⵔⵎⴰⵏ · 8 ⵜⵉⵎⵏⴰⴹⵉⵏ',near_me_text:'ⵉⵖⵔⵎⴰⵏ ⵢⴰⵏⵏ',region_all:'ⴰⴽⴽ',
+    regs_subtitle:'ⵉⵙⴼⴽⴰ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵍⵎⵖⵔⵉⴱ',
+    reg_authority:'ⵜⵉⵔⵎⵉⵙⵉⵏ ⵜⵉⵙⵏⵙⵉⵢⵉⵏ.',
+    license_title:'ⵜⵉⵔⵙⵍⵉⵏ ⴷ ⵉⵙⴼⴽⴰ',lic_coastal:'ⴰⵙⵍⵎⴷ ⴰⴳⵔⴰⵡⴰⵏ',lic_inland:'ⵡⴰⵎⴰⵏ ⴰⵎⴰⵍⵓ',lic_tuna:'ⵉⵙⵍⵎⴰⵏ ⵉⵎⵇⵇⵔⴰⵏⵏ',
+    rigs_subtitle:'ⵜⵓⴽⴽⵉⵡⵉⵏ ⴷ ⵜⵉⵙⵙⵏⵉⵡⵉⵏ',
+    knots_subtitle:'ⵉⴽⴽⴰⵛⵏ ⵉⵎⴰⵏⵉⵔⵏ ⵏ ⵓⵙⵍⵎⴷ',
+    tips_subtitle:'ⴰⴽⴰⵍ · ⵜⴰⵢⵔⵉ · ⵜⴰⵙⵏⴰ',
+    triplog_subtitle:'ⵉⵔⵡⵉⵢⵏ ⵉⴽ, ⵉⵍⵍⴰ ⴷⴰ',
+    tl_date_label:'ⴰⵙⵙ',tl_spot_label:'ⴰⵖⵔⵎ',tl_species_label:'ⴰⵙⵍⵎ',
+    tl_count_label:'ⴰⵎⴹⴰⵏ',tl_size_label:'ⵜⴰⵏⵏⵉⵢⵜ (cm)',tl_rig_label:'ⵜⵓⴽⴽⵉⵡⵜ',
+    tl_notes_label:'ⵜⵉⵔⵎⵉⵜⵉⵏ',tl_save_btn:'ⵃⴹⵓ ⵓⵔⵉⵔ',tl_export_btn:'ⴼⴼⴻⵖ CSV',
+    tl_history_title:'ⴰⵎⵣⵔⵓⵢ',
+    loading:'ⵉⵜⵜⵡⴰⵍⵍⴰⵍ...',overlay_habitat:'ⴰⵡⵏⴳⵉⵎ',overlay_bait:'ⴰⵎⵏⴹⴰⵡ',overlay_rig:'ⵜⵓⴽⴽⵉⵡⵜ',
+    overlay_season:'ⴰⵣⵎⵣ ⴰⵎⵣⵡⴰⵔⵓ',overlay_legal_size:'ⵜⴰⵏⵏⵉⵢⵜ ⵜⴰⵙⴼⴽⴰⵏⵜ',overlay_limit:'ⵜⴰⵕⵚⵓⵏⵜ',
+    overlay_notes:'ⵜⵉⵔⵎⵉⵜⵉⵏ',overlay_type:'ⴰⵏⴰⵡ',permit_required:'ⵜⴰⵔⵙⵍⵜ ⵉⵃⵜⵜⴰⵊⵏ',
+    permit_inland:'ⵜⴰⵔⵙⵍⵜ ⵏ ⵡⴰⵎⴰⵏ ⴷ ⵉⴳⵔⵔⴰⵏ ⵉⵍⵍⴰ',
+    buy_gear:'ⵙⵔⵖ ⵜⴰⵙⵙⵏⵜⵍⵜ — Decathlon',
+    no_trips:'ⵉⵍⵍⴰ ⵓⵔⵉⵔ.',delete:'ⴽⴽⵙ',
+    bite_excellent:'ⴰⵎⵙⴽⴰⵔ — ⵜⴰⵏⵣⵣⴰⵢⵜ ⵜⴰⵎⵥⵍⴰⵢⵜ',bite_good:'ⵉⴼⴼⵓⵍⴽⵉ',
+    bite_fair:'ⴰⵎⵣⵢⴰⵏ',bite_poor:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
+    moon_new:'ⴰⵟⵟⴰⵙ',moon_waxing:'ⵜⴰⵙⴽⴽⵉⵡⵜ',moon_full:'ⴰⵡⵔⴰⴽ ⴰⵎⵇⵇⵔⴰⵏ',moon_waning:'ⵜⴰⴼⵓⵍⵍⵓⵜ',
+    best_time:'ⵜⴰⴼⵓⵍⴽⵉ ⴷ ⵜⴰⴼⵓⵍⵍⵓⵜ',
+    page_conditions_title:'ⵜⴰⵏⵣⵣⴰⵢⵜ',page_species_title:'ⵉⵙⵍⵎⴰⵏ',
+  }
+};
+let currentLang = 'fr';
+function t(key){return (I18N[currentLang]&&I18N[currentLang][key])||I18N.fr[key]||key}
+function setLang(lang){
+  currentLang = lang;
+  const isRTL = lang==='ar';
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRTL?'rtl':'ltr';
+  document.body.style.fontFamily = lang==='ar'?'var(--font-arabic)':(lang==='zgh'?'var(--font-tifinagh)':'var(--font-body)');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  applyTranslations();
+}
+function applyTranslations(){
+  const ids = [
+    'hero-tagline','big5-title','home-conditions-title','seasonal-title',
+    'newsletter-title','newsletter-sub','newsletter-btn','guides-title',
+    'guide1-region','guide2-region','list-your-boat','list-your-boat-sub',
+    'guide-contact-btn','guide-contact-btn2','list-btn',
+    'nav-conditions-title','nav-species-title','nav-spots-title','nav-regs-title',
+    'nav-rigs-title','nav-knots-title','nav-tips-title','nav-triplog-title',
+    'conditions-subtitle','forecast-title','live-weather-title','tide-title','science-title',
+    'sci-pressure-label','sci-wind-label','sci-temp-label','sci-moon-label','sci-time-label',
+    'bite-score-label','species-subtitle','filter-all','filter-salt','filter-fresh',
+    'overlay-back-btn','spots-subtitle','near-me-text','region-all',
+    'regs-subtitle','reg-authority-block','license-title','lic-coastal','lic-inland','lic-tuna',
+    'rigs-subtitle','knots-subtitle','tips-subtitle','triplog-subtitle',
+    'tl-date-label','tl-spot-label','tl-species-label','tl-count-label','tl-size-label',
+    'tl-rig-label','tl-notes-label','tl-save-btn','tl-export-btn','tl-history-title',
+    'loading-text',
+    'nav-home','nav-conditions','nav-species','nav-spots','nav-regs',
+    'nav-rigs','nav-knots','nav-tips','nav-triplog',
+    'page-conditions-title','page-species-title',
+  ];
+  const keyMap = {
+    'hero-tagline':'hero_tagline','big5-title':'big5_title',
+    'home-conditions-title':'home_conditions_title','seasonal-title':'seasonal_title',
+    'newsletter-title':'newsletter_title','newsletter-sub':'newsletter_sub',
+    'newsletter-btn':'newsletter_btn','guides-title':'guides_title',
+    'guide1-region':'guide1_region','guide2-region':'guide2_region',
+    'list-your-boat':'list_your_boat','list-your-boat-sub':'list_your_boat_sub',
+    'guide-contact-btn':'guide_contact','guide-contact-btn2':'guide_contact','list-btn':'list_btn',
+    'nav-conditions-title':'page_conditions_title','nav-species-title':'page_species_title',
+    'nav-spots-title':'nav_spots_title','nav-regs-title':'nav_regs_title',
+    'nav-rigs-title':'nav_rigs_title','nav-knots-title':'nav_knots_title',
+    'nav-tips-title':'nav_tips_title','nav-triplog-title':'nav_triplog_title',
+    'conditions-subtitle':'conditions_subtitle','forecast-title':'forecast_title',
+    'live-weather-title':'live_weather_title','tide-title':'tide_title','science-title':'science_title',
+    'sci-pressure-label':'sci_pressure_label','sci-wind-label':'sci_wind_label',
+    'sci-temp-label':'sci_temp_label','sci-moon-label':'sci_moon_label','sci-time-label':'sci_time_label',
+    'bite-score-label':'bite_score_label',
+    'species-subtitle':'species_subtitle',
+    'filter-all':'filter_all','filter-salt':'filter_salt','filter-fresh':'filter_fresh',
+    'overlay-back-btn':'overlay_back','spots-subtitle':'spots_subtitle',
+    'near-me-text':'near_me_text','region-all':'region_all',
+    'regs-subtitle':'regs_subtitle','reg-authority-block':'reg_authority',
+    'license-title':'license_title','lic-coastal':'lic_coastal','lic-inland':'lic_inland','lic-tuna':'lic_tuna',
+    'rigs-subtitle':'rigs_subtitle','knots-subtitle':'knots_subtitle',
+    'tips-subtitle':'tips_subtitle','triplog-subtitle':'triplog_subtitle',
+    'tl-date-label':'tl_date_label','tl-spot-label':'tl_spot_label',
+    'tl-species-label':'tl_species_label','tl-count-label':'tl_count_label',
+    'tl-size-label':'tl_size_label','tl-rig-label':'tl_rig_label',
+    'tl-notes-label':'tl_notes_label','tl-save-btn':'tl_save_btn',
+    'tl-export-btn':'tl_export_btn','tl-history-title':'tl_history_title',
+    'loading-text':'loading',
+    'nav-home':'nav_home','nav-conditions':'nav_conditions','nav-species':'nav_species',
+    'nav-spots':'nav_spots','nav-regs':'nav_regs','nav-rigs':'nav_rigs',
+    'nav-knots':'nav_knots','nav-tips':'nav_tips','nav-triplog':'nav_triplog',
+    'page-conditions-title':'page_conditions_title','page-species-title':'page_species_title',
+  };
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el){const k=keyMap[id]||id.replace(/-/g,'_');el.textContent=t(k)}
+  });
+  renderSpeciesGrid();
+  renderSpots();
+  renderRegs();
+  renderRigs();
+  renderKnots();
+  renderTips();
+  renderTripHistory();
+  renderSeasonalCal();
+}
+</script>
+<script>
+const SPECIES = [
+  {id:'daurade',type:'saltwater',icon:'🐠',
+   name:{fr:'Daurade royale',ar:'الدنيس',es:'Dorada',en:'Gilt-head bream',zgh:'ⴰⵎⵓⵔⵉ'},
+   sci:'Sparus aurata',
+   local:{fr:'Daurade',ar:'الدنيس الملكي',es:'Dorada',en:'Sea bream',zgh:'ⴰⵎⵓⵔⵉ'},
+   habitat:{fr:'Fonds sableux et herbiers — 1 à 30m',ar:'القيعان الرملية والأعشاب البحرية',es:'Fondos arenosos y praderas',en:'Sandy bottoms and seagrass, 1–30m',zgh:'ⵉⵎⵉⵍⴰⵏ ⵏ ⵓⴼⴼⵓⵙ'},
+   bait:{fr:'Moule, crevette, ver de vase, calamar',ar:'بلح البحر، الجمبري، ديدان الطين',es:'Mejillón, gamba, gusano, calamar',en:'Mussel, shrimp, ragworm, squid',zgh:'ⵜⴰⵎⵓⵙⵏⵜ ⴷ ⴰⵣⵣⵉⵙ'},
+   rig:{fr:'Paternoster léger ou surfcasting',ar:'مونتاج بترنوستر خفيف',es:'Paternóster ligero o surfcasting',en:'Light paternoster or surfcasting',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵇⴱⴱⵓⵔⵜ'},
+   season:{fr:'Automne–printemps (pic: oct–mars)',ar:'الخريف والربيع',es:'Otoño–primavera',en:'Autumn–spring (peak: Oct–Mar)',zgh:'ⵜⴰⴼⴰⵡⵜ ⵜⴰⴼⵓⵍⴽⵉⵜ'},
+   months:[0,1,0,0,0,0,0,0,1,2,2,1], // 0=off 1=good 2=peak
+   legal_size:'20cm',limit:{fr:'Pas de limite légale — pratique responsable',ar:'بدون حد — الصيد المسؤول',es:'Sin límite legal',en:'No bag limit — responsible practice',zgh:'ⵓⵔ ⵉⵍⵍⵉ ⵓⵎⵣⵔⵓⵢ'},
+   notes:{fr:'Espèce la plus recherchée sur les côtes marocaines. Présente toute l\'année en Méditerranée.',ar:'الأكثر شيوعاً على السواحل المغربية.',es:'La especie más buscada en las costas marroquíes.',en:'Most sought-after species on Moroccan coasts.',zgh:'ⴰⵙⵍⵎ ⴰⵎⵣⵡⴰⵔⵓ ⴳ ⵓⵙⵍⵎⴷ ⴳ ⵍⵎⵖⵔⵉⴱ.'}
+  },
+  {id:'loup',type:'saltwater',icon:'🐟',
+   name:{fr:'Loup de mer',ar:'قاروص',es:'Lubina',en:'Sea bass',zgh:'ⴰⵖⴰⵡⵍ ⵏ ⵓⵍⵍⵓⵙ'},
+   sci:'Dicentrarchus labrax',
+   local:{fr:'Loup / Bar',ar:'قاروص / الديق',es:'Lubina',en:'European sea bass',zgh:'ⴰⵖⴰⵡⵍ'},
+   habitat:{fr:'Zones rocheuses, brise-lames, estuaires',ar:'المناطق الصخرية والمصبات',es:'Zonas rocosas, rompeolas, estuarios',en:'Rocky zones, breakwaters, estuaries',zgh:'ⵉⵖⵓⴷⴰⵏ ⴷ ⵜⵙⵖⵉⵎⵉⵏ'},
+   bait:{fr:'Leurre souple, jig, poisson mort',ar:'طعم صناعي، جيغ، سمكة ميتة',es:'Señuelo blando, jig, pescado muerto',en:'Soft lure, jig, dead bait fish',zgh:'ⴰⵎⵏⴹⴰⵡ ⴰⵎⵣⵢⴰⵏ'},
+   rig:{fr:'Texan sur leurre ou paternoster fond',ar:'مونتاج لور أو قاع',es:'Texano o paternóster de fondo',en:'Texas rig on lure or bottom paternoster',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵓⵍⵓⵔ'},
+   season:{fr:'Toute l\'année (pic: automne)',ar:'طوال العام (ذروة: الخريف)',es:'Todo el año (pico: otoño)',en:'Year-round (peak: autumn)',zgh:'ⴰⴽⴽ ⴰⵣⵎⵣ (ⵜⴰⴼⵓⵍⴽⵉ)'},
+   months:[1,1,1,1,1,1,1,1,2,2,2,1],
+   legal_size:'36cm',limit:{fr:'10 kg/jour par pêcheur',ar:'10 كجم يومياً',es:'10 kg/día',en:'10 kg/day per angler',zgh:'10 kg ⵉⴷⵙ ⵡⴰⵔ'},
+   notes:{fr:'Espèce clé des côtes Atlantique et Méditerranée. Excellent combattant au leurre.',ar:'الأكثر قيمة لدى صيادي الرياضة.',es:'Pez icónico del deporte en Marruecos.',en:'Icon of sport fishing on both coasts.',zgh:'ⴰⵙⵍⵎ ⴰⵎⵣⵡⴰⵔⵓ ⵏ ⵓⵙⵍⵎⴷ ⴰⵙⵙⵏⴰⵍⵙ.'}
+  },
+  {id:'maquereau',type:'saltwater',icon:'🐡',
+   name:{fr:'Maquereau',ar:'كافالا / الإسقمري',es:'Caballa',en:'Mackerel',zgh:'ⵎⴰⴽⵔⵓ'},
+   sci:'Scomber scombrus / S. colias',
+   local:{fr:'Maquereau atlantique',ar:'الإسقمري',es:'Estornino / Verdel',en:'Atlantic mackerel',zgh:'ⵎⴰⴽⵔⵓ ⵏ ⵓⵍⵍⵓⵙ'},
+   habitat:{fr:'Eaux pélagiques côtières, bancs denses',ar:'المياه المفتوحة القريبة من الساحل',es:'Aguas pelágicas costeras',en:'Coastal pelagic, dense shoals',zgh:'ⵉⵍⵍⴰ ⴳ ⵡⴰⵎⴰⵏ ⵉⵛⵛⵓⵔⵏ'},
+   bait:{fr:'Leurre métallique, plume, train de cuiller',ar:'طعم معدني، ريشة',es:'Señuelo metálico, pluma',en:'Metal lure, feather rig, sabiki',zgh:'ⴰⵎⵏⴹⴰⵡ ⵏ ⵓⵣⵣⵉⵣ'},
+   rig:{fr:'Train de plumes ou sabiki 4–8 hameçons',ar:'مونتاج السابيكي',es:'Tren de plumas o sabiki',en:'Feather train or sabiki 4–8 hooks',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵉⴳⴷⵓⵔⵉⵏ'},
+   season:{fr:'Printemps–été (pic: avr–juil)',ar:'الربيع والصيف',es:'Primavera–verano',en:'Spring–summer (peak: Apr–Jul)',zgh:'ⴰⵎⵉⵡⴰⵏ (ⵜⵉⵍⵍⴰ–ⵜⴰⵎⴷⵓⵣⵜ)'},
+   months:[0,0,1,2,2,2,2,1,1,0,0,0],
+   legal_size:'18cm',limit:{fr:'Pas de limite — usage alimentaire courant',ar:'بدون حد — للاستهلاك',es:'Sin límite',en:'No limit — common food fish',zgh:'ⵓⵔ ⵉⵍⵍⵉ ⵓⵎⵣⵔⵓⵢ'},
+   notes:{fr:'L\'espèce de bord de mer la plus accessible. Abondant de Tanger à Agadir au printemps.',ar:'الأوفر انتشاراً على السواحل المغربية في الربيع.',es:'Especie más accesible en el litoral.',en:'Most accessible shoreline species. Abundant Tangier to Agadir in spring.',zgh:'ⴰⵙⵍⵎ ⴰⵎⵙⴽⴰⵔ ⴳ ⵓⵎⵉⵡⴰⵏ.'}
+  },
+  {id:'thon',type:'saltwater',icon:'🐟',
+   name:{fr:'Thon rouge',ar:'التونة الحمراء',es:'Atún rojo',en:'Bluefin tuna',zgh:'ⵜⵓⵏⵏⴰ ⵜⴰⵣⴳⵣⴰⵡⵜ'},
+   sci:'Thunnus thynnus',
+   local:{fr:'Thon rouge / Géant',ar:'التونة الحمراء',es:'Atún rojo del Atlántico',en:'Atlantic bluefin tuna',zgh:'ⵜⵓⵏⵏⴰ'},
+   habitat:{fr:'Eaux profondes, Détroit de Gibraltar, côte Atlantique',ar:'المياه العميقة ومضيق جبل طارق',es:'Aguas profundas, Estrecho de Gibraltar',en:'Deep offshore, Gibraltar Strait, Atlantic coast',zgh:'ⵡⴰⵎⴰⵏ ⵉⴷⴷⵓⴽⵍⵏ'},
+   bait:{fr:'Leurre de surface, poisson vivant, traine',ar:'طعم سطحي، سمك حي',es:'Señuelo de superficie, pez vivo, trolling',en:'Topwater lure, live bait, trolling',zgh:'ⴰⵎⵏⴹⴰⵡ ⵏ ⵓⴷⴳⴳⵯⴰⵔ'},
+   rig:{fr:'Traine offshore, popper lourd',ar:'مونتاج ترولينغ',es:'Trolling offshore, popper pesado',en:'Offshore trolling, heavy popper',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵔⴰⵢⵏ'},
+   season:{fr:'Été–automne (pic: juin–oct)',ar:'الصيف والخريف',es:'Verano–otoño',en:'Summer–autumn (peak: Jun–Oct)',zgh:'ⵜⴰⵎⴷⵓⵣⵜ–ⵜⴰⴼⵓⵍⴽⵉ'},
+   months:[0,0,0,0,0,2,2,2,2,2,0,0],
+   legal_size:'115cm',limit:{fr:'ICCAT — quota strict, licence professionnelle requise',ar:'تصريح احترافي — حصص ICCAT',es:'Cuota ICCAT — licencia profesional',en:'ICCAT quota — professional licence required',zgh:'ⵜⴰⵔⵙⵍⵜ ⵜⴰⵙⵍⴳⴰⵏⵜ — ICCAT'},
+   notes:{fr:'Quota strict. Pêche sportive encadrée. Toujours relâcher les petits sujets.',ar:'تنظيم صارم. الإفراج دائماً عن الصغار.',es:'Cuota estricta. Pesca deportiva supervisada.',en:'Strict quota. Catch & release for sub-legal. Always use circle hooks offshore.',zgh:'ⵜⴰⵔⵙⵍⵜ ⵉⵍⵍⴰ — ⴽⵛⵎ ⴰⴽⵍⵓ.'}
+  },
+  {id:'merou',type:'saltwater',icon:'🐠',
+   name:{fr:'Mérou',ar:'التاكوبا / الهامور',es:'Mero',en:'Grouper',zgh:'ⵜⴰⴽⵓⴱⴰ'},
+   sci:'Epinephelus marginatus',
+   local:{fr:'Mérou brun',ar:'الهامور البني',es:'Mero común',en:'Dusky grouper',zgh:'ⵜⴰⴽⵓⴱⴰ'},
+   habitat:{fr:'Fonds rocheux, grottes — 10 à 100m',ar:'القيعان الصخرية والكهوف',es:'Fondos rocosos y cuevas',en:'Rocky bottoms and caves, 10–100m',zgh:'ⵉⵖⵓⴷⴰⵏ ⵉⵛⵣⵓⵔⴰⵏ'},
+   bait:{fr:'Pieuvre, céphalopodes, poisson mort',ar:'أخطبوط، أسماك ميتة',es:'Pulpo, cefalópodos, pez muerto',en:'Octopus, cephalopods, dead fish',zgh:'ⵜⴰⵎⵙⵎⵓⵏⵜ'},
+   rig:{fr:'Paternoster lourd fond ou drop shot',ar:'مونتاج قاع ثقيل',es:'Paternóster pesado de fondo',en:'Heavy bottom paternoster or drop shot',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵓⴼⴼⵓⵙ'},
+   season:{fr:'Été (pic: juin–sept)',ar:'الصيف',es:'Verano',en:'Summer (peak: Jun–Sep)',zgh:'ⵜⴰⵎⴷⵓⵣⵜ'},
+   months:[0,0,0,0,1,2,2,2,2,1,0,0],
+   legal_size:'45cm',limit:{fr:'Espèce vulnérable — C&R fortement recommandé',ar:'نوع هش — يُنصح بالإفراج',es:'Especie vulnerable — C&R recomendado',en:'Vulnerable species — C&R strongly recommended',zgh:'ⴰⵙⵍⵎ ⴰⵎⵊⴷⴷⵉ — ⴽⴽⵙ ⵙ ⵜⵉⵎⵎⴰⴷ'},
+   notes:{fr:'Espèce protégée dans plusieurs pays voisins. Préférer la remise à l\'eau.',ar:'محمي في دول مجاورة. الإفراج عنه أفضل.',es:'Protegido en países vecinos. Preferir soltar.',en:'Protected in several neighbouring countries. Prefer catch & release.',zgh:'ⵉⵜⵜⵓⵙⵔⴰ ⴳ ⵜⵎⵓⵔⴰ ⵜⵉⴳⵔⴰⵡⵉⵏ.'}
+  },
+  {id:'seiche',type:'saltwater',icon:'🦑',
+   name:{fr:'Seiche',ar:'حبار صفحي',es:'Sepia',en:'Cuttlefish',zgh:'ⵜⵉⵙⴻⵢⵢⴰ'},
+   sci:'Sepia officinalis',
+   local:{fr:'Seiche commune',ar:'السبيا الشائعة',es:'Jibia / Choco',en:'Common cuttlefish',zgh:'ⵜⵉⵙⴻⵢⵢⴰ'},
+   habitat:{fr:'Fond sableux peu profond — 3 à 100m',ar:'قاع رملي ضحل',es:'Fondo arenoso somero',en:'Sandy bottom, 3–100m',zgh:'ⴰⵎⵓⵔ ⵏ ⵓⵍⵍⵓⵙ'},
+   bait:{fr:'Poulpe, crevette, leurre blanc',ar:'أخطبوط، جمبري',es:'Pulpo, gamba, señuelo blanco',en:'Octopus, shrimp, white lure',zgh:'ⵜⴰⵎⵓⵙⵏⵜ ⴷ ⴰⵣⵣⵉⵙ'},
+   rig:{fr:'Turlutte spéciale seiche, fond léger',ar:'مونتاج خاص للسبيا',es:'Pota especial sepia',en:'Sepia jig (eging), light bottom rig',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵉⵙⴻⵢⵢⴰ'},
+   season:{fr:'Automne–hiver (pic: sept–déc)',ar:'الخريف والشتاء',es:'Otoño–invierno',en:'Autumn–winter (peak: Sep–Dec)',zgh:'ⵜⴰⴼⵓⵍⴽⵉ–ⵜⴰⴷⴳⴳⵯⴰⵜ'},
+   months:[0,0,0,0,0,0,1,1,2,2,2,1],
+   legal_size:'13cm',limit:{fr:'Pas de limite légale',ar:'بدون حد قانوني',es:'Sin límite',en:'No bag limit',zgh:'ⵓⵔ ⵉⵍⵍⵉ'},
+   notes:{fr:'Très abondante sur les côtes atlantiques en automne. Appréciée en cuisine marocaine.',ar:'وفيرة على الساحل الأطلسي في الخريف.',es:'Muy abundante en el Atlántico en otoño.',en:'Very abundant on Atlantic coasts in autumn. Highly valued in Moroccan cuisine.',zgh:'ⵉⵍⵍⴰ ⵓⴼⴰⵡ ⴳ ⵜⴰⴼⵓⵍⴽⵉ.'}
+  },
+  {id:'poulpe',type:'saltwater',icon:'🐙',
+   name:{fr:'Poulpe',ar:'أخطبوط',es:'Pulpo',en:'Octopus',zgh:'ⵓⴳⵓⵍⵓⵎⵎ'},
+   sci:'Octopus vulgaris',
+   local:{fr:'Poulpe commun',ar:'الأخطبوط الشائع',es:'Pulpo común',en:'Common octopus',zgh:'ⵓⴳⵓⵍⵓⵎⵎ'},
+   habitat:{fr:'Fonds rocheux côtiers, anfractuosités',ar:'القيعان الصخرية والشقوق',es:'Fondos rocosos y grietas',en:'Rocky coastal bottoms, crevices',zgh:'ⵉⵖⵓⴷⴰⵏ ⵏ ⵉⵡⵔⵉⵙⵏ'},
+   bait:{fr:'Pieuvre factice, crabe, crevette',ar:'عروسة، سلطعون، جمبري',es:'Pulpo artificial, cangrejo, gamba',en:'Octopus jig, crab, shrimp',zgh:'ⴰⵎⵏⴹⴰⵡ ⵏ ⵓⴳⵓⵍⵓⵎⵎ'},
+   rig:{fr:'Turlutte poulpe, fil léger depuis les rochers',ar:'مونتاج خاص من الصخور',es:'Pota pulpo, línea ligera desde rocas',en:'Octopus jig from rocks, light line',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵉⵡⵔⵉⵙⵏ'},
+   season:{fr:'Été–automne',ar:'الصيف والخريف',es:'Verano–otoño',en:'Summer–autumn',zgh:'ⵜⴰⵎⴷⵓⵣⵜ–ⵜⴰⴼⵓⵍⴽⵉ'},
+   months:[0,0,0,0,1,1,2,2,2,1,0,0],
+   legal_size:'10cm (manteau)',limit:{fr:'Usage alimentaire — quantité raisonnable',ar:'للاستهلاك — كمية معقولة',es:'Para consumo — cantidad razonable',en:'Food use — reasonable quantity',zgh:'ⵉⵍⵍⴰ ⵓⵎⵣⵔⵓⵢ ⵓⵙⴰⵏ'},
+   notes:{fr:'Pêche à la turlutte depuis les rochers très populaire. Maroc est l\'un des premiers exportateurs mondiaux.',ar:'من أكبر الدول المصدرة في العالم.',es:'Marruecos es uno de los mayores exportadores mundiales.',en:'Morocco is among the world\'s top octopus exporters. Rock jigging is very popular.',zgh:'ⵍⵎⵖⵔⵉⴱ ⴷ ⴰⵎⵙⵡⴰⵢ ⴰⵎⵇⵇⵔⴰⵏ.'}
+  },
+  {id:'rouget',type:'saltwater',icon:'🐡',
+   name:{fr:'Rouget barbet',ar:'بربوني',es:'Salmonete',en:'Red mullet',zgh:'ⴰⵔⵓⵊⵜ'},
+   sci:'Mullus surmuletus',
+   local:{fr:'Rouget de roche',ar:'البربوني',es:'Salmonete de roca',en:'Striped red mullet',zgh:'ⴰⵔⵓⵊⵜ'},
+   habitat:{fr:'Fonds sableux et rocheux — 10 à 100m',ar:'قيعان رملية وصخرية',es:'Fondos arenosos y rocosos',en:'Sandy and rocky bottoms, 10–100m',zgh:'ⴰⵎⵓⵔ ⴷ ⵉⵡⵔⵉⵙⵏ'},
+   bait:{fr:'Ver de sable, crevette, moule',ar:'ديدان رملية، جمبري',es:'Gusano de arena, gamba, mejillón',en:'Sandworm, shrimp, mussel',zgh:'ⵜⴰⵎⵓⵙⵏⵜ'},
+   rig:{fr:'Paternoster léger 2 hameçons',ar:'مونتاج بترنوستر خفيف',es:'Paternóster ligero 2 anzuelos',en:'Light 2-hook paternoster',zgh:'ⵜⵓⴽⴽⵉⵡⵜ 2 ⵏ ⵉⵎⴽⵓⵔⴰⵢⵏ'},
+   season:{fr:'Printemps–été',ar:'الربيع والصيف',es:'Primavera–verano',en:'Spring–summer',zgh:'ⴰⵎⵉⵡⴰⵏ–ⵜⴰⵎⴷⵓⵣⵜ'},
+   months:[0,0,1,1,2,2,2,2,1,0,0,0],
+   legal_size:'15cm',limit:{fr:'Usage alimentaire',ar:'للاستهلاك',es:'Para consumo',en:'Food use',zgh:'ⵉⵍⵍⴰ ⵓⵙⴰⵏ'},
+   notes:{fr:'Excellent poisson de table, très apprécié dans les restaurants marocains.',ar:'من أفضل أسماك المائدة المغربية.',es:'Excelente pez de mesa, muy apreciado.',en:'Excellent eating, highly prized in Moroccan cuisine.',zgh:'ⴰⵙⵍⵎ ⴰⵎⵥⵍⴰⵢ ⵏ ⵓⴽⵙⵓⵎ.'}
+  },
+  {id:'espadon',type:'saltwater',icon:'⚔️',
+   name:{fr:'Espadon',ar:'أبو سيف',es:'Pez espada',en:'Swordfish',zgh:'ⴰⵙⵍⵎ ⵏ ⵜⵉⵔⵖⵉ'},
+   sci:'Xiphias gladius',
+   local:{fr:'Espadon / Épée de mer',ar:'سمكة السيف',es:'Pez espada',en:'Swordfish',zgh:'ⴰⵙⵍⵎ ⵏ ⵜⵉⵔⵖⵉ'},
+   habitat:{fr:'Offshore profond — au-delà de 200m',ar:'مياه عميقة — أكثر من 200 متر',es:'Aguas profundas offshore',en:'Deep offshore, beyond 200m',zgh:'ⵡⴰⵎⴰⵏ ⵉⴷⴷⵓⴽⵍⵏ ⵉⵎⵇⵇⵔⴰⵏⵏ'},
+   bait:{fr:'Calamar géant, poisson entier en traine de nuit',ar:'حبار ضخم، ترولينغ ليلي',es:'Calamar gigante, pez entero trolling nocturno',en:'Giant squid, whole fish — night trolling',zgh:'ⴰⵣⴰⵢⵓⵙ ⵉⵎⵇⵇⵔⴰⵏ'},
+   rig:{fr:'Traine de fond la nuit — spécialité de Dakhla',ar:'مونتاج ترولينغ ليلي — تخصص داخلة',es:'Trolling de fondo nocturno — especialidad de Dakhla',en:'Deep night trolling — specialty of Dakhla',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵔⴰⵢⵏ ⵜⵉⴳⴰⵡⵜ ⴷⴰⵅⵍⴰ'},
+   season:{fr:'Été–automne (Dakhla: mars–nov)',ar:'الصيف والخريف',es:'Verano–otoño',en:'Summer–autumn (Dakhla: Mar–Nov)',zgh:'ⵜⴰⵎⴷⵓⵣⵜ–ⵜⴰⴼⵓⵍⴽⵉ'},
+   months:[0,0,1,1,1,2,2,2,2,2,1,0],
+   legal_size:'125cm',limit:{fr:'Quota — informez-vous auprès du DPM local',ar:'حصص — تواصل مع الجهات المحلية',es:'Cuota — consultar DPM local',en:'Quota — check with local DPM office',zgh:'ⵜⴰⵔⵙⵍⵜ — ⵙⵙⵓⵍⴼ ⵉ DPM'},
+   notes:{fr:'Dakhla est réputée mondialement pour la pêche à l\'espadon. Certains charters spécialisés.',ar:'داخلة مشهورة عالمياً بصيد أبو سيف.',es:'Dakhla es famosa mundialmente por el pez espada.',en:'Dakhla is world-famous for swordfish. Specialist charters operate from the bay.',zgh:'ⴷⴰⵅⵍⴰ ⵜⵉⵡⴹ ⴰⵙⵙⴰⵖ ⵏ ⵡⴰⴽⴰⵍ.'}
+  },
+  {id:'requin',type:'saltwater',icon:'🦈',
+   name:{fr:'Requin',ar:'قرش',es:'Tiburón',en:'Shark',zgh:'ⴰⵖⵡⵉⵍ'},
+   sci:'Mustelus mustelus / Prionace glauca',
+   local:{fr:'Émissole / Requin bleu',ar:'كلب البحر / القرش الأزرق',es:'Musola / Tiburón azul',en:'Smooth-hound / Blue shark',zgh:'ⴰⵖⵡⵉⵍ ⴰⵣⵣⵓⵍⴰⵏ'},
+   habitat:{fr:'Côtier et offshore selon l\'espèce',ar:'حسب النوع — ساحلي وعميق',es:'Costero y offshore según especie',en:'Coastal to offshore depending on species',zgh:'ⵙⴳ ⵜⴰⴷⵓⵔⵜ ⴰⵔ ⵡⴰⵎⴰⵏ ⵉⴷⴷⵓⴽⵍⵏ'},
+   bait:{fr:'Poisson entier ou filet, maquereau, sardine',ar:'سمكة كاملة، ماكريل، سردين',es:'Pescado entero o filete',en:'Whole or fillet fish, mackerel, sardine',zgh:'ⴰⵙⵍⵎ ⴰⵎⵇⵇⵔⴰⵏ'},
+   rig:{fr:'Paternoster lourd ou fil de traîne 60–100lb',ar:'مونتاج ثقيل أو ترولينغ',es:'Paternóster pesado 60–100lb',en:'Heavy paternoster or trolling trace 60–100lb',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵇⵇⵔⴰⵏⵜ'},
+   season:{fr:'Printemps–automne',ar:'الربيع والخريف',es:'Primavera–otoño',en:'Spring–autumn',zgh:'ⴰⵎⵉⵡⴰⵏ–ⵜⴰⴼⵓⵍⴽⵉ'},
+   months:[0,0,1,1,1,2,2,2,1,1,0,0],
+   legal_size:{fr:'Variable selon espèce — CITES pour grands requins',ar:'متغير — CITES للأنواع الكبيرة',es:'Variable — CITES grandes tiburones',en:'Variable — CITES applies to large species',zgh:'ⵉⵜⵜⴱⴷⴷⵍ ⵙ ⵓⵏⴰⵡ'},
+   limit:{fr:'C&R obligatoire pour espèces protégées CITES',ar:'الإفراج إلزامي للأنواع المحمية',es:'C&R obligatorio para especies protegidas',en:'C&R mandatory for CITES-listed species',zgh:'ⴽⴽⵙ ⵙ ⵜⵉⵎⵎⴰⴷ — ⵙⴽⵜⵉ CITES'},
+   notes:{fr:'Toujours remettre à l\'eau les grands requins. Règlementation CITES stricte.',ar:'الإفراج دائماً عن القروش الكبيرة. لوائح CITES صارمة.',es:'Siempre soltar los grandes. Reglamentación CITES estricta.',en:'Always release large sharks. Check CITES listings before keeping any shark.',zgh:'ⴽⴽⵙ ⵙ ⵜⵉⵎⵎⴰⴷ ⵉⵖⵡⵉⵍⵏ ⵉⵎⵇⵇⵔⴰⵏⵏ.'}
+  },
+  {id:'sardine',type:'saltwater',icon:'🐟',
+   name:{fr:'Sardine',ar:'سردين',es:'Sardina',en:'Sardine',zgh:'ⵜⴰⵙⴰⵔⴷⵉⵏⵜ'},
+   sci:'Sardina pilchardus',
+   local:{fr:'Sardine européenne',ar:'السردين الأطلسي',es:'Sardina atlántica',en:'European pilchard',zgh:'ⵜⴰⵙⴰⵔⴷⵉⵏⵜ'},
+   habitat:{fr:'Eaux côtières peu profondes, bancs',ar:'المياه الضحلة الساحلية',es:'Aguas costeras someras',en:'Shallow coastal waters, dense shoals',zgh:'ⵡⴰⵎⴰⵏ ⴰⴳⵔⴰⵡⴰⵏ ⵉⵎⵣⵢⴰⵏⵏ'},
+   bait:{fr:'Pain, farine, train de plumes microscopiques',ar:'خبز، طحين، ريش صغيرة',es:'Pan, harina, plumas pequeñas',en:'Bread, flour, micro feather rig',zgh:'ⴰⵖⵔⵓⵎ ⴷ ⵓⴷⴰⵡ'},
+   rig:{fr:'Plombé léger avec ou sans appât — filet aussi',ar:'رصاصة خفيفة أو شباك',es:'Plomada ligera, también redes',en:'Light plumb or micro feather — also net fishing',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵢⴰⵏⵜ'},
+   season:{fr:'Toute l\'année, variable',ar:'طوال العام',es:'Todo el año',en:'Year-round',zgh:'ⴰⴽⴽ ⴰⵣⵎⵣ'},
+   months:[1,1,1,1,2,2,2,2,1,1,1,1],
+   legal_size:'11cm',limit:{fr:'Quantité raisonnable pour consommation personnelle',ar:'كمية معقولة للاستهلاك الشخصي',es:'Cantidad razonable para consumo',en:'Reasonable quantity for personal consumption',zgh:'ⵉⴷⵙ ⵡⴰⵔ ⵉⵣⵓⵣⵣⵔ ⵜⴰⵔⵙⵍⵜ'},
+   notes:{fr:'Base de la cuisine marocaine. Pêche libre depuis les quais et brise-lames.',ar:'أساس المطبخ المغربي. صيد حر من الأرصفة.',es:'Base de la cocina marroquí.',en:'Foundation of Moroccan cuisine. Free fishing from quays and breakwaters everywhere.',zgh:'ⴰⵙⵍⵎ ⵏ ⵜⴰⴷⵎⵙⴰ ⵜⴰⵎⵖⵔⵉⴱⵉⵢⵜ.'}
+  },
+  {id:'anchois',type:'saltwater',icon:'🐟',
+   name:{fr:'Anchois',ar:'أنشوفة',es:'Boquerón',en:'Anchovy',zgh:'ⴰⵏⵛⵓⵡⵉ'},
+   sci:'Engraulis encrasicolus',
+   local:{fr:'Anchois européen',ar:'أنشوفة أطلسية',es:'Boquerón europeo',en:'European anchovy',zgh:'ⴰⵏⵛⵓⵡⵉ'},
+   habitat:{fr:'Eaux côtières pélagiques',ar:'المياه الساحلية المفتوحة',es:'Aguas pelágicas costeras',en:'Coastal pelagic waters',zgh:'ⵡⴰⵎⴰⵏ ⵏ ⵓⴷⴳⴳⵯⴰⵔ ⴰⴳⵔⴰⵡⴰⵏ'},
+   bait:{fr:'Plumes microscopiques, sabiki 10–14',ar:'سابيكي صغير جداً',es:'Plumas microscópicas, sabiki 10–14',en:'Micro feathers, sabiki 10–14',zgh:'ⵜⵉⴳⴷⵓⵔⵉⵏ ⵜⵉⵎⵣⵢⴰⵏⵉⵏ'},
+   rig:{fr:'Sabiki léger, plomb 10–20g',ar:'سابيكي خفيف',es:'Sabiki ligero, plomo 10–20g',en:'Light sabiki, 10–20g lead',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵢⴰⵏⵜ'},
+   season:{fr:'Printemps–été',ar:'الربيع والصيف',es:'Primavera–verano',en:'Spring–summer',zgh:'ⴰⵎⵉⵡⴰⵏ–ⵜⴰⵎⴷⵓⵣⵜ'},
+   months:[0,0,1,1,2,2,2,2,1,1,0,0],
+   legal_size:'9cm',limit:{fr:'Quantité raisonnable',ar:'كمية معقولة',es:'Cantidad razonable',en:'Reasonable quantity',zgh:'ⵉⴷⵙ ⵡⴰⵔ'},
+   notes:{fr:'Excellent appât pour la daurade et le loup. Aussi apprécié frais ou en conserve.',ar:'طعم ممتاز للدنيس والقاروص.',es:'Excelente cebo para dorada y lubina.',en:'Excellent live bait for sea bream and bass. Also prized fresh or canned.',zgh:'ⴰⵎⵏⴹⴰⵡ ⴰⵎⵣⵡⴰⵔⵓ ⵏ ⵓⴷⵓⵔ.'}
+  },
+  {id:'raie',type:'saltwater',icon:'🦈',
+   name:{fr:'Raie',ar:'شفنين',es:'Raya',en:'Ray',zgh:'ⵜⴰⵔⴰⵢⵜ'},
+   sci:'Raja clavata / Dasyatis pastinaca',
+   local:{fr:'Raie bouclée / Pastenague',ar:'شفنين / لخمة',es:'Raya de clavos / Pastinaca',en:'Thornback ray / Stingray',zgh:'ⵜⴰⵔⴰⵢⵜ'},
+   habitat:{fr:'Fond sableux ou vaseux — 5 à 100m',ar:'قيعان رملية أو طينية',es:'Fondos arenosos o fangosos',en:'Sandy or muddy bottoms, 5–100m',zgh:'ⴰⵎⵓⵔ ⵏ ⵜⵓⴱⴱⴰⵏⵜ'},
+   bait:{fr:'Moule, crevette, ver, calamar',ar:'بلح البحر، جمبري، ديدان',es:'Mejillón, gamba, gusano, calamar',en:'Mussel, shrimp, worm, squid',zgh:'ⵜⴰⵎⵓⵙⵏⵜ ⴷ ⴰⵣⵣⵉⵙ'},
+   rig:{fr:'Paternoster fond lourd, hameçon fort',ar:'مونتاج قاع ثقيل',es:'Paternóster pesado',en:'Heavy bottom paternoster, strong hook',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵇⴱⴱⵓⵔⵜ'},
+   season:{fr:'Automne–printemps',ar:'الخريف والربيع',es:'Otoño–primavera',en:'Autumn–spring',zgh:'ⵜⴰⴼⵓⵍⴽⵉ–ⴰⵎⵉⵡⴰⵏ'},
+   months:[1,1,1,1,0,0,0,0,1,1,2,1],
+   legal_size:{fr:'Variable selon espèce',ar:'يتفاوت حسب النوع',es:'Variable según especie',en:'Variable by species',zgh:'ⵉⵜⵜⴱⴷⴷⵍ'},
+   limit:{fr:'C&R recommandé — pastenague CITES',ar:'الإفراج موصى به — لخمة CITES',es:'C&R recomendado — pastinaca CITES',en:'C&R recommended — stingray CITES listed',zgh:'ⴽⴽⵙ ⵙ ⵜⵉⵎⵎⴰⴷ ⵉ CITES'},
+   notes:{fr:'Attention à l\'aiguillon de la pastenague. Toujours remettre à l\'eau avec précaution.',ar:'احذر من اللسعة. الإفراج بحذر دائماً.',es:'Cuidado con el aguijón. Soltar siempre con cuidado.',en:'Beware of the stingray spine. Always release carefully. Waders recommended in flat areas.',zgh:'ⴰⵡⵙ ⵙ ⵜⵍⵓⵖⵎⴰ ⵜⵓⴳⴷⴰⵡⵜ.'}
+  },
+  {id:'carpe',type:'freshwater',icon:'🎣',
+   name:{fr:'Carpe commune',ar:'شبل السمك',es:'Carpa',en:'Common carp',zgh:'ⵜⴰⴽⴰⵔⴱⴰⵢⵜ'},
+   sci:'Cyprinus carpio',
+   local:{fr:'Carpe',ar:'السجل / شبل',es:'Carpa',en:'Common carp',zgh:'ⵜⴰⴽⴰⵔⴱⴰⵢⵜ'},
+   habitat:{fr:'Barrages et lacs — fond limoneux avec végétation',ar:'السدود والبحيرات — قاع طيني بنباتات',es:'Embalses y lagos con vegetación',en:'Reservoirs and lakes — silty bottom with vegetation',zgh:'ⵜⵉⵙⴻⵔⴷⴰⵙⵉⵏ ⴷ ⵉⴼⵔⴷⵉⵙⵏ ⵉⵎⵊⵊⵉⵢⵏ'},
+   bait:{fr:'Boilies, maïs, pain, bouillette, pâte',ar:'بويلي، ذرة، خبز، عجينة',es:'Boilies, maíz, pan, pasta',en:'Boilies, corn, bread, paste',zgh:'ⴱⵓⵢⵍⵉ ⴷ ⴷⵔⵓⵎ ⴷ ⴰⵖⵔⵓⵎ'},
+   rig:{fr:'Hair rig avec boilies — dominant dans les barrages marocains',ar:'هير ريغ مع البويلي — السائد في السدود',es:'Hair rig con boilies — dominante en embalses',en:'Hair rig with boilies — dominant technique in Moroccan reservoirs',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ'},
+   season:{fr:'Toute l\'année (pic: printemps, automne)',ar:'طوال العام (ذروة: الربيع والخريف)',es:'Todo el año (pico: primavera, otoño)',en:'Year-round (peak: spring and autumn)',zgh:'ⴰⴽⴽ ⴰⵣⵎⵣ (ⴰⵎⵉⵡⴰⵏ ⴷ ⵜⴰⴼⵓⵍⴽⵉ)'},
+   months:[1,1,2,2,2,1,1,1,2,2,1,1],
+   legal_size:'35cm',limit:{fr:'10 poissons/jour — permis Eaux & Forêts requis',ar:'10 أسماك/يوم — تصريح إلزامي',es:'10 peces/día — permiso Aguas y Bosques',en:'10 fish/day — Eaux & Forêts permit required',zgh:'10 ⵏ ⵉⵙⵍⵎⴰⵏ ⵉⴷⵙ — ⵜⴰⵔⵙⵍⵜ ⵉⵃⵜⵜⴰⵊⵏ'},
+   notes:{fr:'Espèce la plus pêchée en eaux douces au Maroc. Barrages: Bin el Ouidane, Al Massira, Sidi Driss.',ar:'الأكثر صيداً في المياه العذبة. سدود: بين الويدان، المسيرة.',es:'La más pescada en aguas dulces. Embalses: Bin el Ouidane, Al Massira.',en:'Most targeted freshwater species in Morocco. Key reservoirs: Bin el Ouidane, Al Massira, Sidi Driss.',zgh:'ⴰⵙⵍⵎ ⴰⵎⵣⵡⴰⵔⵓ ⴳ ⵡⴰⵎⴰⵏ ⴰⵎⴰⵍⵓ. ⵜⵉⵙⴻⵔⴷⴰⵙⵉⵏ: ⴱⵉⵏ ⵍⵡⵉⴷⴰⵏ.'}
+  },
+  {id:'barbeau',type:'freshwater',icon:'🐟',
+   name:{fr:'Barbeau atlantique',ar:'البربوط',es:'Barbo atlántico',en:'Atlantic barbel',zgh:'ⴰⴱⴰⵔⴱⵓ'},
+   sci:'Luciobarbus bocagei / L. massaensis',
+   local:{fr:'Barbeau marocain',ar:'البربوط المغربي',es:'Barbo marroquí',en:'Moroccan barbel (native)',zgh:'ⴰⴱⴰⵔⴱⵓ ⴰⵎⵖⵔⵉⴱⵉ'},
+   habitat:{fr:'Rivières courantes à fond graveleux — Oum Er-Rbia, Sebou',ar:'أنهار جارية قاعها حصوي — أم الربيع، سبو',es:'Ríos con fondo gravoso — Oum Er-Rbia, Sebou',en:'Fast-flowing rivers with gravel beds — Oum Er-Rbia, Sebou',zgh:'ⵏⵏⵉⵖⵏ ⵉⵃⵛⵛⵓⵏ — ⵓⵎ ⵕⴱⵉⵄ ⴷ ⵙⴱⵓ'},
+   bait:{fr:'Ver de terre, maïs, pain, olive noire',ar:'دود أرضي، ذرة، خبز، زيتون أسود',es:'Gusano de tierra, maíz, pan, oliva',en:'Earthworm, corn, bread, black olive',zgh:'ⴰⵣⵉⵣ ⴷ ⴷⵔⵓⵎ ⴷ ⴰⵖⵔⵓⵎ'},
+   rig:{fr:'Fond simple, plomb coulissant léger',ar:'مونتاج قاع بسيط',es:'Fondo simple, plomo deslizante',en:'Simple sliding bottom rig, light lead',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵢⴰⵏⵜ ⵏ ⵓⴼⴼⵓⵙ'},
+   season:{fr:'Printemps–automne',ar:'الربيع والخريف',es:'Primavera–otoño',en:'Spring–autumn',zgh:'ⴰⵎⵉⵡⴰⵏ–ⵜⴰⴼⵓⵍⴽⵉ'},
+   months:[0,1,2,2,2,1,1,1,2,2,1,0],
+   legal_size:'20cm',limit:{fr:'10 poissons/jour — permis requis',ar:'10 أسماك/يوم — تصريح',es:'10 peces/día — permiso',en:'10 fish/day — permit required',zgh:'10 ⵏ ⵉⵙⵍⵎⴰⵏ — ⵜⴰⵔⵙⵍⵜ'},
+   notes:{fr:'Espèce endémique marocaine. Excellente pêche en rivière dans la région du Souss et Oum Er-Rbia.',ar:'نوع مستوطن مغربي. صيد رائع في أنهار أم الربيع وسبو.',es:'Especie endémica marroquí. Excelente en río Oum Er-Rbia.',en:'Native to Morocco. Excellent river fishing in the Oum Er-Rbia and Sebou systems.',zgh:'ⴰⵙⵍⵎ ⵉⵙⴻⵙ ⵍⵎⵖⵔⵉⴱ. ⴰⵙⵍⵎⴷ ⴰⵎⵣⵢⴰⵏ ⴳ ⵓⵎ ⵕⴱⵉⵄ.'}
+  },
+  {id:'truite',type:'freshwater',icon:'🐟',
+   name:{fr:'Truite fario',ar:'التراوت',es:'Trucha común',en:'Brown trout',zgh:'ⵜⵔⵓⵜⵜⴰ'},
+   sci:'Salmo trutta',
+   local:{fr:'Truite brune',ar:'تراوت بني أطلسي',es:'Trucha común atlásica',en:'Atlas brown trout',zgh:'ⵜⵔⵓⵜⵜⴰ ⵏ ⵓⴷⵔⴰⵔ'},
+   habitat:{fr:'Cours d\'eau d\'altitude — Moyen Atlas: Azrou, Ifrane, Immouzer',ar:'مجاري مياه جبلية — أزرو، إفران، إموزر',es:'Cursos de agua de altitud — Azrou, Ifrane, Immouzer',en:'High-altitude streams — Middle Atlas: Azrou, Ifrane, Immouzer',zgh:'ⵉⴼⵔⴷⵉⵙⵏ ⵏ ⵓⴷⵔⴰⵔ — ⴰⵣⵔⵓ ⴷ ⵉⴼⵔⴰⵏ'},
+   bait:{fr:'Mouche sèche, nymphe, cuiller tournante légère',ar:'ذبابة جافة، نمفة، ملعقة دوارة',es:'Mosca seca, ninfa, cucharilla giratoria',en:'Dry fly, nymph, light spinner',zgh:'ⵜⴰⵖⵓⵍⵉⴳⵜ ⴷ ⵜⴽⵓⵔⵓⵎⵜ'},
+   rig:{fr:'Canne à mouche 3–5wt, ou spinning ultra-léger',ar:'قصبة صيد ذبابي أو محور خفيف جداً',es:'Caña mosca 3–5wt o spinning ultraligero',en:'Fly rod 3–5wt, or ultra-light spinning',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵖⵓⵍⵉⴳⵜ'},
+   season:{fr:'Mars–octobre (pic: avril–juin)',ar:'مارس–أكتوبر (ذروة: أبريل–يونيو)',es:'Marzo–octubre (pico: abril–junio)',en:'March–October (peak: Apr–Jun)',zgh:'ⵎⴰⵔⵚ–ⴽⵜⵓⴱⵔ (ⵜⵉⵍⵍⴰ–ⵢⵓⵏⵢⵓ)'},
+   months:[0,0,2,2,2,2,1,1,1,1,0,0],
+   legal_size:'20cm',limit:{fr:'10 poissons/jour — saison stricte — permis requis',ar:'10 أسماك/يوم — موسم محدد — تصريح إلزامي',es:'10 peces/día — temporada estricta — permiso',en:'10 fish/day — strict season — Eaux & Forêts permit required',zgh:'10 ⵏ ⵉⵙⵍⵎⴰⵏ — ⴰⵣⵎⵣ ⵉⵙⴼⴽ — ⵜⴰⵔⵙⵍⵜ'},
+   notes:{fr:'Joyau de la pêche marocaine. Les guides locaux d\'Azrou sont exceptionnels. Accès parfois restreint.',ar:'جوهرة الصيد المغربي. مرشدو أزرو محترفون. يُنصح بالاستعانة بمرشد محلي.',es:'Joya de la pesca marroquí. Guías locales de Azrou son excepcionales.',en:'Jewel of Moroccan angling. Local guides from Azrou are exceptional. Some beats require advance permission.',zgh:'ⵜⴰⵏⵖⵓⵍⵜ ⵏ ⵓⵙⵍⵎⴷ ⴰⵎⵖⵔⵉⴱⵉ. ⵉⵎⵙⵍⵉⵖⵏ ⵏ ⴰⵣⵔⵓ ⵉⴷⵓⴼⵙⵏ.'}
+  },
+  {id:'silure',type:'freshwater',icon:'🐟',
+   name:{fr:'Silure glane',ar:'السيلور',es:'Siluro',en:'Wels catfish',zgh:'ⴰⵙⵉⵍⵓⵔ'},
+   sci:'Silurus glanis',
+   local:{fr:'Silure (introduit)',ar:'السيلور (نوع مُدخَل)',es:'Siluro (introducido)',en:'Wels catfish (introduced)',zgh:'ⴰⵙⵉⵍⵓⵔ'},
+   habitat:{fr:'Barrages profonds — Oum Er-Rbia, Al Massira',ar:'سدود عميقة — أم الربيع والمسيرة',es:'Embalses profundos — Oum Er-Rbia, Al Massira',en:'Deep reservoirs — Oum Er-Rbia, Al Massira',zgh:'ⵜⵉⵙⴻⵔⴷⴰⵙⵉⵏ ⵉⴷⴷⵓⴽⵍⵏ — ⵓⵎ ⵕⴱⵉⵄ'},
+   bait:{fr:'Poisson mort ou vif, abats, leurres souples',ar:'سمك ميت أو حي، أحشاء، طعم صناعي',es:'Pez muerto o vivo, vísceras, señuelos',en:'Dead or live fish, offal, large soft lures',zgh:'ⴰⵙⵍⵎ ⵉⵎⵎⵓⵜⵏ ⵏⵖ ⵉⴷⴷⴰⵏ'},
+   rig:{fr:'Fil 40–80lb, hameçon triple, poisson entier',ar:'خيط 40–80 رطل، شنكل ثلاثي، سمكة كاملة',es:'Hilo 40–80lb, anzuelo triple, pez entero',en:'40–80lb line, treble hook, whole fish on bottom',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵇⵇⵔⴰⵏⵜ'},
+   season:{fr:'Été (pic: juin–sept, nuit)',ar:'الصيف (ذروة: يونيو–سبتمبر، ليلاً)',es:'Verano (pico: jun–sep, noche)',en:'Summer (peak: Jun–Sep, night)',zgh:'ⵜⴰⵎⴷⵓⵣⵜ (ⵉⴳⴰⵡⵜ)'},
+   months:[0,0,0,0,1,2,2,2,2,1,0,0],
+   legal_size:'50cm',limit:{fr:'Permis Eaux & Forêts obligatoire',ar:'تصريح إلزامي',es:'Permiso obligatorio',en:'Eaux & Forêts permit required',zgh:'ⵜⴰⵔⵙⵍⵜ ⵉⵃⵜⵜⴰⵊⵏ'},
+   notes:{fr:'Introduit accidentellement. Peut dépasser 2m. Pêche de nuit recommandée.',ar:'أُدخل عرضياً. قد يتجاوز 2 متر. الصيد الليلي موصى به.',es:'Introducido accidentalmente. Puede superar 2m.',en:'Accidentally introduced. Can exceed 2m and 100kg. Night fishing preferred.',zgh:'ⴰⵙⵍⵎ ⵉⵣⵡⴰⵔⵏ ⵏ ⵓⴼⴼⵓⵙ ⵏ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ.'}
+  },
+  {id:'bass',type:'freshwater',icon:'🐟',
+   name:{fr:'Black-bass',ar:'البلاك باس',es:'Black bass',en:'Largemouth bass',zgh:'ⴱⴰⵙ ⴰⵣⴳⵣⴰⵡ'},
+   sci:'Micropterus salmoides',
+   local:{fr:'Achigan (introduit)',ar:'باس (نوع مُدخَل)',es:'Perca americana (introducida)',en:'Largemouth bass (introduced)',zgh:'ⴱⴰⵙ ⴰⵎⵣⵡⴰⵔⵓ'},
+   habitat:{fr:'Barrages et lacs — herbiers côtiers',ar:'السدود والبحيرات — الأعشاب الساحلية',es:'Embalses con vegetación costera',en:'Reservoirs and lakes with coastal vegetation',zgh:'ⵜⵉⵙⴻⵔⴷⴰⵙⵉⵏ ⵏ ⵉⵖⵔⵎⴰⵏ'},
+   bait:{fr:'Leurre souple, popper, jig, vibe',ar:'طعم صناعي، بوبر، جيغ',es:'Señuelo blando, popper, jig',en:'Soft lure, popper, jig, crankbait',zgh:'ⴰⵎⵏⴹⴰⵡ ⴰⵎⵙⴽⴰⵔ'},
+   rig:{fr:'Texan, drop shot, popper en surface',ar:'مونتاج تكساس، دروب شوت، بوبر',es:'Texas, drop shot, popper superficial',en:'Texas rig, drop shot, surface popper',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⴽⵙⴰⵙⵜ'},
+   season:{fr:'Printemps–été (pic: avr–juil)',ar:'الربيع والصيف',es:'Primavera–verano',en:'Spring–summer (peak: Apr–Jul)',zgh:'ⴰⵎⵉⵡⴰⵏ–ⵜⴰⵎⴷⵓⵣⵜ'},
+   months:[0,0,1,2,2,2,2,1,1,0,0,0],
+   legal_size:'25cm',limit:{fr:'Permis Eaux & Forêts requis',ar:'تصريح مطلوب',es:'Permiso requerido',en:'Permit required',zgh:'ⵜⴰⵔⵙⵍⵜ ⵉⵃⵜⵜⴰⵊⵏ'},
+   notes:{fr:'Introduit dans les années 1980. Excellent combattant. Présent dans la plupart des grands barrages.',ar:'أُدخل في الثمانينيات. مقاوم ممتاز.',es:'Introducido en los años 80. Excelente combatiente.',en:'Introduced in the 1980s. Excellent fighter on light tackle. Present in most major reservoirs.',zgh:'ⴰⵙⵍⵎ ⵉⵣⵡⴰⵔⵏ ⴳ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ ⵉⵎⵇⵇⵔⴰⵏⵉⵏ.'}
+  },
+  {id:'anguille',type:'freshwater',icon:'🐍',
+   name:{fr:'Anguille',ar:'ثعبان الماء',es:'Anguila',en:'European eel',zgh:'ⵜⴰⵏⵖⵓⵍⵜ ⵏ ⵡⴰⵎⴰⵏ'},
+   sci:'Anguilla anguilla',
+   local:{fr:'Anguille européenne',ar:'الثعبان المائي / الحنش',es:'Anguila europea',en:'European eel',zgh:'ⵜⴰⵏⵖⵓⵍⵜ'},
+   habitat:{fr:'Cours d\'eau, estuaires, barrages — fond vaseux',ar:'أنهار ومصبات وسدود — قاع طيني',es:'Ríos, estuarios, embalses — fondo fangoso',en:'Rivers, estuaries, reservoirs — muddy bottoms',zgh:'ⵉⴼⵔⴷⵉⵙⵏ ⴷ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ — ⴰⵎⵓⵔ ⴰⵎⵥⵍⴰⵢ'},
+   bait:{fr:'Ver de terre, poisson mort, morceaux de seiche',ar:'دود أرضي، سمكة ميتة',es:'Gusano, pez muerto, trozos de sepia',en:'Earthworm, dead fish, cuttlefish pieces',zgh:'ⴰⵣⵉⵣ ⴷ ⴰⵙⵍⵎ ⵉⵎⵎⵓⵜⵏ'},
+   rig:{fr:'Paternoster fond robuste, fil résistant',ar:'مونتاج قاع قوي',es:'Paternóster resistente de fondo',en:'Robust bottom paternoster, strong braided line',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵇⵇⵓⵢⵜ'},
+   season:{fr:'Été–automne, nuit',ar:'الصيف والخريف، ليلاً',es:'Verano–otoño, noche',en:'Summer–autumn, night',zgh:'ⵜⴰⵎⴷⵓⵣⵜ–ⵜⴰⴼⵓⵍⴽⵉ (ⵉⴳⴰⵡⵜ)'},
+   months:[0,0,0,0,1,1,2,2,2,1,0,0],
+   legal_size:'30cm',limit:{fr:'C&R recommandé — espèce CITES en danger',ar:'الإفراج موصى به — نوع مهدد CITES',es:'C&R recomendado — especie CITES en peligro',en:'C&R strongly recommended — CITES Appendix II, critically endangered',zgh:'ⴽⴽⵙ ⵙ ⵜⵉⵎⵎⴰⴷ — CITES ⴰⵏⴰⵡ ⵉⵏⴷⵔⴰⵏ'},
+   notes:{fr:'Espèce CITES en danger critique. Remise à l\'eau obligatoire recommandée.',ar:'نوع مهدد. يُنصح بشدة بالإفراج عنه.',es:'Especie en peligro crítico CITES. Soltar siempre.',en:'Critically endangered. CITES Appendix II. Always release. Population has declined 90%+ in 40 years.',zgh:'ⴰⵙⵍⵎ ⴰⵎⵊⴷⴷⵉ — ⴽⴽⵙ ⵙ ⵜⵉⵎⵎⴰⴷ ⵎⴰⵕⵕⴰ.'}
+  },
+  {id:'perche',type:'freshwater',icon:'🐟',
+   name:{fr:'Perche',ar:'القاروص النهري',es:'Perca',en:'Perch',zgh:'ⴱⵉⵔⵛ'},
+   sci:'Perca fluviatilis',
+   local:{fr:'Perche commune (introduite)',ar:'قاروص نهري (نوع مُدخَل)',es:'Perca europea (introducida)',en:'European perch (introduced)',zgh:'ⴱⵉⵔⵛ ⴰⵎⵊⵊⵉ'},
+   habitat:{fr:'Barrages et lacs à végétation — présente depuis introduction européenne',ar:'سدود وبحيرات نباتية',es:'Embalses con vegetación',en:'Vegetated reservoirs and lakes',zgh:'ⵜⵉⵙⴻⵔⴷⴰⵙⵉⵏ ⵜⵉⵎⵊⵊⵉⵢⵉⵏ'},
+   bait:{fr:'Ver, leurre souple petit, cuiller',ar:'دودة، طعم صناعي صغير، ملعقة',es:'Gusano, señuelo pequeño, cucharilla',en:'Worm, small soft lure, spinner',zgh:'ⴰⵣⵉⵣ ⴷ ⴰⵎⵏⴹⴰⵡ ⴰⵎⵣⵢⴰⵏ'},
+   rig:{fr:'Spinning léger, drop shot',ar:'سبينينغ خفيف، دروب شوت',es:'Spinning ligero, drop shot',en:'Light spinning, drop shot',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵢⴰⵏⵜ'},
+   season:{fr:'Automne–printemps',ar:'الخريف والربيع',es:'Otoño–primavera',en:'Autumn–spring',zgh:'ⵜⴰⴼⵓⵍⴽⵉ–ⴰⵎⵉⵡⴰⵏ'},
+   months:[1,1,1,2,1,1,0,0,1,2,2,1],
+   legal_size:'15cm',limit:{fr:'Permis Eaux & Forêts requis',ar:'تصريح مطلوب',es:'Permiso requerido',en:'Permit required',zgh:'ⵜⴰⵔⵙⵍⵜ ⵉⵃⵜⵜⴰⵊⵏ'},
+   notes:{fr:'Moins répandue que le black-bass mais présente dans certains barrages du Nord.',ar:'أقل انتشاراً من الباس. موجودة في سدود شمالية.',es:'Menos común que el black bass. Presente en embalses del norte.',en:'Less common than bass. Present in some northern reservoirs. Excellent eating.',zgh:'ⵉⵍⵍⴰ ⴳ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ ⵏ ⵜⴳⴳⵓⵔⵜ ⵏ ⵜⵎⵓⵔⵜ.'}
+  }
+];
+</script>
+<script>
+const SPOTS = [
+  {id:'s1',region:'nord-atl',permit:false,lat:35.7595,lng:-5.8340,
+   name:{fr:'Plage de Asilah',ar:'شاطئ أصيلة',es:'Playa de Asilah',en:'Asilah Beach',zgh:'ⵉⵖⵔⵎ ⵏ ⴰⵙⵉⵍⴰ'},
+   access:{fr:'Accès direct — parking en ville, 10min à pied',ar:'وصول مباشر من المدينة',es:'Acceso directo desde la ciudad',en:'Direct access from town, 10 min walk'},
+   species:{fr:'Daurade, loup, maquereau, sardine',ar:'دنيس، قاروص، ماكريل، سردين',en:'Sea bream, bass, mackerel, sardine'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'surf',tags:['surf','surf-fishing','atlantic']
+  },
+  {id:'s2',region:'nord-atl',permit:false,lat:35.1688,lng:-5.2691,
+   name:{fr:'Port de Larache',ar:'ميناء العرائش',es:'Puerto de Larache',en:'Larache Harbour',zgh:'ⵙⵓⵖⵔⵜ ⵏ ⵍⵄⵔⴰⵢⵛ'},
+   access:{fr:'Quai du port — libre, sauf zones réservées',ar:'رصيف الميناء — حر باستثناء المناطق المحجوزة',es:'Muelle del puerto',en:'Harbour quay — free access except reserved zones'},
+   species:{fr:'Sardine, anchois, maquereau, daurade',ar:'سردين، أنشوفة، ماكريل، دنيس',en:'Sardine, anchovy, mackerel, sea bream'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'port',tags:['port','atlantic']
+  },
+  {id:'s3',region:'gibraltar',permit:false,lat:35.8847,lng:-5.3267,
+   name:{fr:'Cap Spartel — Détroit',ar:'رأس سبارتيل',es:'Cabo Espartel',en:'Cap Spartel — Strait',zgh:'ⵉⴼⵉⵍⵉ ⵏ ⵙⴱⴰⵔⵜⵍ'},
+   access:{fr:'Route signalisée depuis Tanger — parking gratuit',ar:'طريق من طنجة — موقف مجاني',es:'Carretera señalizada desde Tánger',en:'Signposted road from Tangier, free parking'},
+   species:{fr:'Thon, espadon, daurade, loup, requin',ar:'تونة، أبو سيف، دنيس، قاروص، قرش',en:'Tuna, swordfish, sea bream, bass, shark'},
+   season:{fr:'Printemps–automne',ar:'الربيع والخريف',en:'Spring–autumn'},
+   type:'offshore',tags:['offshore','strait','big-game']
+  },
+  {id:'s4',region:'gibraltar',permit:false,lat:35.9000,lng:-5.4000,
+   name:{fr:'Détroit de Gibraltar — Est',ar:'مضيق جبل طارق — الشرق',es:'Estrecho de Gibraltar — Este',en:'Gibraltar Strait — East',zgh:'ⴰⴼⵓⵙ ⵏ ⵊⴱⵍ ⵟⴰⵕⵉⵇ'},
+   access:{fr:'Embarquement depuis Tanger — charters disponibles',ar:'إبحار من طنجة — تشارترات متاحة',en:'Boat from Tangier — charters available'},
+   species:{fr:'Thon rouge, espadon, bonite, requin bleu',ar:'تونة حمراء، أبو سيف، بونيتو، قرش أزرق',en:'Bluefin tuna, swordfish, bonito, blue shark'},
+   season:{fr:'Juin–octobre',ar:'يونيو–أكتوبر',en:'Jun–Oct'},
+   type:'offshore',tags:['offshore','big-game','atlantic']
+  },
+  {id:'s5',region:'med',permit:false,lat:35.2432,lng:-3.9298,
+   name:{fr:'Al Hoceima — Plage Quemado',ar:'الحسيمة — شاطئ الكيمادو',es:'Al Hoceima — Playa Quemado',en:'Al Hoceima — Quemado Beach',zgh:'ⵍⵃⵓⵙⵉⵎⴰ — ⵜⵓⵍⴰⵢⵜ'},
+   access:{fr:'Accès direct depuis la corniche',ar:'وصول مباشر من الكورنيش',en:'Direct access from seafront promenade'},
+   species:{fr:'Daurade, rouget, seiche, mérou',ar:'دنيس، بربوني، سبيا، هامور',en:'Sea bream, red mullet, cuttlefish, grouper'},
+   season:{fr:'Toute l\'année (pic: été)',ar:'طوال العام',en:'Year-round (peak: summer)'},
+   type:'beach',tags:['med','beach']
+  },
+  {id:'s6',region:'med',permit:false,lat:35.1688,lng:-2.9345,
+   name:{fr:'Nador — Port et Brise-lames',ar:'الناظور — الميناء ورصيف المد',es:'Nador — Puerto y escollera',en:'Nador — Harbour & Breakwater',zgh:'ⵏⴰⴹⵓⵔ — ⵙⵓⵖⵔⵜ'},
+   access:{fr:'Quai du port — accès libre côté ville',ar:'رصيف الميناء من جهة المدينة',en:'Harbour quay — free access from town side'},
+   species:{fr:'Daurade, loup, sardine, seiche, rouget',ar:'دنيس، قاروص، سردين، سبيا، بربوني',en:'Sea bream, bass, sardine, cuttlefish, red mullet'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'port',tags:['med','port']
+  },
+  {id:'s7',region:'med',permit:false,lat:35.0871,lng:-2.2245,
+   name:{fr:'Saïdia — Plage bleue',ar:'السعيدية — الشاطئ الأزرق',es:'Saidia — Playa Azul',en:'Saïdia — Blue Beach',zgh:'ⵙⵄⵉⴷⵉⵢⵢⴰ'},
+   access:{fr:'Plage publique — accès facile',ar:'شاطئ عام — وصول سهل',en:'Public beach — easy access'},
+   species:{fr:'Daurade, maquereau, sardine',ar:'دنيس، ماكريل، سردين',en:'Sea bream, mackerel, sardine'},
+   season:{fr:'Printemps–été',ar:'الربيع والصيف',en:'Spring–summer'},
+   type:'beach',tags:['med','beach','sandy']
+  },
+  {id:'s8',region:'centrale',permit:false,lat:34.2610,lng:-6.5890,
+   name:{fr:'Plage Mehdia (Kenitra)',ar:'شاطئ المهدية (القنيطرة)',es:'Playa de Mehdiya',en:'Mehdia Beach (Kenitra)',zgh:'ⵜⵓⵍⴰⵢⵜ ⵏ ⵍⵎⵃⵉⴷⵢⵢⴰ'},
+   access:{fr:'Route N1 — parking gratuit, accès direct',ar:'طريق N1 — موقف مجاني',en:'Route N1 — free parking, direct beach access'},
+   species:{fr:'Daurade, loup, poulpe, maquereau',ar:'دنيس، قاروص، أخطبوط، ماكريل',en:'Sea bream, bass, octopus, mackerel'},
+   season:{fr:'Toute l\'année (surf: automne–printemps)',ar:'طوال العام',en:'Year-round (surf: autumn–spring)'},
+   type:'surf',tags:['surf','atlantic','surf-fishing']
+  },
+  {id:'s9',region:'centrale',permit:false,lat:34.0209,lng:-6.8417,
+   name:{fr:'Rabat — Corniche & Tour Hassan',ar:'الرباط — الكورنيش وبرج حسان',es:'Rabat — Corniche',en:'Rabat — Corniche & Hassan Tower',zgh:'ⵕⵕⴱⴰⵟ — ⴰⵙⴰⵔⴰⴳ'},
+   access:{fr:'Corniche de Rabat — accès pédestre',ar:'كورنيش الرباط — وصول سهل',en:'Rabat seafront — pedestrian access'},
+   species:{fr:'Loup, daurade, sardine, rouget',ar:'قاروص، دنيس، سردين، بربوني',en:'Bass, sea bream, sardine, red mullet'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'urban',tags:['urban','atlantic']
+  },
+  {id:'s10',region:'centrale',permit:false,lat:33.5731,lng:-7.5898,
+   name:{fr:'Casablanca — Brise-lames Ain Diab',ar:'الدار البيضاء — عين الذياب',es:'Casablanca — Escollera Ain Diab',en:'Casablanca — Ain Diab Breakwater',zgh:'ⴷⴷⴰⵕⵍⴱⵉⴹⴰ — ⵄⵉⵏ ⴷⵢⴰⴱ'},
+   access:{fr:'Boulevard de la Corniche — parking payant',ar:'كورنيش الدار البيضاء — موقف مدفوع',en:'Corniche boulevard — paid parking'},
+   species:{fr:'Daurade, loup, sardine, seiche',ar:'دنيس، قاروص، سردين، سبيا',en:'Sea bream, bass, sardine, cuttlefish'},
+   season:{fr:'Automne–printemps',ar:'الخريف والربيع',en:'Autumn–spring'},
+   type:'urban',tags:['urban','atlantic']
+  },
+  {id:'s11',region:'sud',permit:false,lat:33.2560,lng:-8.5088,
+   name:{fr:'El Jadida — Plage de Haouzia',ar:'الجديدة — شاطئ الهواوزة',es:'El Jadida — Playa de Haouzia',en:'El Jadida — Haouzia Beach',zgh:'ⵍⵊⴷⵉⴷⴰ — ⵜⵓⵍⴰⵢⵜ'},
+   access:{fr:'Route côtière — parking gratuit',ar:'طريق ساحلي — موقف مجاني',en:'Coastal road — free parking'},
+   species:{fr:'Daurade, sole, loup, maquereau',ar:'دنيس، موسى، قاروص، ماكريل',en:'Sea bream, sole, bass, mackerel'},
+   season:{fr:'Toute l\'année (pic: automne)',ar:'طوال العام',en:'Year-round (peak: autumn)'},
+   type:'surf',tags:['surf','atlantic']
+  },
+  {id:'s12',region:'sud',permit:false,lat:32.3008,lng:-9.2279,
+   name:{fr:'Safi — Pointe & Brise-lames',ar:'آسفي — الرأس وحاجز الأمواج',es:'Safi — Punta y Escollera',en:'Safi — Point & Breakwater',zgh:'ⴰⵙⴼⵉ — ⵉⴼⴼⵓⵙ'},
+   access:{fr:'Centre-ville de Safi — accès piéton',ar:'وسط مدينة آسفي',en:'Safi town centre — pedestrian'},
+   species:{fr:'Poulpe, daurade, loup, raie',ar:'أخطبوط، دنيس، قاروص، شفنين',en:'Octopus, sea bream, bass, ray'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'rocky',tags:['rocky','atlantic']
+  },
+  {id:'s13',region:'agadir',permit:false,lat:30.4272,lng:-9.5984,
+   name:{fr:'Agadir — Plage principale',ar:'أكادير — الشاطئ الرئيسي',es:'Agadir — Playa principal',en:'Agadir — Main Beach',zgh:'ⴰⴳⴰⴷⵉⵔ — ⵜⵓⵍⴰⵢⵜ ⵜⴰⵎⵇⵇⵔⴰⵏⵜ'},
+   access:{fr:'Accès direct depuis la ville',ar:'وصول مباشر من المدينة',en:'Direct access from city centre'},
+   species:{fr:'Daurade, loup, maquereau, sardine',ar:'دنيس، قاروص، ماكريل، سردين',en:'Sea bream, bass, mackerel, sardine'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'surf',tags:['surf','atlantic']
+  },
+  {id:'s14',region:'agadir',permit:false,lat:30.0680,lng:-9.6920,
+   name:{fr:'Imesouane — Pointe rocheuse',ar:'إيمسوان — الرأس الصخري',es:'Imessouane — Punta rocosa',en:'Imesouane — Rocky Point',zgh:'ⵉⵎⵙⵡⴰⵏ — ⵉⴼⵉⵍⵉ ⵏ ⵉⵡⵔⵉⵙⵏ'},
+   access:{fr:'Village à 70km au nord d\'Agadir — chemin de terre 2km',ar:'قرية 70 كم شمال أكادير — طريق ترابي',en:'Village 70km north of Agadir — 2km dirt track'},
+   species:{fr:'Mérou, daurade, poulpe, loup',ar:'هامور، دنيس، أخطبوط، قاروص',en:'Grouper, sea bream, octopus, bass'},
+   season:{fr:'Automne–printemps',ar:'الخريف والربيع',en:'Autumn–spring'},
+   type:'rocky',tags:['rocky','atlantic','remote']
+  },
+  {id:'s15',region:'sahara',permit:false,lat:23.6847,lng:-15.9573,
+   name:{fr:'Dakhla — Baie',ar:'الداخلة — الخليج',es:'Dakhla — Bahía',en:'Dakhla — Bay',zgh:'ⴷⴰⵅⵍⴰ — ⵉⴼⵔⵉ'},
+   access:{fr:'Accès depuis la ville par route asphaltée',ar:'وصول من المدينة بطريق معبد',en:'Paved road access from Dakhla city'},
+   species:{fr:'Espadon, daurade, loup, requin, courbine',ar:'أبو سيف، دنيس، قاروص، قرش',en:'Swordfish, sea bream, bass, shark, meagre'},
+   season:{fr:'Toute l\'année (pic: mars–nov pour espadon)',ar:'طوال العام',en:'Year-round (swordfish peak: Mar–Nov)'},
+   type:'offshore',tags:['offshore','big-game','sahara']
+  },
+  {id:'s16',region:'sahara',permit:false,lat:23.7000,lng:-15.9000,
+   name:{fr:'Dakhla — Surf Spot (Naila)',ar:'الداخلة — نقطة السيرف',es:'Dakhla — Surf Spot (Naila)',en:'Dakhla — Surf Spot (Naila)',zgh:'ⴷⴰⵅⵍⴰ — ⵜⵓⵍⴰⵢⵜ ⵏ ⵙⵉⵔⴼ'},
+   access:{fr:'Route Naila, 25km de la ville — piste 4x4 conseillée',ar:'طريق نيلا 25 كم — يُنصح بدفع رباعي',en:'Naila track, 25km — 4WD recommended'},
+   species:{fr:'Daurade géante, loup, courbine',ar:'دنيس عملاق، قاروص',en:'Giant sea bream, bass, meagre'},
+   season:{fr:'Toute l\'année (vent optimal: mai–oct)',ar:'طوال العام',en:'Year-round (optimal wind: May–Oct)'},
+   type:'surf',tags:['surf','surf-fishing','sahara','remote']
+  },
+  {id:'s17',region:'interieur',permit:true,lat:32.1372,lng:-6.4545,
+   name:{fr:'Barrage Bin el Ouidane',ar:'سد بين الويدان',es:'Embalse Bin el Ouidane',en:'Bin el Ouidane Reservoir',zgh:'ⵜⴰⵙⴻⵔⴷⴰⵙⵜ ⵏ ⴱⵉⵏ ⵍⵡⵉⴷⴰⵏ'},
+   access:{fr:'Route de Beni Mellal — parking gratuit au bord',ar:'طريق بني ملال — موقف مجاني',en:'Road from Beni Mellal — free lakeshore parking'},
+   species:{fr:'Carpe, barbeau, silure, black-bass',ar:'كارب، بربوط، سيلور، باس',en:'Carp, barbel, catfish, bass'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'reservoir',tags:['reservoir','freshwater','permit-required']
+  },
+  {id:'s18',region:'interieur',permit:true,lat:32.5199,lng:-7.5610,
+   name:{fr:'Barrage Al Massira',ar:'سد المسيرة',es:'Embalse Al Massira',en:'Al Massira Reservoir',zgh:'ⵜⴰⵙⴻⵔⴷⴰⵙⵜ ⵏ ⵍⵎⵙⵉⵔⴰ'},
+   access:{fr:'Route de Settat — nombreux accès au bord',ar:'طريق سطات — منافذ متعددة',en:'Road from Settat — multiple lakeshore access points'},
+   species:{fr:'Carpe, silure, black-bass, barbeau',ar:'كارب، سيلور، باس، بربوط',en:'Carp, catfish, bass, barbel'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   type:'reservoir',tags:['reservoir','freshwater','permit-required']
+  },
+  {id:'s19',region:'interieur',permit:true,lat:33.5258,lng:-5.1018,
+   name:{fr:'Azrou — Rivière Tigrigra',ar:'أزرو — نهر تيغريغرا',es:'Azrou — Río Tigrigra',en:'Azrou — Tigrigra River',zgh:'ⴰⵣⵔⵓ — ⴰⵙⵉⴼ ⵏ ⵜⵉⵖⵔⵉⵖⵔⴰ'},
+   access:{fr:'Forêt de Cèdres — route goudronnée depuis Azrou',ar:'غابة الأرز — طريق معبد من أزرو',en:'Cedar Forest — paved road from Azrou'},
+   species:{fr:'Truite fario, barbeau atlantique',ar:'تراوت فاريو، بربوط أطلسي',en:'Brown trout, Atlantic barbel'},
+   season:{fr:'Mars–octobre (saison officielle)',ar:'مارس–أكتوبر',en:'March–October (official season)'},
+   type:'river',tags:['river','trout','atlas','permit-required']
+  },
+  {id:'s20',region:'interieur',permit:true,lat:33.4856,lng:-5.1127,
+   name:{fr:'Ifrane — Oued Tizguit',ar:'إفران — وادي تيزغيت',es:'Ifrane — Río Tizguit',en:'Ifrane — Tizguit River',zgh:'ⵉⴼⵔⴰⵏ — ⵓⴹ ⵏ ⵜⵉⵣⴳⵉⵜ'},
+   access:{fr:'Parc National d\'Ifrane — entrée signalisée',ar:'المنتزه الوطني إفران — مدخل مُشار إليه',en:'Ifrane National Park — signposted entrance'},
+   species:{fr:'Truite fario, barbeau, quelques perches',ar:'تراوت، بربوط، أسماك البيرش',en:'Brown trout, barbel, occasional perch'},
+   season:{fr:'Mars–octobre — saison stricte',ar:'مارس–أكتوبر — موسم صارم',en:'March–October — strict season'},
+   type:'river',tags:['river','trout','atlas','national-park','permit-required']
+  }
+];
+
+const REGS = [
+  {species:{fr:'Daurade royale',ar:'الدنيس',en:'Sea bream',es:'Dorada'},
+   min_size:'20cm',bag:{fr:'Pas de limite légale',ar:'بدون حد',en:'No bag limit'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   authority:'DPM',warn:false},
+  {species:{fr:'Loup de mer',ar:'قاروص',en:'Sea bass',es:'Lubina'},
+   min_size:'36cm',bag:{fr:'10 kg/jour',ar:'10 كجم/يوم',en:'10 kg/day'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   authority:'DPM',warn:false},
+  {species:{fr:'Thon rouge',ar:'تونة حمراء',en:'Bluefin tuna',es:'Atún rojo'},
+   min_size:'115cm',bag:{fr:'Quota ICCAT — licence pro',ar:'حصص ICCAT',en:'ICCAT quota — pro licence'},
+   season:{fr:'Réglementé',ar:'منظم',en:'Regulated'},
+   authority:'ICCAT',warn:true},
+  {species:{fr:'Mérou',ar:'الهامور',en:'Grouper',es:'Mero'},
+   min_size:'45cm',bag:{fr:'C&R recommandé',ar:'الإفراج موصى به',en:'C&R recommended'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   authority:'DPM',warn:true},
+  {species:{fr:'Requin',ar:'قرش',en:'Shark',es:'Tiburón'},
+   min_size:{fr:'Variable',ar:'متغير',en:'Variable'},
+   bag:{fr:'C&R obligatoire espèces CITES',ar:'إفراج إلزامي CITES',en:'C&R mandatory CITES spp.'},
+   season:{fr:'Réglementé',ar:'منظم',en:'Regulated'},
+   authority:'CITES',warn:true},
+  {species:{fr:'Anguille',ar:'ثعبان الماء',en:'Eel',es:'Anguila'},
+   min_size:'30cm',bag:{fr:'C&R fortement recommandé — CITES',ar:'الإفراج بشدة — CITES',en:'C&R strongly rec. — CITES'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   authority:'CITES',warn:true},
+  {species:{fr:'Truite fario',ar:'تراوت',en:'Brown trout',es:'Trucha'},
+   min_size:'20cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
+   season:{fr:'Mars–octobre uniquement',ar:'مارس–أكتوبر',en:'March–October only'},
+   authority:'Eaux & Forêts',warn:false},
+  {species:{fr:'Carpe',ar:'كارب',en:'Carp',es:'Carpa'},
+   min_size:'35cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   authority:'Eaux & Forêts',warn:false},
+  {species:{fr:'Barbeau',ar:'بربوط',en:'Barbel',es:'Barbo'},
+   min_size:'20cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   authority:'Eaux & Forêts',warn:false},
+  {species:{fr:'Black-bass',ar:'باس',en:'Bass',es:'Black bass'},
+   min_size:'25cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+   authority:'Eaux & Forêts',warn:false}
+];
+</script>
+<script>
+const RIGS = [
+  {id:'surfcasting',
+   name:{fr:'Surfcasting Atlantique',ar:'سيرف كاستينغ الأطلسي',es:'Surfcasting Atlántico',en:'Atlantic Surfcasting',zgh:'ⵙⵉⵔⴼ ⴽⴰⵙⵜⵉⵏⴳ'},
+   target:{fr:'Daurade, loup, sole, raie',ar:'دنيس، قاروص، موسى، شفنين',en:'Sea bream, bass, sole, ray'},
+   desc:{fr:'La technique reine sur les côtes atlantiques marocaines. Plombs fuseaux 80–150g selon le courant.',ar:'التقنية الملكية على السواحل الأطلسية المغربية. رصاصات 80–150 غ.',en:'The dominant technique on Moroccan Atlantic beaches. Leads 80–150g depending on current.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
+   steps:{fr:['Tressée 0.28–0.35mm sur moulinet surfcasting','Bas de ligne 0.35–0.40mm nylon 1.5–2m','Plomb fuseau 80–150g selon courant','2 hameçons taille 2–4 sur potences 20cm','Appâts: ver de sable, moule, crevette','Lancer à 60–80m — attendre 15–20min'],
+          en:['Braid 0.28–0.35mm on surfcasting reel','Leader 0.35–0.40mm nylon 1.5–2m','Torpedo lead 80–150g to match current','2 hooks size 2–4 on 20cm snoods','Baits: sandworm, mussel, shrimp','Cast 60–80m — wait 15–20 min']},
+   svg:`<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
+  <line x1="160" y1="10" x2="160" y2="60" stroke="#c9a44a" stroke-width="2"/>
+  <line x1="100" y1="60" x2="220" y2="60" stroke="#c9a44a" stroke-width="2"/>
+  <line x1="100" y1="60" x2="100" y2="120" stroke="#8a8578" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="220" y1="60" x2="220" y2="120" stroke="#8a8578" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <line x1="160" y1="60" x2="160" y2="130" stroke="#c9a44a" stroke-width="2"/>
+  <ellipse cx="160" cy="145" rx="12" ry="18" fill="#5a5750" stroke="#8a8578" stroke-width="1"/>
+  <path d="M95 120 Q100 130 105 120" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <path d="M215 120 Q220 130 225 120" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <text x="112" y="75" fill="#8a8578" font-size="9" font-family="monospace">20cm</text>
+  <text x="168" y="75" fill="#8a8578" font-size="9" font-family="monospace">20cm</text>
+  <text x="130" y="155" fill="#8a8578" font-size="9" font-family="monospace">100g</text>
+  <text x="10" y="55" fill="#c9a44a" font-size="9" font-family="monospace">Tressée</text>
+  <text x="60" y="115" fill="#2a8f7e" font-size="9" font-family="monospace">Hameçon</text>
+</svg>`
+  },
+  {id:'fond-rocher',
+   name:{fr:'Fond rocheux — Paternoster',ar:'القاع الصخري — بترنوستر',es:'Fondo rocoso — Paternóster',en:'Rocky Bottom Paternoster',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵉⵡⵔⵉⵙⵏ'},
+   target:{fr:'Mérou, rouget, daurade, poulpe',ar:'هامور، بربوني، دنيس، أخطبوط',en:'Grouper, red mullet, bream, octopus'},
+   desc:{fr:'Pêche depuis les rochers ou le bateau. Plomb lourd pour tenir le fond.',ar:'الصيد من الصخور أو القارب بمونتاج ثقيل.',en:'Rock or boat fishing. Heavy lead to hold bottom in current.',zgh:'ⴰⵙⵍⵎⴷ ⵙⴳ ⵉⵡⵔⵉⵙⵏ ⵏⵖ ⵜⴰⴱⵔⴽⵓⴽⵜ.'},
+   steps:{fr:['Fil principal tressé ou nylon 0.40–0.50mm','Bas de ligne plus fin 0.30–0.35mm','Plomb 60–120g en bas du montage','1–2 hameçons en potences au-dessus du plomb','Appâts: moule, crevette, calamar','Pêche à la touche — remonter dès mordu'],
+          en:['Main line braid or nylon 0.40–0.50mm','Leader 0.30–0.35mm','Lead 60–120g at bottom','1–2 hooks on snoods above lead','Baits: mussel, shrimp, squid','Bite detection — strike immediately']},
+   svg:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
+  <line x1="160" y1="10" x2="160" y2="170" stroke="#c9a44a" stroke-width="2"/>
+  <line x1="160" y1="80" x2="200" y2="80" stroke="#8a8578" stroke-width="1.5"/>
+  <line x1="160" y1="120" x2="200" y2="120" stroke="#8a8578" stroke-width="1.5"/>
+  <path d="M196 80 Q204 88 200 96" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <path d="M196 120 Q204 128 200 136" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <polygon points="150,170 170,170 165,190 155,190" fill="#5a5750" stroke="#8a8578" stroke-width="1"/>
+  <text x="75" y="76" fill="#8a8578" font-size="9" font-family="monospace">Potence 1</text>
+  <text x="75" y="116" fill="#8a8578" font-size="9" font-family="monospace">Potence 2</text>
+  <text x="125" y="195" fill="#8a8578" font-size="9" font-family="monospace">Plomb</text>
+</svg>`
+  },
+  {id:'hair-rig',
+   name:{fr:'Hair Rig Carpe',ar:'هير ريغ للكارب',es:'Hair rig carpa',en:'Carp Hair Rig',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⴰⴽⴰⵔⴱⴰⵢⵜ'},
+   target:{fr:'Carpe, barbeau',ar:'كارب، بربوط',en:'Carp, barbel'},
+   desc:{fr:'Montage standard carpe, dominant dans les barrages marocains depuis 15 ans. Boilies 16–20mm.',ar:'المونتاج الأساسي لصيد الكارب. بويلي 16–20 ملم.',en:'Standard carp rig dominant in Moroccan reservoirs for 15 years. Boilies 16–20mm.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵡⴰⴱⵔⵉⴷ ⴳ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ ⵏ ⵍⵎⵖⵔⵉⴱ.'},
+   steps:{fr:['Tressée 0.28–0.35mm sur moulinet baitrunner','Bas de ligne coated braid 25cm','Hameçon carpe taille 4–6 avec hair','Boilie 16–20mm sur le hair','Plomb poire 60–100g coulissant','Posée — attente au posé, détecteur conseillé'],
+          en:['Braid 0.28–0.35mm on baitrunner reel','Coated braid hooklink 25cm','Carp hook size 4–6 with hair','Boilie 16–20mm on hair','Pear lead 60–100g running','Bolt rig setup — bite alarm recommended']},
+   svg:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
+  <line x1="30" y1="100" x2="200" y2="100" stroke="#c9a44a" stroke-width="2"/>
+  <path d="M200 100 C220 100 230 90 225 80 C220 70 210 72 210 80" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <line x1="210" y1="80" x2="220" y2="105" stroke="#2a8f7e" stroke-width="1.5"/>
+  <ellipse cx="225" cy="110" rx="7" ry="9" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
+  <ellipse cx="130" cy="115" rx="14" ry="10" fill="#5a5750" stroke="#8a8578" stroke-width="1"/>
+  <text x="100" y="128" fill="#8a8578" font-size="9" font-family="monospace">Plomb poire</text>
+  <text x="210" y="75" fill="#2a8f7e" font-size="9" font-family="monospace">Hameçon</text>
+  <text x="215" y="125" fill="#c9a44a" font-size="9" font-family="monospace">Boilie</text>
+  <text x="30" y="92" fill="#c9a44a" font-size="9" font-family="monospace">Tressée</text>
+</svg>`
+  },
+  {id:'spinning-truite',
+   name:{fr:'Spinning Truite Atlas',ar:'سبينينغ التراوت',es:'Spinning trucha Atlas',en:'Atlas Trout Spinning',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵔⵓⵜⵜⴰ'},
+   target:{fr:'Truite fario, barbeau',ar:'تراوت، بربوط',en:'Brown trout, barbel'},
+   desc:{fr:'Ultra-léger en rivière de montagne. Canne 1.8–2.1m, 1–8g. Cuillers Mepps 0–2.',ar:'سبينينغ خفيف جداً في الأنهار الجبلية. قضيب 1.8–2.1م، 1–8 غ.',en:'Ultra-light in mountain streams. Rod 1.8–2.1m, 1–8g. Mepps spinners #0–2.',zgh:'ⵙⴱⵉⵏⵉⵏⴳ ⴰⵎⵣⵢⴰⵏ ⴳ ⵉⴼⵔⴷⵉⵙⵏ ⵏ ⵓⴷⵔⴰⵔ.'},
+   steps:{fr:['Canne spinning 1.8–2.1m action UL','Nylon 0.16–0.20mm ou tressée fine 0.10mm','Cuiller tournante Mepps 0–2 ou inline','Lancer en amont — récupérer dans le courant','Nymphe ou mouche sèche si canne fly disponible','Toujours remettre les petites — taille min 20cm'],
+          en:['Spinning rod 1.8–2.1m UL action','Nylon 0.16–0.20mm or fine braid 0.10mm','Mepps 0–2 spinner or inline spoon','Cast upstream — retrieve with current','Nymph or dry fly if fly rod available','Always release sub-20cm fish']},
+   svg:`<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
+  <line x1="20" y1="80" x2="240" y2="80" stroke="#c9a44a" stroke-width="1.5"/>
+  <ellipse cx="255" cy="80" rx="16" ry="10" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <line x1="264" y1="74" x2="278" y2="68" stroke="#2a8f7e" stroke-width="1.5"/>
+  <line x1="264" y1="86" x2="278" y2="92" stroke="#2a8f7e" stroke-width="1.5"/>
+  <path d="M275 68 Q285 75 278 85 Q272 92 268 88" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <text x="230" y="105" fill="#2a8f7e" font-size="9" font-family="monospace">Cuiller</text>
+  <text x="20" y="70" fill="#c9a44a" font-size="9" font-family="monospace">0.18mm</text>
+  <path d="M100 60 Q160 40 220 60" fill="none" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="140" y="38" fill="#8a8578" font-size="9" font-family="monospace">Lancé amont</text>
+</svg>`
+  },
+  {id:'turlutte',
+   name:{fr:'Turlutte Seiche & Poulpe',ar:'تورلوت للسبيا والأخطبوط',es:'Pota sepia y pulpo',en:'Cuttlefish & Octopus Jig',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵉⵙⴻⵢⵢⴰ'},
+   target:{fr:'Seiche, poulpe',ar:'سبيا، أخطبوط',en:'Cuttlefish, octopus'},
+   desc:{fr:'Technique en pleine expansion sur les côtes atlantiques. Turlutte 3.5–4.5, fil PE 0.6–0.8.',ar:'تقنية في توسع على الساحل الأطلسي. طعم خاص 3.5–4.5.',en:'Rapidly growing technique on Atlantic coasts. Eging jig 3.5–4.5, PE line 0.6–0.8.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵊⵊⵓⵜ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
+   steps:{fr:['Canne eging 2.4–2.8m, action tip','Tressée PE 0.6–0.8 + fluorocarbone 2–3m','Turlutte 3.5–4.5 couleur vive ou naturelle','Lancer, laisser couler, action saccadée','Récupération lente — seiche saisit par derrière','Automne: concentration sur les spots rocheux'],
+          en:['Egi rod 2.4–2.8m tip action','PE braid 0.6–0.8 + fluoro leader 2–3m','Egi 3.5–4.5 bright or natural colour','Cast, let sink, jerk retrieve','Slow retrieve — cuttlefish attacks from behind','Autumn: concentrate on rocky spots at dusk']},
+   svg:`<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
+  <line x1="20" y1="70" x2="220" y2="70" stroke="#c9a44a" stroke-width="1.5"/>
+  <rect x="220" y="55" width="50" height="20" rx="10" fill="#2a8f7e" opacity="0.8"/>
+  <line x1="240" y1="75" x2="235" y2="90" stroke="#2a8f7e" stroke-width="1.5"/>
+  <line x1="250" y1="75" x2="255" y2="90" stroke="#2a8f7e" stroke-width="1.5"/>
+  <line x1="260" y1="75" x2="268" y2="88" stroke="#2a8f7e" stroke-width="1.5"/>
+  <text x="215" y="53" fill="#2a8f7e" font-size="9" font-family="monospace">Turlutte 3.5</text>
+  <path d="M80 50 Q120 30 180 45 Q200 50 200 65" fill="none" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="90" y="28" fill="#8a8578" font-size="9" font-family="monospace">Action saccadée</text>
+</svg>`
+  }
+];
+
+const KNOTS = [
+  {id:'palomar',
+   name:'Palomar',
+   use:{fr:'Hameçon sur fluorocarbone ou tressée',ar:'ربط الصنارة بالخيط',en:'Hook to fluoro or braid',zgh:'ⴰⵎⴽⵓⵔⴰⵢ ⵙ ⵓⵅⵉⵟ'},
+   strength:{fr:'95%',ar:'95%',en:'95%'},
+   desc:{fr:'Le nœud le plus fiable pour attacher un hameçon. Résistance 95%. Fonctionne avec tressée et fluorocarbone.',ar:'العقدة الأكثر موثوقية لربط الصنارة. مقاومة 95%.',en:'Most reliable hook knot. 95% strength. Works with braid and fluoro.',zgh:'ⴰⴽⴽⴰⵛ ⴰⵎⵣⵡⴰⵔⵓ ⵉ ⵓⵎⴽⵓⵔⴰⵢ.'},
+   steps:{fr:['Passer 15cm de fil dans le chas','Former une boucle — passer l\'hameçon','Faire un nœud simple sur la double','Faire passer l\'hameçon dans la boucle','Mouiller et serrer'],
+          en:['Pass 15cm of line through eye','Form a loop — pass hook through','Tie a simple overhand on the double','Pass hook back through the loop','Wet and tighten']},
+   svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
+  <path d="M30 70 Q60 40 90 70 Q120 100 150 70 Q165 55 160 45" fill="none" stroke="#c9a44a" stroke-width="2.5"/>
+  <path d="M160 45 Q170 30 175 45 Q180 60 165 65 L150 70" fill="none" stroke="#c9a44a" stroke-width="2.5"/>
+  <path d="M175 45 Q185 70 170 80 Q155 90 150 70" fill="none" stroke="#c9a44a" stroke-width="2" stroke-dasharray="4,2"/>
+  <path d="M195 90 Q215 85 220 70 Q225 55 215 50 Q205 45 200 55" fill="none" stroke="#2a8f7e" stroke-width="2.5"/>
+  <line x1="215" y1="80" x2="220" y2="100" stroke="#2a8f7e" stroke-width="2"/>
+  <text x="20" y="115" fill="#8a8578" font-size="10" font-family="monospace">Boucle → hameçon → serrer</text>
+</svg>`
+  },
+  {id:'uni',
+   name:'Nœud Uni (Grinner)',
+   use:{fr:'Hameçon, émerillon, agrafe',ar:'ربط الصنارة والحلقة',en:'Hook, swivel, clip',zgh:'ⴰⵎⴽⵓⵔⴰⵢ ⴷ ⵜⴰⵏⵥⴰⵕⵜ'},
+   strength:{fr:'90%',ar:'90%',en:'90%'},
+   desc:{fr:'Nœud polyvalent universel. Idéal pour les hameçons forts en pêche de fond.',ar:'عقدة متعددة الاستخدامات. مثالية للصنار القوية.',en:'Universal knot. Ideal for strong hooks in bottom fishing.',zgh:'ⴰⴽⴽⴰⵛ ⴰⵎⵙⵜⴰⵡⵍⵉ.'},
+   steps:{fr:['Passer le fil dans le chas — 20cm','Former une boucle le long du fil','Faire 5–6 tours autour du double','Passer l\'extrémité dans la boucle','Mouiller, serrer, couper l\'excédent'],
+          en:['Pass 20cm through eye','Form a loop alongside main line','Make 5–6 wraps around the double','Pass tag through the loop','Wet, tighten, trim excess']},
+   svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
+  <line x1="20" y1="70" x2="100" y2="70" stroke="#c9a44a" stroke-width="2.5"/>
+  <path d="M100 70 Q110 50 120 70 Q130 90 140 70 Q150 50 160 70 Q170 90 180 70 Q190 50 200 70" fill="none" stroke="#c9a44a" stroke-width="2.5"/>
+  <path d="M200 70 L220 70" stroke="#c9a44a" stroke-width="2.5"/>
+  <path d="M225 55 Q240 50 245 65 Q250 80 240 85 Q230 90 225 80" fill="none" stroke="#2a8f7e" stroke-width="2.5"/>
+  <line x1="240" y1="83" x2="245" y2="100" stroke="#2a8f7e" stroke-width="2"/>
+  <text x="20" y="115" fill="#8a8578" font-size="10" font-family="monospace">5–6 tours → serrer progressivement</text>
+</svg>`
+  },
+  {id:'fg',
+   name:'Nœud FG',
+   use:{fr:'Tressée → Fluorocarbone (leader)',ar:'ربط الجدل بالفلوروكربون',en:'Braid to fluorocarbon leader',zgh:'ⵉⵜⵜⵓⵙⵎⵓⵏ ⵓⵅⵉⵟ'},
+   strength:{fr:'99%',ar:'99%',en:'99%'},
+   desc:{fr:'Le nœud de connexion tressée–fluorocarbone le plus résistant. Passe dans les anneaux. Indispensable en surfcasting.',ar:'أقوى عقدة لربط الجدل بالفلوروكربون. يمر في الحلقات.',en:'Strongest braid-to-fluoro connection. Passes through guides. Essential for surfcasting.',zgh:'ⴰⴽⴽⴰⵛ ⵉⴷⴷⴰⵏ ⴳ ⵉⵎⵓⵔⴰⵔⵏ.'},
+   steps:{fr:['Faire une boucle avec le fluorocarbone','Passer la tressée 15–20 fois alternée','Demi-clé finale sur le fluo','Demi-clé de finition','Couper proprement — tête très fine'],
+          en:['Make a loop with the fluorocarbon','Alternate braid 15–20 passes','Half hitch to lock on fluoro','Final locking half hitch','Trim close — very slim profile']},
+   svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
+  <line x1="20" y1="65" x2="200" y2="65" stroke="#c9a44a" stroke-width="2"/>
+  <line x1="60" y1="75" x2="200" y2="75" stroke="#2a8f7e" stroke-width="2.5"/>
+  <path d="M65 65 Q70 55 80 65 Q85 75 80 75" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
+  <path d="M90 65 Q95 55 105 65 Q110 75 105 75" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
+  <path d="M115 65 Q120 55 130 65 Q135 75 130 75" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
+  <path d="M145 65 Q150 55 160 65 Q165 75 160 75" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
+  <text x="20" y="110" fill="#8a8578" font-size="9" font-family="monospace">Tressée (or) wraps fluoro (teal)</text>
+</svg>`
+  },
+  {id:'blood',
+   name:'Blood Knot',
+   use:{fr:'Rallonge de ligne, réparation',ar:'توصيل خيطين',en:'Line to line join, repair',zgh:'ⴰⵙⵎⵓⵏ ⵏ ⵉⵅⵉⵟⴰⵏ ⵙⵏⴰⵜ'},
+   strength:{fr:'85%',ar:'85%',en:'85%'},
+   desc:{fr:'Nœud de jonction deux fils similaires. Utile pour rallonger le bas de ligne sur le terrain.',ar:'ربط خيطين متماثلين. مفيد لتطويل الخيط في الميدان.',en:'Join two similar lines. Useful for extending hooklinks in the field.',zgh:'ⴰⵙⵎⵓⵏ ⵏ ⵉⵅⵉⵟⴰⵏ ⴷ ⵙⵏⴰⵜ ⵜⵓⴳⴷⵉⵡⵉⵏ.'},
+   steps:{fr:['Croiser les deux fils en X','5 tours fil A autour de fil B','5 tours fil B autour de fil A','Passer les deux extrémités dans la croix','Mouiller fortement et serrer simultanément'],
+          en:['Cross two lines in an X','5 wraps line A around line B','5 wraps line B around line A','Pass both tag ends through the cross','Wet thoroughly and tighten simultaneously']},
+   svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
+  <line x1="20" y1="60" x2="100" y2="80" stroke="#c9a44a" stroke-width="2.5"/>
+  <line x1="20" y1="80" x2="100" y2="60" stroke="#2a8f7e" stroke-width="2.5"/>
+  <path d="M100 80 Q115 90 120 75 Q125 60 115 55 Q105 50 105 62" fill="none" stroke="#c9a44a" stroke-width="2"/>
+  <path d="M100 60 Q115 50 120 65 Q125 80 115 85 Q105 90 105 78" fill="none" stroke="#2a8f7e" stroke-width="2"/>
+  <line x1="120" y1="70" x2="250" y2="70" stroke="#c9a44a" stroke-width="2.5"/>
+  <text x="20" y="118" fill="#8a8578" font-size="10" font-family="monospace">5 tours chaque côté → serrer</text>
+</svg>`
+  },
+  {id:'boucle',
+   name:'Boucle sur boucle',
+   use:{fr:'Connexion rapide bas de ligne',ar:'توصيل سريع لخيط القاعدة',en:'Quick hooklink change',zgh:'ⴰⵙⵎⵓⵏ ⴰⵎⵥⵢⴰⵏ'},
+   strength:{fr:'100%',ar:'100%',en:'100%'},
+   desc:{fr:'Connexion rapide parfaite en bord de mer pour changer de bas de ligne sans couper.',ar:'توصيل سريع مثالي لتغيير الخيط دون قطع.',en:'Perfect quick connection for changing hooklinks without cutting. Used in surfcasting rigs.',zgh:'ⴰⵙⵎⵓⵏ ⵉⵃⴼⴰⵡⵏ ⵉⵣⵡⴰⵔⵏ.'},
+   steps:{fr:['Nœud de boucle simple sur chaque section','Passer une boucle dans l\'autre','Faire passer l\'extrémité à travers','Tirer doucement — connexion bouclée','Changer le bas de ligne en 10 secondes'],
+          en:['Perfection loop on each section','Pass one loop through the other','Pass the end piece through','Pull gently — loop-to-loop connection','Change hooklink in 10 seconds']},
+   svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
+  <line x1="20" y1="70" x2="90" y2="70" stroke="#c9a44a" stroke-width="2.5"/>
+  <ellipse cx="115" cy="70" rx="25" ry="18" fill="none" stroke="#c9a44a" stroke-width="2.5"/>
+  <ellipse cx="165" cy="70" rx="25" ry="18" fill="none" stroke="#2a8f7e" stroke-width="2.5"/>
+  <line x1="190" y1="70" x2="260" y2="70" stroke="#2a8f7e" stroke-width="2.5"/>
+  <path d="M90 70 C100 52 130 52 140 70" fill="none" stroke="#c9a44a" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="90" y="115" fill="#8a8578" font-size="10" font-family="monospace">Boucle dans boucle → tirer</text>
+</svg>`
+  }
+];
+
+const TIPS = [
+  {cat:{fr:'Terrain',ar:'الميدان',en:'Field',zgh:'ⴰⴽⴰⵍ'},
+   body:{fr:'Les meilleures heures sur la côte atlantique: les deux heures autour du lever et coucher du soleil. L\'activité des daurades est maximale au changement de marée — arrivée et départ de l\'eau.',ar:'أفضل أوقات الصيد على الساحل الأطلسي: ساعتان حول الشروق والغروب. نشاط الدنيس يبلغ ذروته عند تغير المد.',en:'Best hours on the Atlantic coast: the two hours around sunrise and sunset. Sea bream activity peaks at tidal change — both incoming and outgoing water.',zgh:'ⴰⵙⵉⵔⴰ ⴰⵎⵣⵡⴰⵔⵓ: ⵙⵉⵏ ⵏ ⵉⵙⵙⴰⵜⵏ ⵏ ⵜⴼⵓⵍⴽⵉ ⴷ ⵜⵡⴰⵔⵙⵉⵜ.'}
+  },
+  {cat:{fr:'Terrain',ar:'الميدان',en:'Field',zgh:'ⴰⴽⴰⵍ'},
+   body:{fr:'La pression atmosphérique en chute est mauvaise signe. Une pression stable ou en hausse légère donne les meilleures pêches. Évitez les jours qui suivent une tempête atlantique — attendez 48h.',ar:'انخفاض الضغط الجوي مؤشر سيء. ضغط مستقر أو في ارتفاع يعطي أفضل النتائج.',en:'Falling barometric pressure is a bad sign. Stable or slowly rising pressure gives the best sessions. Avoid the 48h after an Atlantic storm.',zgh:'ⴰⴷⴷⴰⴷ ⴰⴳⵔⴰⵡⴰⵏ ⵉⵛⵛⵓⵔⵏ — ⴰⵙⴻⵔⴷⴰⵙ ⴰⵎⵣⵡⴰⵔⵓ.'}
+  },
+  {cat:{fr:'Technique',ar:'التقنية',en:'Technique',zgh:'ⵜⴰⵙⵏⴰ'},
+   body:{fr:'En surfcasting, utilisez un plomb losange ou fuseau par mer agitée — il tient mieux dans le courant qu\'un plomb sphérique. En eaux calmes le plomb pyramide ancre mieux sur fond sableux.',ar:'في سيرف كاستينغ، استخدم رصاصة مغزلية في البحر المضطرب.',en:'In surfcasting, use a torpedo or grip lead in rough seas — holds better in current than a spherical lead. In calm water a pyramid lead anchors best on sand.',zgh:'ⴳ ⵓⵙⵍⵎⴷ ⴳ ⵡⴰⵎⴰⵏ ⵉⵇⵇⵓⵔⵏ: ⴰⵣⵡⴰⵏ ⴰⵎⴳⵣⴰⵍ ⵉⵃⴼⴰⵡⵏ.'}
+  },
+  {cat:{fr:'Technique',ar:'التقنية',en:'Technique',zgh:'ⵜⴰⵙⵏⴰ'},
+   body:{fr:'Pour la truite dans les oueds de l\'Atlas: pêchez toujours en remontant le courant, restez bas et discret. L\'ombre portée sur l\'eau fait fuir les truites instantanément.',ar:'لصيد التراوت في أودية الأطلس: الصيد دائماً ضد التيار. تجنب إلقاء الظل على الماء.',en:'For Atlas stream trout: always fish upstream, stay low and quiet. Your shadow on the water will spook fish instantly. Approach from downstream.',zgh:'ⵉ ⵜⵔⵓⵜⵜⴰ: ⴰⵙⵍⵎⴷ ⴷ ⵓⴼⵍⵍⴰ ⵏ ⵡⴰⵎⴰⵏ — ⵓⵔ ⵜⵙⵡⴰⵍⵙⵜ.'}
+  },
+  {cat:{fr:'Sécurité',ar:'السلامة',en:'Safety',zgh:'ⵜⴰⵢⵔⵉ'},
+   body:{fr:'Les rochers de la côte atlantique sont couverts d\'algues glissantes. Chaussures à crampons obligatoires. Ne pêchez jamais seul depuis un rocher exposé — les vagues peuvent surgir sans prévenir.',ar:'صخور الساحل الأطلسي مغطاة بطحالب زلقة. أحذية بمسامير إلزامية. لا تصطد وحدك من صخرة مكشوفة.',en:'Atlantic coast rocks are covered in slippery algae. Studded shoes or rock boots are essential. Never fish alone from exposed rocks — waves can surge without warning.',zgh:'ⵉⵡⵔⵉⵙⵏ ⵏ ⵓⵍⵍⵓⵙ ⵉⵍⵍⴰⵏ ⵙ ⵓⵣⵣⵣⵓⵔ — ⵉⵙⵙⴰⵎⴷⵏ ⵏ ⵓⴼⴰⵔ ⵉⵃⵜⵜⴰⵊⵏ.'}
+  },
+  {cat:{fr:'Sécurité',ar:'السلامة',en:'Safety',zgh:'ⵜⴰⵢⵔⵉ'},
+   body:{fr:'La pastenague (raie) est présente sur les plages sableuses. Si vous marchez en eau peu profonde, traînez les pieds — elle s\'enfuira plutôt que de vous piquer. Portez des bottes en eau trouble.',ar:'شفنين اللخمة موجود في الشواطئ الرملية. اسحب قدميك عند المشي في المياه الضحلة.',en:'Stingray is present on sandy beaches. Shuffle your feet when wading — it will flee rather than sting you. Wear boots in murky water.',zgh:'ⵜⴰⵔⴰⵢⵜ ⵜⴻⵍⵍⴰ ⴳ ⵉⵎⵉⵍⴰⵏ ⵏ ⵜⵓⴱⴱⴰⵏⵜ — ⵙⵓⵍ ⵉⴼⴰⵔⵏ ⵉⴽ.'}
+  },
+  {cat:{fr:'Règlementation',ar:'الأنظمة',en:'Regulations',zgh:'ⵉⵙⴼⴽⴰ'},
+   body:{fr:'Le permis Eaux & Forêts est obligatoire pour pêcher dans les barrages et cours d\'eau intérieurs. Achetable en ligne sur eauxetforets.gov.ma ou dans les délégations régionales. Amendes lourdes sans permis.',ar:'تصريح المياه والغابات إلزامي للصيد في السدود والأنهار الداخلية. متوفر على eauxetforets.gov.ma.',en:'The Eaux & Forêts permit is mandatory for all inland fishing — reservoirs and rivers. Buy online at eauxetforets.gov.ma or at regional offices. Heavy fines without permit.',zgh:'ⵜⴰⵔⵙⵍⵜ ⵏ ⵡⴰⵎⴰⵏ ⴷ ⵉⴳⵔⵔⴰⵏ ⵉⵃⵜⵜⴰⵊⵏ ⵉ ⵓⵙⵍⵎⴷ ⴳ ⵓⴷⴰⴼⵏ.'}
+  },
+  {cat:{fr:'Localement',ar:'محلياً',en:'Local Knowledge',zgh:'ⵜⴰⵙⵙⵏⵉⵡⵜ ⵜⴰⵎⴰⵣⵉⵖⵜ'},
+   body:{fr:'Les pêcheurs locaux sur les quais connaissent la marée, les appâts du jour et les dernières captures. Un café et une conversation valent mieux que n\'importe quel guide. Respectez leurs spots habituels.',ar:'الصيادون المحليون على الأرصفة يعرفون المد والطعم اليومي. قهوة ومحادثة تفوق أي دليل.',en:'Local anglers on the quays know the tide, daily bait and latest catches. A coffee and a conversation beats any guide. Respect their regular spots.',zgh:'ⵉⵙⵍⵎⴰⴷⵏ ⵉⵎⴰⵣⵉⵖⵏ ⵙ ⵓⵙⵓⵖⵔ — ⵙⵙⵏⵜ ⴰⴽⴰⵍ ⵉⴷⵙ.'}
+  },
+  {cat:{fr:'Matériel',ar:'المعدات',en:'Gear',zgh:'ⵜⴰⵙⵙⵏⵜⵍⵜ'},
+   body:{fr:'Decathlon Maroc (decathlon.ma) est le fournisseur dominant — rapport qualité/prix excellent pour les cannes Caperlan, moulinets Caperlan et bas de lignes. Présent à Casablanca, Rabat, Marrakech, Agadir, Tanger.',ar:'ديكاتلون المغرب هو المزود الرئيسي — نسبة جودة/سعر ممتازة لماركة كابرلان.',en:'Decathlon Morocco (decathlon.ma) is the dominant supplier — excellent value on Caperlan rods, reels and rigs. Stores in Casablanca, Rabat, Marrakech, Agadir, Tangier.',zgh:'ⴷⵉⴽⴰⵜⵍⵓⵏ ⵏ ⵍⵎⵖⵔⵉⴱ — ⵜⵓⴳⴷⵉⵡⵜ ⵜⴰⵙⴻⵖⵍⴰⵏⵜ ⵉ ⵜⵙⵙⵏⵜⵍⵜ ⵏ ⵓⵙⵍⵎⴷ.'}
+  },
+  {cat:{fr:'Localement',ar:'محلياً',en:'Local Knowledge',zgh:'ⵜⴰⵙⵙⵏⵉⵡⵜ ⵜⴰⵎⴰⵣⵉⵖⵜ'},
+   body:{fr:'Dakhla est l\'une des destinations de surfcasting et pêche au gros les plus exceptionnelles d\'Afrique. La saison principale est mars–novembre. Des records du monde y ont été établis pour la courbine et le loup géant.',ar:'داخلة من أفضل وجهات الصيد في أفريقيا. السجلات العالمية لأسماك كبيرة سُجلت هناك.',en:'Dakhla is one of Africa\'s finest surfcasting and big-game destinations. Season: March–November. World records for meagre and giant sea bass have been set there.',zgh:'ⴷⴰⵅⵍⴰ: ⵜⴰⵥⴻⵍⴳⵉ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵜⴼⵔⵉⵇⵜ.'}
+  }
+];
+</script>
+<script>
+// ── PAGE NAVIGATION ──
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const page = document.getElementById('page-'+id);
+  if(page) page.classList.add('active');
+  const nav = document.querySelector('.nav-item[data-page="'+id+'"]');
+  if(nav) nav.classList.add('active');
+  document.getElementById('main-content').scrollTop = 0;
+  if(id==='conditions') loadConditions();
+  if(id==='home') loadHomeConditionsPreview();
+}
+
+// ── SPECIES ──
+function renderSpeciesGrid(){
+  const grid = document.getElementById('species-grid');
+  if(!grid) return;
+  const filter = document.querySelector('.pill[data-filter].active')?.dataset.filter||'all';
+  const filtered = filter==='all'?SPECIES:SPECIES.filter(s=>s.type===filter);
+  grid.innerHTML = filtered.map(sp=>`
+    <div class="species-card ${sp.type}" onclick="showSpeciesOverlay('${sp.id}')">
+      <span class="species-icon">${sp.icon}</span>
+      <div class="species-name">${sp.name[currentLang]||sp.name.fr}</div>
+      <div class="species-local">${sp.local[currentLang]||sp.local.fr}</div>
+      <div class="species-sci">${sp.sci}</div>
+      <div style="margin-top:6px">
+        <span class="tag ${sp.type==='saltwater'?'tag-teal':'tag-gold'}">${sp.type==='saltwater'?t('filter_salt'):t('filter_fresh')}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+document.addEventListener('click',function(e){
+  const pill = e.target.closest('.pill[data-filter]');
+  if(pill){
+    document.querySelectorAll('.pill[data-filter]').forEach(p=>p.classList.remove('active'));
+    pill.classList.add('active');
+    renderSpeciesGrid();
+  }
+  const regionPill = e.target.closest('.pill[data-region]');
+  if(regionPill){
+    document.querySelectorAll('.pill[data-region]').forEach(p=>p.classList.remove('active'));
+    regionPill.classList.add('active');
+    renderSpots();
+  }
+  const rigHeader = e.target.closest('.rig-header');
+  if(rigHeader){
+    const body = rigHeader.nextElementSibling;
+    const chevron = rigHeader.querySelector('.rig-chevron');
+    const isOpen = body.classList.contains('open');
+    document.querySelectorAll('.rig-body.open').forEach(b=>b.classList.remove('open'));
+    document.querySelectorAll('.rig-chevron').forEach(c=>c.textContent='▶');
+    if(!isOpen){body.classList.add('open');if(chevron)chevron.textContent='▼';}
+  }
+  const knotHeader = e.target.closest('.knot-header');
+  if(knotHeader){
+    const body = knotHeader.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    document.querySelectorAll('.knot-body.open').forEach(b=>b.classList.remove('open'));
+    if(!isOpen) body.classList.add('open');
+  }
+});
+
+function showSpeciesOverlay(id){
+  const sp = SPECIES.find(s=>s.id===id);
+  if(!sp) return;
+  const overlay = document.getElementById('species-overlay');
+  const nameEl = document.getElementById('overlay-species-name');
+  const bodyEl = document.getElementById('overlay-body');
+  if(nameEl) nameEl.textContent = sp.name[currentLang]||sp.name.fr;
+
+  const months=['J','F','M','A','M','J','J','A','S','O','N','D'];
+  const seasonBar = sp.months?`
+    <div class="overlay-section">
+      <div class="overlay-section-title">${t('overlay_season')}</div>
+      <div class="season-bar">
+        ${sp.months.map((v,i)=>`<div class="month-cell ${v===2?'peak':v===1?'good':'poor'}" title="${months[i]}"></div>`).join('')}
+      </div>
+      <div class="season-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Pic</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>Bon</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--surface2)"></div>Faible</div>
+      </div>
+    </div>`:''
+
+  const L = currentLang;
+  const getField = (obj)=> typeof obj==='object'?(obj[L]||obj.fr||obj.en||'—'):obj||'—';
+
+  bodyEl.innerHTML = `
+    <div class="overlay-section">
+      <div class="overlay-section-title">Info</div>
+      <div class="detail-row"><span class="detail-label">${t('overlay_type')}</span><span class="detail-value">${sp.type==='saltwater'?t('filter_salt'):t('filter_fresh')}</span></div>
+      <div class="detail-row"><span class="detail-label">Sci.</span><span class="detail-value" style="font-style:italic">${sp.sci}</span></div>
+      <div class="detail-row"><span class="detail-label">${t('overlay_habitat')}</span><span class="detail-value">${getField(sp.habitat)}</span></div>
+    </div>
+    ${seasonBar}
+    <div class="overlay-section">
+      <div class="overlay-section-title">${t('overlay_bait')} &amp; ${t('overlay_rig')}</div>
+      <div class="detail-row"><span class="detail-label">${t('overlay_bait')}</span><span class="detail-value">${getField(sp.bait)}</span></div>
+      <div class="detail-row"><span class="detail-label">${t('overlay_rig')}</span><span class="detail-value">${getField(sp.rig)}</span></div>
+    </div>
+    <div class="overlay-section">
+      <div class="overlay-section-title">${t('overlay_legal_size')} &amp; ${t('overlay_limit')}</div>
+      <div class="detail-row"><span class="detail-label">${t('overlay_legal_size')}</span><span class="detail-value" style="color:var(--teal)">${getField(sp.legal_size)||sp.min_size||'—'}</span></div>
+      <div class="detail-row"><span class="detail-label">${t('overlay_limit')}</span><span class="detail-value">${getField(sp.limit)}</span></div>
+    </div>
+    ${sp.notes?`<div class="overlay-section">
+      <div class="overlay-section-title">${t('overlay_notes')}</div>
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.6">${getField(sp.notes)}</p>
+    </div>`:''}
+  `;
+  overlay.style.display='flex';
+  requestAnimationFrame(()=>overlay.classList.add('open'));
+}
+
+function showSpeciesById(id){ showSpeciesOverlay(id); showPage('species'); }
+
+function closeOverlay(){
+  const overlay = document.getElementById('species-overlay');
+  overlay.classList.remove('open');
+  setTimeout(()=>overlay.style.display='none',280);
+}
+
+// ── SPOTS ──
+function renderSpots(userLat, userLng){
+  const list = document.getElementById('spots-list');
+  if(!list) return;
+  const region = document.querySelector('.pill[data-region].active')?.dataset.region||'all';
+  let spots = region==='all'?[...SPOTS]:SPOTS.filter(s=>s.region===region);
+
+  if(userLat!=null){
+    spots = spots.map(s=>({...s,dist:haversine(userLat,userLng,s.lat,s.lng)}));
+    spots.sort((a,b)=>a.dist-b.dist);
+  }
+
+  const L = currentLang;
+  list.innerHTML = spots.map(sp=>`
+    <div class="spot-card">
+      <div class="spot-header">
+        <div>
+          <div class="spot-name">${sp.name[L]||sp.name.fr}</div>
+          <div class="spot-region-tag">${sp.region.replace('-',' ')}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          ${sp.dist!=null?`<span class="spot-distance">📍 ${sp.dist<1?(sp.dist*1000).toFixed(0)+'m':sp.dist.toFixed(1)+'km'}</span>`:''}
+          <a href="https://maps.google.com/?q=${sp.lat},${sp.lng}" target="_blank" style="font-size:10px;color:var(--teal);font-family:var(--font-mono);text-decoration:none">GPS →</a>
+        </div>
+      </div>
+      <div class="spot-species">${sp.species[L]||sp.species.fr||sp.species.en||''}</div>
+      <div class="spot-meta">
+        <span class="tag ${sp.type==='offshore'?'tag-crimson':sp.type==='reservoir'||sp.type==='river'?'tag-gold':'tag-teal'}">${sp.type}</span>
+        ${sp.tags.map(t=>`<span class="tag tag-dim">${t}</span>`).join('')}
+      </div>
+      ${sp.access?`<div style="font-size:11px;color:var(--text-dim);margin-top:8px;font-family:var(--font-mono)">${sp.access[L]||sp.access.fr||sp.access.en||''}</div>`:''}
+      ${sp.permit?`<div class="permit-warning">⚠️ ${t('permit_inland')} — <a href="https://www.eauxetforets.gov.ma" target="_blank" style="color:var(--crimson)">eauxetforets.gov.ma</a></div>`:''}
+    </div>
+  `).join('')||'<div class="loading">—</div>';
+}
+
+function haversine(lat1,lng1,lat2,lng2){
+  const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function findNearMe(){
+  const btn = document.getElementById('near-me-btn');
+  if(!navigator.geolocation){btn.innerHTML='<span>📍</span><span>Géolocalisation non supportée</span>';return;}
+  btn.innerHTML='<span>⏳</span><span>Localisation...</span>';
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      renderSpots(pos.coords.latitude,pos.coords.longitude);
+      btn.innerHTML='<span>📍</span><span>'+t('near_me_text')+'</span>';
+    },
+    ()=>{btn.innerHTML='<span>📍</span><span>Accès refusé</span>';}
+  );
+}
+
+// ── REGULATIONS ──
+function renderRegs(){
+  const list = document.getElementById('regs-list');
+  if(!list) return;
+  const L = currentLang;
+  list.innerHTML = REGS.map(r=>`
+    <div class="reg-card">
+      <div class="reg-species">${r.species[L]||r.species.fr}</div>
+      <div class="reg-row"><span class="reg-key">${t('overlay_legal_size')}</span><span class="${r.warn?'reg-warning':'reg-ok'}">${r.min_size}</span></div>
+      <div class="reg-row"><span class="reg-key">${t('overlay_limit')}</span><span class="reg-val">${r.bag[L]||r.bag.fr}</span></div>
+      <div class="reg-row"><span class="reg-key">${t('overlay_season')}</span><span class="reg-val">${r.season[L]||r.season.fr}</span></div>
+      <div class="reg-row"><span class="reg-key">Autorité</span><span class="reg-val ${r.warn?'reg-warning':''}">${r.authority}</span></div>
+    </div>
+  `).join('');
+}
+
+// ── RIGS ──
+function renderRigs(){
+  const list = document.getElementById('rigs-list');
+  if(!list) return;
+  const L = currentLang;
+  list.innerHTML = RIGS.map(r=>`
+    <div class="rig-card">
+      <div class="rig-header">
+        <div>
+          <div class="rig-title">${r.name[L]||r.name.fr}</div>
+          <div class="rig-subtitle">${r.target[L]||r.target.fr}</div>
+        </div>
+        <span class="rig-chevron">▶</span>
+      </div>
+      <div class="rig-body">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">${r.desc[L]||r.desc.fr}</p>
+        ${r.svg}
+        <ol class="rig-steps">
+          ${(r.steps[L]||r.steps.fr||r.steps.en||[]).map(s=>`<li>${s}</li>`).join('')}
+        </ol>
+        <a href="https://www.decathlon.ma/Sport/Peche" target="_blank" class="affiliate-link">🛒 ${t('buy_gear')}</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── KNOTS ──
+function renderKnots(){
+  const list = document.getElementById('knots-list');
+  if(!list) return;
+  const L = currentLang;
+  list.innerHTML = KNOTS.map(k=>`
+    <div class="knot-card">
+      <div class="knot-header">
+        <div>
+          <div class="knot-title">${k.name}</div>
+          <div class="knot-use">${k.use[L]||k.use.fr} · ${k.strength[L]||k.strength.fr}</div>
+        </div>
+        <span style="color:var(--text-dim);font-size:12px">▶</span>
+      </div>
+      <div class="knot-body">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">${k.desc[L]||k.desc.fr}</p>
+        ${k.svg}
+        <ol class="knot-steps">
+          ${(k.steps[L]||k.steps.fr||k.steps.en||[]).map(s=>`<li>${s}</li>`).join('')}
+        </ol>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── TIPS ──
+function renderTips(){
+  const list = document.getElementById('tips-list');
+  if(!list) return;
+  const L = currentLang;
+  list.innerHTML = TIPS.map(tip=>`
+    <div class="tip-card">
+      <div class="tip-category">${tip.cat[L]||tip.cat.fr}</div>
+      <div class="tip-body">${tip.body[L]||tip.body.fr}</div>
+    </div>
+  `).join('');
+}
+
+// ── SEASONAL CALENDAR ──
+function renderSeasonalCal(){
+  const el = document.getElementById('seasonal-cal');
+  if(!el) return;
+  const L = currentLang;
+  const months=['J','F','M','A','M','J','J','A','S','O','N','D'];
+  const featured = SPECIES.filter(s=>[
+    'daurade','loup','maquereau','thon','seiche','carpe','truite','barbeau','espadon'
+  ].includes(s.id));
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:80px repeat(12,1fr);gap:2px;padding:0 16px 12px;overflow-x:auto">
+      <div></div>
+      ${months.map(m=>`<div style="text-align:center;font-size:9px;font-family:var(--font-mono);color:var(--text-dim);padding:4px 0">${m}</div>`).join('')}
+      ${featured.map(sp=>`
+        <div style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);padding:2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sp.name[L]||sp.name.fr}</div>
+        ${(sp.months||[0,0,0,0,0,0,0,0,0,0,0,0]).map(v=>`
+          <div style="height:12px;border-radius:2px;background:${v===2?'var(--gold)':v===1?'var(--teal)':'var(--surface2)'};margin:2px 1px"></div>
+        `).join('')}
+      `).join('')}
+    </div>
+  `;
+}
+
+// ── TRIP LOG ──
+function getTrips(){
+  try{return JSON.parse(localStorage.getItem('iselman_trips')||'[]')}catch{return[]}
+}
+function saveTrips(trips){
+  try{localStorage.setItem('iselman_trips',JSON.stringify(trips))}catch{}
+}
+function populateSpeciesSelect(){
+  const sel = document.getElementById('tl-species');
+  if(!sel) return;
+  sel.innerHTML = `<option value="">— ${currentLang==='ar'?'اختر':'Sélectionner'} —</option>`
+    + SPECIES.map(s=>`<option value="${s.id}">${s.name[currentLang]||s.name.fr}</option>`).join('');
+}
+function saveTrip(){
+  const date = document.getElementById('tl-date').value;
+  const spot = document.getElementById('tl-spot').value;
+  const speciesId = document.getElementById('tl-species').value;
+  const count = document.getElementById('tl-count').value;
+  const size = document.getElementById('tl-size').value;
+  const rig = document.getElementById('tl-rig').value;
+  const notes = document.getElementById('tl-notes').value;
+  if(!date||!spot) return;
+  const sp = SPECIES.find(s=>s.id===speciesId);
+  const trips = getTrips();
+  trips.unshift({id:Date.now(),date,spot,speciesId,speciesName:sp?sp.name.fr:'—',count:count||0,size:size||0,rig,notes});
+  saveTrips(trips);
+  document.getElementById('tl-date').value='';
+  document.getElementById('tl-spot').value='';
+  document.getElementById('tl-species').value='';
+  document.getElementById('tl-count').value='';
+  document.getElementById('tl-size').value='';
+  document.getElementById('tl-rig').value='';
+  document.getElementById('tl-notes').value='';
+  renderTripHistory();
+}
+function deleteTrip(id){
+  const trips = getTrips().filter(t=>t.id!==id);
+  saveTrips(trips);
+  renderTripHistory();
+}
+function renderTripHistory(){
+  const el = document.getElementById('trip-entries');
+  if(!el) return;
+  const trips = getTrips();
+  if(!trips.length){el.innerHTML=`<p style="font-size:12px;color:var(--text-dim);font-family:var(--font-mono);padding:8px 0">${t('no_trips')}</p>`;return;}
+  el.innerHTML = trips.map(tr=>`
+    <div class="trip-entry">
+      <div class="trip-entry-header">
+        <div>
+          <div class="trip-entry-species">${tr.speciesName}${tr.count>0?' × '+tr.count:''}</div>
+          <div class="trip-entry-date">${tr.date} · ${tr.spot}</div>
+        </div>
+        <button class="trip-entry-delete" onclick="deleteTrip(${tr.id})">${t('delete')}</button>
+      </div>
+      <div class="trip-entry-details">
+        ${tr.size>0?tr.size+'cm · ':''}${tr.rig?tr.rig+' · ':''}${tr.notes||''}
+      </div>
+    </div>
+  `).join('');
+}
+function exportTrips(){
+  const trips = getTrips();
+  if(!trips.length) return;
+  const header = 'Date,Spot,Espèce,Nombre,Taille(cm),Montage,Notes';
+  const rows = trips.map(t=>[t.date,t.spot,t.speciesName,t.count,t.size,t.rig,t.notes||''].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv = [header,...rows].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download = 'iselman_journal.csv';
+  a.click();
+}
+
+// ── WEATHER & CONDITIONS ──
+const TIDE_STATIONS = {
+  tanger:{lat:35.78,lng:-5.81,name:'Tanger'},
+  casablanca:{lat:33.60,lng:-7.62,name:'Casablanca'},
+  agadir:{lat:30.41,lng:-9.59,name:'Agadir'},
+  dakhla:{lat:23.69,lng:-15.93,name:'Dakhla'},
+  nador:{lat:35.17,lng:-2.94,name:'Nador'}
+};
+
+let conditionsData = null;
+
+async function loadConditions(){
+  const station = document.getElementById('tide-station-select');
+  const stationKey = station ? station.value : 'casablanca';
+  const loc = TIDE_STATIONS[stationKey]||TIDE_STATIONS.casablanca;
+
+  const forecastStrip = document.getElementById('forecast-strip');
+  const condGrid = document.getElementById('conditions-grid');
+  if(forecastStrip) forecastStrip.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+  if(condGrid) condGrid.innerHTML = '<div class="loading" style="grid-column:1/-1"><div class="loading-spinner"></div></div>';
+
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,winddirection_10m,weathercode,surface_pressure,precipitation&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max,precipitation_sum&wind_speed_unit=kmh&timezone=Africa%2FCasablanca&forecast_days=7`;
+    const res = await fetch(url);
+    const data = await res.json();
+    conditionsData = data;
+    renderForecastStrip(data);
+    renderLiveConditions(data);
+    renderBiteScience(data);
+    loadTides();
+  } catch(e){
+    if(forecastStrip) forecastStrip.innerHTML = `<div class="error-msg">${t('loading')} — erreur réseau</div>`;
+  }
+}
+
+function getWeatherIcon(code){
+  if(code===0) return '☀️';
+  if(code<=2) return '⛅';
+  if(code<=3) return '☁️';
+  if(code<=48) return '🌫️';
+  if(code<=57) return '🌧️';
+  if(code<=67) return '🌧️';
+  if(code<=77) return '❄️';
+  if(code<=82) return '🌦️';
+  if(code<=86) return '🌨️';
+  if(code<=99) return '⛈️';
+  return '🌡️';
+}
+
+function renderForecastStrip(data){
+  const strip = document.getElementById('forecast-strip');
+  if(!strip||!data.daily) return;
+  const days = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  const today = new Date();
+  strip.innerHTML = data.daily.time.map((dateStr,i)=>{
+    const d = new Date(dateStr);
+    const name = i===0?(currentLang==='ar'?'اليوم':'Auj.'):days[d.getDay()];
+    const icon = getWeatherIcon(data.daily.weathercode[i]);
+    const tmax = Math.round(data.daily.temperature_2m_max[i]);
+    const wind = Math.round(data.daily.windspeed_10m_max[i]);
+    return `<div class="forecast-day ${i===0?'today':''}">
+      <div class="fday-name">${name}</div>
+      <div class="fday-icon">${icon}</div>
+      <div class="fday-temp">${tmax}°</div>
+      <div class="fday-wind">${wind}km/h</div>
+    </div>`;
+  }).join('');
+}
+
+function renderLiveConditions(data){
+  const grid = document.getElementById('conditions-grid');
+  if(!grid||!data.hourly) return;
+  const now = new Date();
+  const hourIdx = Math.min(data.hourly.time.findIndex(t=>new Date(t)>=now),data.hourly.temperature_2m.length-1)||0;
+  const temp = data.hourly.temperature_2m[hourIdx];
+  const wind = data.hourly.windspeed_10m[hourIdx];
+  const pressure = data.hourly.surface_pressure[hourIdx];
+  const code = data.hourly.weathercode[hourIdx];
+  const score = calcBiteScore(temp,wind,pressure);
+  const scoreLabel = score>=75?t('bite_excellent'):score>=50?t('bite_good'):score>=30?t('bite_fair'):t('bite_poor');
+
+  grid.innerHTML = `
+    <div class="cond-card">
+      <div class="cond-value">${Math.round(temp)}<span class="cond-unit">°C</span></div>
+      <div class="cond-label">${t('sci_temp_label')}</div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-value">${Math.round(wind)}<span class="cond-unit">km/h</span></div>
+      <div class="cond-label">${t('sci_wind_label')}</div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-value">${Math.round(pressure)}<span class="cond-unit">hPa</span></div>
+      <div class="cond-label">${t('sci_pressure_label')}</div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-value">${getWeatherIcon(code)}</div>
+      <div class="cond-label">Ciel</div>
+    </div>
+    <div class="bite-score">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <span class="section-title" style="margin:0;font-size:12px">${t('bite_score_label')}</span>
+        <span style="font-family:var(--font-display);font-size:24px;color:var(--gold)">${score}/100</span>
+      </div>
+      <div class="bite-bar"><div class="bite-fill" style="width:${score}%"></div></div>
+      <p style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);margin-top:4px">${scoreLabel}</p>
+    </div>
+  `;
+}
+
+function renderBiteScience(data){
+  if(!data||!data.hourly) return;
+  const now = new Date();
+  const hourIdx = Math.min(data.hourly.time.findIndex(t=>new Date(t)>=now),data.hourly.temperature_2m.length-1)||0;
+  const temp = data.hourly.temperature_2m[hourIdx];
+  const wind = data.hourly.windspeed_10m[hourIdx];
+  const pressure = data.hourly.surface_pressure[hourIdx];
+  const moon = getMoonPhase();
+
+  const setVal = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  setVal('sci-pressure-val', Math.round(pressure)+' hPa');
+  setVal('sci-wind-val', Math.round(wind)+' km/h');
+  setVal('sci-temp-val', Math.round(temp-3)+'–'+Math.round(temp+2)+'°C (estimée)');
+  setVal('sci-moon-val', moon.label);
+  setVal('sci-time-val', t('best_time'));
+
+  const score = calcBiteScore(temp,wind,pressure);
+  const fill = document.getElementById('bite-fill');
+  const val = document.getElementById('bite-score-val');
+  const advice = document.getElementById('bite-advice');
+  if(fill) fill.style.width = score+'%';
+  if(val) val.textContent = score+'/100';
+  if(advice) advice.textContent = score>=75?t('bite_excellent'):score>=50?t('bite_good'):score>=30?t('bite_fair'):t('bite_poor');
+}
+
+function calcBiteScore(temp,wind,pressure){
+  let score = 50;
+  // Temperature (optimal 16–22°C for Atlantic species)
+  if(temp>=16&&temp<=22) score+=20;
+  else if(temp>=12&&temp<=26) score+=10;
+  else if(temp<8||temp>30) score-=20;
+  // Wind (optimal <20km/h)
+  if(wind<15) score+=15;
+  else if(wind<25) score+=5;
+  else if(wind>40) score-=20;
+  else if(wind>30) score-=10;
+  // Pressure (stable/rising better)
+  if(pressure>=1015&&pressure<=1025) score+=15;
+  else if(pressure<1000) score-=15;
+  return Math.max(0,Math.min(100,Math.round(score)));
+}
+
+function getMoonPhase(){
+  const now = new Date();
+  const lp = 29.53058867;
+  const known = new Date('2000-01-06');
+  const diff = (now-known)/(1000*60*60*24);
+  const phase = ((diff % lp)+lp)%lp;
+  const labels = [t('moon_new'),t('moon_waxing'),t('moon_full'),t('moon_waning')];
+  if(phase<3.7) return {phase,label:labels[0]+'🌑'};
+  if(phase<11) return {phase,label:labels[1]+'🌒'};
+  if(phase<18.4) return {phase,label:labels[2]+'🌕'};
+  return {phase,label:labels[3]+'🌘'};
+}
+
+async function loadTides(){
+  const stationKey = document.getElementById('tide-station-select')?.value||'casablanca';
+  const loc = TIDE_STATIONS[stationKey];
+  const el = document.getElementById('tide-content');
+  if(!el) return;
+  el.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+
+  // Generate synthetic tidal data based on location (SHOM/Worldtides not free without key)
+  // Realistic semi-diurnal pattern for Atlantic Morocco; Nador uses smaller Mediterranean range
+  const isMed = stationKey==='nador';
+  const range = isMed?0.6:3.2; // metres
+  const period = 12.42; // hours (semi-diurnal)
+  const now = new Date();
+  const rows = [];
+  for(let i=0;i<14;i++){
+    const t = new Date(now.getTime()+i*3*60*60*1000);
+    const h = (now.getHours()*60+now.getMinutes())/60;
+    const phase = ((h+i*3)/period)*2*Math.PI;
+    const height = (range/2)*Math.sin(phase)+range/2;
+    const isHigh = Math.sin(phase)>0.7;
+    rows.push({time:t,height:height.toFixed(2),isHigh});
+  }
+  const timeStr = (d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  el.innerHTML = `
+    <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">
+      ${loc.name} — ${isMed?'Méditerranée (faible marnage)':'Atlantique (grand marnage)'}
+    </p>
+    <table class="tide-table">
+      <thead><tr><th>Heure</th><th>Hauteur</th><th>Type</th></tr></thead>
+      <tbody>
+        ${rows.filter((_,i)=>i%2===0).map(r=>`
+          <tr>
+            <td>${timeStr(r.time)}</td>
+            <td class="${r.isHigh?'tide-high':'tide-low'}">${r.height}m</td>
+            <td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">
+      Données indicatives. Pour données officielles: <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM →</a>
+    </p>
+  `;
+}
+
+async function loadHomeConditionsPreview(){
+  const el = document.getElementById('home-conditions-preview');
+  if(!el) return;
+  const loc = TIDE_STATIONS.casablanca;
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,surface_pressure&wind_speed_unit=kmh&timezone=Africa%2FCasablanca&forecast_days=1`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const now = new Date();
+    const idx = Math.min(data.hourly.time.findIndex(t=>new Date(t)>=now),23)||0;
+    const temp = Math.round(data.hourly.temperature_2m[idx]);
+    const wind = Math.round(data.hourly.windspeed_10m[idx]);
+    const pressure = data.hourly.surface_pressure[idx];
+    const score = calcBiteScore(temp,wind,pressure);
+    el.innerHTML = `
+      <div class="conditions-grid" style="padding:0">
+        <div class="cond-card"><div class="cond-value">${temp}<span class="cond-unit">°C</span></div><div class="cond-label">Air</div></div>
+        <div class="cond-card"><div class="cond-value">${wind}<span class="cond-unit">km/h</span></div><div class="cond-label">${t('sci_wind_label')}</div></div>
+        <div class="bite-score" style="margin-top:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim)">${t('bite_score_label')}</span>
+            <span style="font-family:var(--font-display);font-size:22px;color:var(--gold)">${score}/100</span>
+          </div>
+          <div class="bite-bar"><div class="bite-fill" style="width:${score}%"></div></div>
+        </div>
+      </div>
+    `;
+  } catch(e){
+    el.innerHTML = `<p style="font-size:12px;font-family:var(--font-mono);color:var(--text-dim);padding:8px 0">Hors ligne — ouvrez l'onglet Météo</p>`;
+  }
+}
+
+// ── NEWSLETTER ──
+function subscribeNewsletter(){
+  const email = document.getElementById('newsletter-email').value;
+  if(!email||!email.includes('@')) return;
+  document.getElementById('newsletter-email').value='';
+  const btn = document.getElementById('newsletter-submit');
+  if(btn){btn.textContent='✓';btn.style.background='var(--teal)';setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',function(){
+  // Set today's date in trip log
+  const dateInput = document.getElementById('tl-date');
+  if(dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+
+  // Language buttons
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>setLang(btn.dataset.lang));
+  });
+
+  // Initial render
+  renderSpeciesGrid();
+  renderSpots();
+  renderRegs();
+  renderRigs();
+  renderKnots();
+  renderTips();
+  renderTripHistory();
+  renderSeasonalCal();
+  populateSpeciesSelect();
+  loadHomeConditionsPreview();
+
+  // Service worker
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/sw.js').catch(()=>{});
+  }
+});
+</script>
+</div><!-- end #app -->
+</body>
+</html>
