@@ -12,6 +12,7 @@
 <meta name="description" content="Iselman ⵉⵙⴻⵍⵎⴰⵏ — Guide de pêche du Maroc. Atlantique, Méditerranée, eaux douces.">
 <title>Iselman ⵉⵙⴻⵍⵎⴰⵏ · Guide Pêche Maroc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tifinagh&display=block">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Noto+Sans+Tifinagh&display=swap" rel="stylesheet">
 <style>
@@ -2437,43 +2438,69 @@ async function loadTides(){
   const el = document.getElementById('tide-content');
   if(!el) return;
   el.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-
-  // Generate synthetic tidal data based on location (SHOM/Worldtides not free without key)
-  // Realistic semi-diurnal pattern for Atlantic Morocco; Nador uses smaller Mediterranean range
   const isMed = stationKey==='nador';
-  const range = isMed?0.6:3.2; // metres
-  const period = 12.42; // hours (semi-diurnal)
-  const now = new Date();
-  const rows = [];
-  for(let i=0;i<14;i++){
-    const t = new Date(now.getTime()+i*3*60*60*1000);
-    const h = (now.getHours()*60+now.getMinutes())/60;
-    const phase = ((h+i*3)/period)*2*Math.PI;
-    const height = (range/2)*Math.sin(phase)+range/2;
-    const isHigh = Math.sin(phase)>0.7;
-    rows.push({time:t,height:height.toFixed(2),isHigh});
+  try{
+    // Open-Meteo Marine API — free, no key, real tidal/wave data
+    const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${loc.lat}&longitude=${loc.lng}&hourly=sea_level_height_msl,ocean_current_velocity&timezone=Africa%2FCasablanca&forecast_days=2`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const now = new Date();
+    const times = data.hourly.time;
+    const heights = data.hourly.sea_level_height_msl;
+    // Find upcoming tide extremes (peaks and troughs) over next 24h
+    const nowIdx = times.findIndex(t=>new Date(t)>=now)||0;
+    const slice = times.slice(nowIdx, nowIdx+24).map((t,i)=>({
+      time: new Date(t),
+      h: heights[nowIdx+i]
+    })).filter(r=>r.h!=null);
+    // Detect local maxima/minima
+    const extremes = [];
+    for(let i=1;i<slice.length-1;i++){
+      const prev=slice[i-1].h, cur=slice[i].h, next=slice[i+1].h;
+      if(cur>prev&&cur>next) extremes.push({...slice[i],isHigh:true});
+      else if(cur<prev&&cur<next) extremes.push({...slice[i],isHigh:false});
+    }
+    // Show next 6 extremes or hourly if no extremes found
+    const rows = extremes.length>=2 ? extremes.slice(0,6) : slice.filter((_,i)=>i%3===0).slice(0,8).map(r=>({...r,isHigh:r.h>1.0}));
+    const timeStr = (d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    el.innerHTML = `
+      <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">
+        ${loc.name} — ${isMed?'Méditerranée (faible marnage)':'Atlantique (grand marnage)'}
+      </p>
+      <table class="tide-table">
+        <thead><tr><th>Heure</th><th>Hauteur</th><th>Type</th></tr></thead>
+        <tbody>
+          ${rows.map(r=>`
+            <tr>
+              <td>${timeStr(r.time)}</td>
+              <td class="${r.isHigh?'tide-high':'tide-low'}">${r.h!=null?r.h.toFixed(2):'—'}m</td>
+              <td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">
+        Source: Open-Meteo Marine · <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM officiel →</a>
+      </p>
+    `;
+  } catch(e){
+    // Fallback to semi-diurnal model if API fails
+    const isMed=stationKey==='nador', range=isMed?0.5:3.2, period=12.42;
+    const now=new Date(); const rows=[];
+    for(let i=0;i<8;i++){
+      const t=new Date(now.getTime()+(i*3+1)*3600000);
+      const phase=((now.getHours()+i*3)/period)*2*Math.PI;
+      const h=((range/2)*Math.sin(phase)+range/2);
+      rows.push({time:t,h:h.toFixed(2),isHigh:Math.sin(phase)>0.5});
+    }
+    const timeStr=(d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    el.innerHTML=`
+      <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">${loc.name} — estimations</p>
+      <table class="tide-table"><thead><tr><th>Heure</th><th>Hauteur</th><th>Type</th></tr></thead><tbody>
+        ${rows.map(r=>`<tr><td>${timeStr(r.time)}</td><td class="${r.isHigh?'tide-high':'tide-low'}">${r.h}m</td><td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td></tr>`).join('')}
+      </tbody></table>
+      <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">Hors ligne — données estimées</p>`;
   }
-  const timeStr = (d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  el.innerHTML = `
-    <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">
-      ${loc.name} — ${isMed?'Méditerranée (faible marnage)':'Atlantique (grand marnage)'}
-    </p>
-    <table class="tide-table">
-      <thead><tr><th>Heure</th><th>Hauteur</th><th>Type</th></tr></thead>
-      <tbody>
-        ${rows.filter((_,i)=>i%2===0).map(r=>`
-          <tr>
-            <td>${timeStr(r.time)}</td>
-            <td class="${r.isHigh?'tide-high':'tide-low'}">${r.height}m</td>
-            <td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-    <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">
-      Données indicatives. Pour données officielles: <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM →</a>
-    </p>
-  `;
 }
 
 async function loadHomeConditionsPreview(){
