@@ -574,7 +574,10 @@ body{
   background:var(--gold);border-radius:4px;
   color:#0c0d0b;font-size:11px;font-weight:700;
   text-decoration:none;font-family:var(--font-mono);
+  cursor:pointer;transition:opacity 0.15s;
 }
+.guide-contact.disabled{background:var(--surface2);color:var(--text-dim);cursor:default;pointer-events:none;opacity:0.7}
+.guide-coming-soon{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.04em;margin-left:6px;vertical-align:middle}
 
 /* ── LICENSE BLOCK ── */
 .license-block{
@@ -692,13 +695,17 @@ body{
     <div class="guides-band">
       <div class="guides-band-header">
         <div class="guides-band-title" id="guides-title">GUIDES &amp; CHARTERS</div>
+        <button class="near-me-btn" id="guides-near-me-btn" onclick="findNearbyGuides()" style="margin:8px 0 4px;font-size:11px;padding:7px 12px">
+          <span>📍</span><span id="guides-near-me-text">Guides près de moi</span>
+        </button>
       </div>
+      <div id="guides-location-note" style="display:none;font-family:var(--font-mono);font-size:10px;color:var(--teal);padding:0 0 8px;letter-spacing:0.06em"></div>
       <div class="guide-listing">
         <div class="guide-badge">🚤</div>
         <div class="guide-info">
           <div class="guide-name">Dakhla Surf Fishing</div>
           <div class="guide-region" id="guide1-region">Sahara Atlantique — Surf &amp; Bateau</div>
-          <a href="mailto:guides@iselman.ma" class="guide-contact" id="guide-contact-btn" target="_blank">Contact</a>
+          <span class="guide-contact disabled" id="guide-contact-btn">Contact</span><span class="guide-coming-soon" id="guide-coming-soon-1">— Bientôt disponible</span>
         </div>
       </div>
       <div class="guide-listing">
@@ -706,15 +713,15 @@ body{
         <div class="guide-info">
           <div class="guide-name">Atlas Trout Guides</div>
           <div class="guide-region" id="guide2-region">Moyen Atlas — Truite &amp; Barbeau</div>
-          <a href="mailto:guides@iselman.ma" class="guide-contact" id="guide-contact-btn2" target="_blank">Contact</a>
+          <span class="guide-contact disabled" id="guide-contact-btn2">Contact</span><span class="guide-coming-soon" id="guide-coming-soon-2">— Bientôt disponible</span>
         </div>
       </div>
       <div class="guide-listing" style="border-bottom:none">
         <div class="guide-badge">⚡</div>
         <div class="guide-info">
           <div class="guide-name" id="list-your-boat">Listez votre bateau</div>
-          <div class="guide-region" id="list-your-boat-sub">Votre charter ici — guides@iselman.ma</div>
-          <a href="https://iselman.safjob.com" class="guide-contact" id="list-btn" target="_blank">Nous écrire</a>
+          <div class="guide-region" id="list-your-boat-sub">Votre charter ici — yassir@safjob.com</div>
+          <a href="mailto:yassir@safjob.com" class="guide-contact" id="list-btn" target="_blank">Nous écrire</a>
         </div>
       </div>
     </div>
@@ -990,7 +997,7 @@ const I18N = {
     hero_tagline:'Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces',
     big5_title:'LES 5 DU MOMENT',home_conditions_title:'CONDITIONS LIVE',
     seasonal_title:'CALENDRIER SAISONNIER',
-    city_placeholder:'— Choisir une ville —',
+    city_placeholder:'— Choisir une ville —',coming_soon:'— Bientôt disponible',tide_atl_label:'Atlantique (grand marnage)',tide_med_label:'Méditerranée (faible marnage)',
     newsletter_title:'LE RAPPORT DE TERRAIN',newsletter_sub:'Conditions, espèces, spots — un email par mois. Aucune pub.',
     newsletter_btn:'S\'inscrire',newsletter_placeholder:'votre@email.com',
     guides_title:'GUIDES & CHARTERS',guide1_region:'Sahara Atlantique — Surf & Bateau',
@@ -1047,12 +1054,12 @@ const I18N = {
     hero_tagline:'Morocco Fishing Guide — Atlantic · Mediterranean · Freshwater',
     big5_title:'BIG 5 RIGHT NOW',home_conditions_title:'LIVE CONDITIONS',
     seasonal_title:'SEASONAL CALENDAR',
-    city_placeholder:'— Choose a city —',
+    city_placeholder:'— Choose a city —',coming_soon:'— Coming soon',tide_atl_label:'Atlantic (macrotidal)',tide_med_label:'Mediterranean (microtidal)',
     newsletter_title:'THE FIELD REPORT',newsletter_sub:'Conditions, species, spots — one email a month. No ads.',
     newsletter_btn:'Subscribe',newsletter_placeholder:'your@email.com',
     guides_title:'GUIDES & CHARTERS',guide1_region:'Atlantic Sahara — Surf & Boat',
     guide2_region:'Middle Atlas — Trout & Barbel',list_your_boat:'List your boat',
-    list_your_boat_sub:'Your charter here — guides@iselman.ma',guide_contact:'Contact',list_btn:'Get in touch',
+    list_your_boat_sub:'Your charter here — yassir@safjob.com',guide_contact:'Contact',list_btn:'Get in touch',
     conditions_subtitle:'Weather, tides & bite score',forecast_title:'7-DAY FORECAST',
     live_weather_title:'LIVE WEATHER',tide_title:'TIDES',science_title:'BITE SCIENCE',
     sci_pressure_label:'Barometric pressure',sci_wind_label:'Wind',sci_temp_label:'Est. water temp',
@@ -1104,12 +1111,12 @@ const I18N = {
     hero_tagline:'Guía de pesca de Marruecos — Atlántico · Mediterráneo · Agua dulce',
     big5_title:'LOS 5 AHORA',home_conditions_title:'CONDICIONES EN VIVO',
     seasonal_title:'CALENDARIO ESTACIONAL',
-    city_placeholder:'— Elegir ciudad —',
+    city_placeholder:'— Elegir ciudad —',coming_soon:'— Próximamente',tide_atl_label:'Atlántico (gran mareal)',tide_med_label:'Mediterráneo (pequeño mareal)',
     newsletter_title:'EL INFORME DE CAMPO',newsletter_sub:'Condiciones, especies, zonas — un correo al mes. Sin publicidad.',
     newsletter_btn:'Suscribirse',newsletter_placeholder:'tu@email.com',
     guides_title:'GUÍAS & CHARTERS',guide1_region:'Sáhara Atlántico — Surf & Barco',
     guide2_region:'Atlas Medio — Trucha & Barbo',list_your_boat:'Publica tu barco',
-    list_your_boat_sub:'Tu charter aquí — guides@iselman.ma',guide_contact:'Contacto',list_btn:'Escríbenos',
+    list_your_boat_sub:'Tu charter aquí — yassir@safjob.com',guide_contact:'Contacto',list_btn:'Escríbenos',
     conditions_subtitle:'Tiempo, mareas & puntuación de mordida',forecast_title:'PREVISIÓN 7 DÍAS',
     live_weather_title:'TIEMPO EN DIRECTO',tide_title:'MAREAS',science_title:'CIENCIA DE LA MORDIDA',
     sci_pressure_label:'Presión barométrica',sci_wind_label:'Viento',sci_temp_label:'Temp. agua est.',
@@ -1161,12 +1168,12 @@ const I18N = {
     hero_tagline:'دليل الصيد في المغرب — المحيط الأطلسي · البحر الأبيض المتوسط · المياه العذبة',
     big5_title:'أفضل 5 الآن',home_conditions_title:'الأحوال الآن',
     seasonal_title:'التقويم الموسمي',
-    city_placeholder:'— اختر مدينة —',
+    city_placeholder:'— اختر مدينة —',coming_soon:'— قريباً',tide_atl_label:'الأطلسي (مد كبير)',tide_med_label:'المتوسط (مد صغير)',
     newsletter_title:'تقرير الميدان',newsletter_sub:'الأحوال والأسماك والأماكن — بريد إلكتروني واحد شهرياً. بدون إعلانات.',
     newsletter_btn:'اشتراك',newsletter_placeholder:'بريدك@الإلكتروني.com',
     guides_title:'المرشدون والتأجير',guide1_region:'الصحراء الأطلسية — صيد الشاطئ والقوارب',
     guide2_region:'الأطلس المتوسط — سمك التراوت والبربوط',list_your_boat:'أضف قاربك',
-    list_your_boat_sub:'طرتشاركك هنا — guides@iselman.ma',guide_contact:'تواصل',list_btn:'راسلنا',
+    list_your_boat_sub:'تشارترك هنا — yassir@safjob.com',guide_contact:'تواصل',list_btn:'راسلنا',
     conditions_subtitle:'الطقس والمد والجزر ومؤشر العض',forecast_title:'توقعات 7 أيام',
     live_weather_title:'الطقس المباشر',tide_title:'المد والجزر',science_title:'علم الصيد',
     sci_pressure_label:'الضغط الجوي',sci_wind_label:'الرياح',sci_temp_label:'درجة حرارة الماء (تقديرية)',
@@ -1265,6 +1272,16 @@ const I18N = {
     season_peak:'ⵜⵉⵣⵉ',season_good:'ⵉⴼⴼⵓⵍⴽⵉ',season_slow:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     overlay_info:'ⵉⵙⴰⵍⴰⵏ',bait_rig_title:'ⴰⵎⵏⴹⴰⵡ & ⵜⵓⴽⴽⵉⵡⵜ',legal_size_title:'ⵜⴰⵏⵏⵉⵢⵜ & ⵜⴰⵕⵚⵓⵏⵜ',
     page_conditions_title:'ⵜⴰⵏⵣⵣⴰⵢⵜ',page_species_title:'ⵉⵙⵍⵎⴰⵏ',
+    nav_spots_title:'ⵉⵖⵔⵎⴰⵏ',nav_regs_title:'ⵉⵙⴼⴽⴰ',nav_rigs_title:'ⵜⵓⴽⴽⵉⵡⵉⵏ',
+    nav_knots_title:'ⵉⴽⴽⴰⵛⵏ',nav_tips_title:'ⵜⵉⵙⵙⵏⵉⵡⵉⵏ',nav_triplog_title:'ⵜⴰⴼⵙⵏⴰⵢⵜ',
+    city_placeholder:'— ⵙⵜⵉ ⵜⴰⵎⴷⵉⵏⵜ —',coming_soon:'— ⴷⴷⴰⵡ ⴰⵔ ⵉⵥⵉⵍ',
+    tide_atl_label:'ⴰⵜⵍⴰⵙ (ⴰⵍⵍⵓⵙ ⴰⵎⵇⵇⵔⴰⵏ)',tide_med_label:'ⵓⵔⵉⵔ (ⴰⵍⵍⵓⵙ ⴰⵎⵣⵢⴰⵏ)',
+    newsletter_title:'ⵜⴰⵎⵍⵉⵍⵉⵜ',newsletter_sub:'ⵜⵉⵏⵉⵔⵉ ⴷ ⵉⵙⵍⵎⴰⵏ — ⵢⴰⵜ ⵜⴱⵔⴰⵜ ⵙ ⴰⵢⵢⵓⵔ',
+    newsletter_btn:'ⴽⵛⵎ',newsletter_placeholder:'email ⵏⵏⴽ',
+    guides_near_me_text:'ⵉⵎⵔⵛⴰⵏ ⵢⴰⵏⵏ',guides_region_note:'ⵜⴰⵎⵏⴰⴹⵜ:',
+    guide1_region:'ⵜⵉⵏⵉⵔⵉ ⵏ ⵓⵜⵍⴰⵙ — ⵙⵓⵔⴼ',guide2_region:'ⵓⴷⵔⴰⵔ ⵏ ⵓⵎⵎⴰ — ⵜⵔⵓⵜⵜⴰ',
+    list_your_boat:'ⵙⵎⵔⴰⵙ ⴰⵏⴰⵡ ⵏⵏⴽ',list_your_boat_sub:'ⴰⵛⴰⵔⵜⴰⵔ — yassir@safjob.com',
+    guide_contact:'ⵎⵢⴰⵡⴰⴹ',guide_list_btn:'ⴽⵛⵎ ⴰⵖ',license_title:'ⵜⵉⵔⴽⵉⵙⵉⵏ',
   }
 };
 let currentLang = 'fr';
@@ -1380,6 +1397,13 @@ function applyTranslations(){
   loadHomeConditionsPreview();
   loadTides();
   // Update tide station options
+  // Update coming soon text
+  // Update guides near me text
+  const gNearMe = document.getElementById('guides-near-me-text');
+  if(gNearMe) gNearMe.textContent = t('guides_near_me_text')||'Guides near me';
+  ['guide-coming-soon-1','guide-coming-soon-2'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.textContent=t('coming_soon')||'— Coming soon';
+  });
   // Update city placeholder text
   const cityPh = document.getElementById('city-placeholder');
   if(cityPh) cityPh.textContent = t('city_placeholder')||'— Choose a city —';
@@ -1837,7 +1861,7 @@ const REGS = [
 const RIGS = [
   {id:'surfcasting',
    name:{fr:'Surfcasting Atlantique',ar:'سيرف كاستينغ الأطلسي',es:'Surfcasting Atlántico',en:'Atlantic Surfcasting',zgh:'ⵙⵉⵔⴼ ⴽⴰⵙⵜⵉⵏⴳ'},
-   target:{fr:'Daurade, loup, sole, raie',ar:'دنيس، قاروص، موسى، شفنين',en:'Sea bream, bass, sole, ray'},
+   target:{fr:'Daurade, loup, sole, raie',ar:'دنيس، قاروص، موسى، شفنين',en:'Sea bream, bass, sole, ray',es:'Dorada, lubina, lenguado, raya',zgh:'ⴰⵎⵓⵔⵉ, ⵉⵖⵢⵓⵍ, ⵜⴰⵔⴰⵢⵜ'},
    desc:{fr:'La technique reine sur les côtes atlantiques marocaines. Plombs fuseaux 80–150g selon le courant.',ar:'التقنية الملكية على السواحل الأطلسية المغربية. رصاصات 80–150 غ.',en:'The dominant technique on Moroccan Atlantic beaches. Leads 80–150g depending on current.',es:'La técnica dominante en las playas atlánticas marroquíes. Plomos 80–150g según corriente.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet surfcasting','Bas de ligne 0.35–0.40mm nylon 1.5–2m','Plomb fuseau 80–150g selon courant','2 hameçons taille 2–4 sur potences 20cm','Appâts: ver de sable, moule, crevette','Lancer à 60–80m — attendre 15–20min'],
           en:['Braid 0.28–0.35mm on surfcasting reel','Leader 0.35–0.40mm nylon 1.5–2m','Torpedo lead 80–150g to match current','2 hooks size 2–4 on 20cm snoods','Baits: sandworm, mussel, shrimp','Cast 60–80m — wait 15–20 min'],
@@ -1856,12 +1880,12 @@ const RIGS = [
   <text x="168" y="75" fill="#8a8578" font-size="9" font-family="monospace">20cm</text>
   <text x="130" y="155" fill="#8a8578" font-size="9" font-family="monospace">100g</text>
   <text x="10" y="55" fill="#c9a44a" font-size="9" font-family="monospace">Tressée</text>
-  <text x="60" y="115" fill="#2a8f7e" font-size="9" font-family="monospace">Hameçon</text>
+  <text x="60" y="115" fill="#2a8f7e" font-size="9" font-family="monospace">Hook</text>
 </svg>`
   },
   {id:'fond-rocher',
    name:{fr:'Fond rocheux — Paternoster',ar:'القاع الصخري — بترنوستر',es:'Fondo rocoso — Paternóster',en:'Rocky Bottom Paternoster',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵉⵡⵔⵉⵙⵏ'},
-   target:{fr:'Mérou, rouget, daurade, poulpe',ar:'هامور، بربوني، دنيس، أخطبوط',en:'Grouper, red mullet, bream, octopus'},
+   target:{fr:'Mérou, rouget, daurade, poulpe',ar:'هامور، بربوني، دنيس، أخطبوط',en:'Grouper, red mullet, bream, octopus',es:'Mero, salmonete, dorada, pulpo',zgh:'ⴰⵎⵇⵇⵔⴰⵏ, ⴰⵎⵓⵔⵉ, ⵜⵉⵎⵙⵙⵜ'},
    desc:{fr:'Pêche depuis les rochers ou le bateau. Plomb lourd pour tenir le fond.',ar:'الصيد من الصخور أو القارب بمونتاج ثقيل.',en:'Rock or boat fishing. Heavy lead to hold bottom in current.',es:'Pesca de fondo desde roca o barco. Plomo pesado para aguantar corriente.',zgh:'ⴰⵙⵍⵎⴷ ⵙⴳ ⵉⵡⵔⵉⵙⵏ ⵏⵖ ⵜⴰⴱⵔⴽⵓⴽⵜ.'},
    steps:{fr:['Fil principal tressé ou nylon 0.40–0.50mm','Bas de ligne plus fin 0.30–0.35mm','Plomb 60–120g en bas du montage','1–2 hameçons en potences au-dessus du plomb','Appâts: moule, crevette, calamar','Pêche à la touche — remonter dès mordu'],
           en:['Main line braid or nylon 0.40–0.50mm','Leader 0.30–0.35mm','Lead 60–120g at bottom','1–2 hooks on snoods above lead','Baits: mussel, shrimp, squid','Bite detection — strike immediately'],
@@ -1881,7 +1905,7 @@ const RIGS = [
   },
   {id:'hair-rig',
    name:{fr:'Hair Rig Carpe',ar:'هير ريغ للكارب',es:'Hair rig carpa',en:'Carp Hair Rig',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⴰⴽⴰⵔⴱⴰⵢⵜ'},
-   target:{fr:'Carpe, barbeau',ar:'كارب، بربوط',en:'Carp, barbel'},
+   target:{fr:'Carpe, barbeau',ar:'كارب، بربوط',en:'Carp, barbel',es:'Carpa, barbo',zgh:'ⴽⴰⵕⴱ, ⴰⴱⴰⵕⴱⵓ'},
    desc:{fr:'Montage standard carpe, dominant dans les barrages marocains depuis 15 ans. Boilies 16–20mm.',ar:'المونتاج الأساسي لصيد الكارب. بويلي 16–20 ملم.',en:'Standard carp rig dominant in Moroccan reservoirs for 15 years. Boilies 16–20mm.',es:'Método dominante para carpa en embalses marroquíes. Boilies 16–20mm.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵡⴰⴱⵔⵉⴷ ⴳ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ ⵏ ⵍⵎⵖⵔⵉⴱ.'},
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet baitrunner','Bas de ligne coated braid 25cm','Hameçon carpe taille 4–6 avec hair','Boilie 16–20mm sur le hair','Plomb poire 60–100g coulissant','Posée — attente au posé, détecteur conseillé'],
           en:['Braid 0.28–0.35mm on baitrunner reel','Coated braid hooklink 25cm','Carp hook size 4–6 with hair','Boilie 16–20mm on hair','Pear lead 60–100g running','Bolt rig setup — bite alarm recommended'],
@@ -1894,14 +1918,14 @@ const RIGS = [
   <ellipse cx="225" cy="110" rx="7" ry="9" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
   <ellipse cx="130" cy="115" rx="14" ry="10" fill="#5a5750" stroke="#8a8578" stroke-width="1"/>
   <text x="100" y="128" fill="#8a8578" font-size="9" font-family="monospace">Plomb poire</text>
-  <text x="210" y="75" fill="#2a8f7e" font-size="9" font-family="monospace">Hameçon</text>
+  <text x="210" y="75" fill="#2a8f7e" font-size="9" font-family="monospace">Hook</text>
   <text x="215" y="125" fill="#c9a44a" font-size="9" font-family="monospace">Boilie</text>
   <text x="30" y="92" fill="#c9a44a" font-size="9" font-family="monospace">Tressée</text>
 </svg>`
   },
   {id:'spinning-truite',
    name:{fr:'Spinning Truite Atlas',ar:'سبينينغ التراوت',es:'Spinning trucha Atlas',en:'Atlas Trout Spinning',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵔⵓⵜⵜⴰ'},
-   target:{fr:'Truite fario, barbeau',ar:'تراوت، بربوط',en:'Brown trout, barbel'},
+   target:{fr:'Truite fario, barbeau',ar:'تراوت، بربوط',en:'Brown trout, barbel',es:'Trucha, barbo',zgh:'ⵜⵔⵓⵜⵜⴰ, ⴰⴱⴰⵕⴱⵓ'},
    desc:{fr:'Ultra-léger en rivière de montagne. Canne 1.8–2.1m, 1–8g. Cuillers Mepps 0–2.',ar:'سبينينغ خفيف جداً في الأنهار الجبلية. قضيب 1.8–2.1م، 1–8 غ.',en:'Ultra-light in mountain streams. Rod 1.8–2.1m, 1–8g. Mepps spinners #0–2.',es:'Spinning ultraligero para trucha en ríos del Atlas. Caña 1.8–2.1m, cucharillas Mepps #0–2.',zgh:'ⵙⴱⵉⵏⵉⵏⴳ ⴰⵎⵣⵢⴰⵏ ⴳ ⵉⴼⵔⴷⵉⵙⵏ ⵏ ⵓⴷⵔⴰⵔ.'},
    steps:{fr:['Canne spinning 1.8–2.1m action UL','Nylon 0.16–0.20mm ou tressée fine 0.10mm','Cuiller tournante Mepps 0–2 ou inline','Lancer en amont — récupérer dans le courant','Nymphe ou mouche sèche si canne fly disponible','Toujours remettre les petites — taille min 20cm'],
           en:['Spinning rod 1.8–2.1m UL action','Nylon 0.16–0.20mm or fine braid 0.10mm','Mepps 0–2 spinner or inline spoon','Cast upstream — retrieve with current','Nymph or dry fly if fly rod available','Always release sub-20cm fish'],
@@ -1921,7 +1945,7 @@ const RIGS = [
   },
   {id:'turlutte',
    name:{fr:'Turlutte Seiche & Poulpe',ar:'تورلوت للسبيا والأخطبوط',es:'Pota sepia y pulpo',en:'Cuttlefish & Octopus Jig',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵉⵙⴻⵢⵢⴰ'},
-   target:{fr:'Seiche, poulpe',ar:'سبيا، أخطبوط',en:'Cuttlefish, octopus'},
+   target:{fr:'Seiche, poulpe',ar:'سبيا، أخطبوط',en:'Cuttlefish, octopus',es:'Sepia, pulpo',zgh:'ⵜⴰⵙⴱⵉⵢⴰ, ⵜⵉⵎⵙⵙⵜ'},
    desc:{fr:'Technique en pleine expansion sur les côtes atlantiques. Turlutte 3.5–4.5, fil PE 0.6–0.8.',ar:'تقنية في توسع على الساحل الأطلسي. طعم خاص 3.5–4.5.',en:'Rapidly growing technique on Atlantic coasts. Eging jig 3.5–4.5, PE line 0.6–0.8.',es:'Jigging para sepia en auge en Marruecos. Egi 3.5–4.5, sedal PE 0.6–0.8.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵊⵊⵓⵜ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
    steps:{fr:['Canne eging 2.4–2.8m, action tip','Tressée PE 0.6–0.8 + fluorocarbone 2–3m','Turlutte 3.5–4.5 couleur vive ou naturelle','Lancer, laisser couler, action saccadée','Récupération lente — seiche saisit par derrière','Automne: concentration sur les spots rocheux'],
           en:['Egi rod 2.4–2.8m tip action','PE braid 0.6–0.8 + fluoro leader 2–3m','Egi 3.5–4.5 bright or natural colour','Cast, let sink, jerk retrieve','Slow retrieve — cuttlefish attacks from behind','Autumn: concentrate on rocky spots at dusk'],
@@ -1935,7 +1959,7 @@ const RIGS = [
   <line x1="260" y1="75" x2="268" y2="88" stroke="#2a8f7e" stroke-width="1.5"/>
   <text x="215" y="53" fill="#2a8f7e" font-size="9" font-family="monospace">Turlutte 3.5</text>
   <path d="M80 50 Q120 30 180 45 Q200 50 200 65" fill="none" stroke="#8a8578" stroke-width="1" stroke-dasharray="3,3"/>
-  <text x="90" y="28" fill="#8a8578" font-size="9" font-family="monospace">Action saccadée</text>
+  <text x="90" y="28" fill="#8a8578" font-size="9" font-family="monospace">Jerk retrieve</text>
 </svg>`
   }
 ];
@@ -1957,7 +1981,7 @@ const KNOTS = [
   <path d="M175 45 Q185 70 170 80 Q155 90 150 70" fill="none" stroke="#c9a44a" stroke-width="2" stroke-dasharray="4,2"/>
   <path d="M195 90 Q215 85 220 70 Q225 55 215 50 Q205 45 200 55" fill="none" stroke="#2a8f7e" stroke-width="2.5"/>
   <line x1="215" y1="80" x2="220" y2="100" stroke="#2a8f7e" stroke-width="2"/>
-  <text x="20" y="115" fill="#8a8578" font-size="10" font-family="monospace">Boucle → hameçon → serrer</text>
+  <text x="20" y="115" fill="#8a8578" font-size="10" font-family="monospace">Loop → hook → tighten</text>
 </svg>`
   },
   {id:'uni',
@@ -2201,7 +2225,7 @@ function closeOverlay(){
 }
 
 // ── SPOTS ──
-function renderSpots(userLat, userLng){
+function renderSpots(userLat, userLng, forceRegion){
   const list = document.getElementById('spots-list');
   const filterBar = document.getElementById('region-filter-bar');
   if(!list) return;
@@ -2217,7 +2241,7 @@ function renderSpots(userLat, userLng){
     {key:'sahara',i18nKey:'region_sahara'},
     {key:'interieur',i18nKey:'region_interieur'}
   ];
-  const activeRegion = (filterBar&&filterBar.querySelector('.pill.active')?.dataset.region)||'all';
+  const activeRegion = forceRegion || (filterBar&&filterBar.querySelector('.pill.active')?.dataset.region)||'all';
   if(filterBar){
     filterBar.innerHTML = REGIONS.map(r=>`<button class="pill${r.key===activeRegion?' active':''}" data-region="${r.key}" onclick="setSpotRegion('${r.key}')">${t(r.i18nKey)||r.key}</button>`).join('');
   }
@@ -2229,6 +2253,7 @@ function renderSpots(userLat, userLng){
   }
 
   const L = currentLang;
+  const getLang = (obj) => { if(!obj) return ''; if(typeof obj !== 'object') return String(obj); return obj[L] || (L==='zgh'?obj.en:null) || obj.fr || obj.en || ''; };
   const TAG_LABELS = {
     fr:{surf:'Surf',port:'Port',beach:'Plage',offshore:'Offshore',atlantic:'Atlantique',mediterranean:'Méditerranée',river:'Rivière',reservoir:'Barrage',freshwater:'Eau douce','surf-fishing':'Surfcasting','big-game':'Grand jeu',atlas:'Atlas',trout:'Truite','national-park':'Parc nat.',sandy:'Sableux',strait:'Détroit'},
     en:{surf:'Surf',port:'Port',beach:'Beach',offshore:'Offshore',atlantic:'Atlantic',mediterranean:'Mediterranean',river:'River',reservoir:'Reservoir',freshwater:'Freshwater','surf-fishing':'Surf fishing','big-game':'Big game',atlas:'Atlas',trout:'Trout','national-park':'Nat. park',sandy:'Sandy',strait:'Strait'},
@@ -2254,23 +2279,19 @@ function renderSpots(userLat, userLng){
           <a href="https://www.google.com/maps/search/?api=1&query=${sp.lat},${sp.lng}" target="_blank" style="font-size:10px;color:var(--teal);font-family:var(--font-mono);text-decoration:none">📍 GPS →</a>
         </div>
       </div>
-      <div class="spot-species">${sp.species[L]||sp.species.fr||sp.species.en||''}</div>
+      <div class="spot-species">${getLang(sp.species)}</div>
       <div class="spot-meta">
         <span class="tag ${primaryClass}">${typeStr}</span>
         ${allTags.map(tag=>`<span class="tag tag-dim">${(tagMap[tag]||tag).toUpperCase()}</span>`).join('')}
       </div>
-      ${sp.access?`<div style="font-size:11px;color:var(--text-dim);margin-top:8px;font-family:var(--font-mono)">${sp.access[L]||sp.access.fr||sp.access.en||''}</div>`:''}
+      ${sp.access?`<div style="font-size:11px;color:var(--text-dim);margin-top:8px;font-family:var(--font-mono)">${getLang(sp.access)}</div>`:''}
       ${sp.permit?`<div class="permit-warning">⚠️ <a href="https://www.eauxetforets.gov.ma" target="_blank" style="color:var(--crimson);font-family:var(--font-mono)">${t('permit_inland')}</a></div>`:''}
     </div>`;
   }).join('')||'<div class="loading">—</div>';
 }
 
 function setSpotRegion(region){
-  const filterBar = document.getElementById('region-filter-bar');
-  if(filterBar) filterBar.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.region===region));
-  renderSpots();
-  // After re-render the region resets; force it
-  if(filterBar) filterBar.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.region===region));
+  renderSpots(null, null, region);
 }
 
 function renderLicenseBlock(){
@@ -2289,10 +2310,46 @@ function renderLicenseBlock(){
   if(licInland) licInland.textContent = (AUTH_TRANSLATE.lic_inland[L]||AUTH_TRANSLATE.lic_inland.fr);
   if(licTuna) licTuna.textContent = (AUTH_TRANSLATE.lic_tuna[L]||AUTH_TRANSLATE.lic_tuna.fr);
   // Translate link arrow direction for RTL
-  const arrow = L==='ar'?'← ':'→ ';
-  const dpmLink=document.getElementById('lic-dpm-link'); if(dpmLink) dpmLink.textContent='DPM '+arrow.trim();
-  const efLink=document.getElementById('lic-ef-link'); if(efLink) efLink.textContent=(L==='ar'?'مياه وغابات':L==='en'?'Eaux & Forêts':L==='es'?'Eaux & Forêts':'Eaux & Forêts')+' →';
+  const dpmLink=document.getElementById('lic-dpm-link'); if(dpmLink) dpmLink.textContent='DPM →';
+  const efLink=document.getElementById('lic-ef-link'); if(efLink) efLink.textContent=(L==='ar'?'مياه وغابات →':L==='zgh'?'ⵡⴰⵎⴰⵏ & ⵉⴳⵔⵔⴰⵏ →':'Eaux & Forêts →');
   const iccatLink=document.getElementById('lic-iccat-link'); if(iccatLink) iccatLink.textContent='ICCAT →';
+}
+
+function findNearbyGuides(){
+  const btn = document.getElementById('guides-near-me-btn');
+  if(!navigator.geolocation){
+    if(btn) btn.querySelector('span:last-child').textContent = '⚠ Géolocalisation non supportée';
+    return;
+  }
+  if(btn) btn.querySelector('span:last-child').textContent = t('locating')||'Localisation...';
+  navigator.geolocation.getCurrentPosition(
+    (pos)=>{
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      // Determine Morocco region based on lat/lng
+      let region = 'all';
+      let regionName = '';
+      if(lat > 35.0 && lng < -5.3) { region = 'nord-atl'; regionName = 'Nord Atlantique'; }
+      else if(lat > 35.5 && lng > -5.3) { region = 'gibraltar'; regionName = 'Gibraltar'; }
+      else if(lat > 34.0 && lng > -4.0) { region = 'med'; regionName = 'Méditerranée'; }
+      else if(lat >= 33.5 && lat <= 35.0 && lng < -5.3) { region = 'centrale'; regionName = 'Côte Centrale'; }
+      else if(lat >= 31.5 && lat < 33.5 && lng < -8.0) { region = 'sud'; regionName = 'Côte Sud'; }
+      else if(lat >= 29.5 && lat < 31.5) { region = 'agadir'; regionName = 'Agadir / Souss'; }
+      else if(lat < 29.5) { region = 'sahara'; regionName = 'Sahara Atlantique'; }
+      else { region = 'interieur'; regionName = 'Intérieur'; }
+      
+      const regionLabel = t('region_'+region.replace('-','_'))||regionName;
+      if(btn) btn.querySelector('span:last-child').textContent = '📍 '+regionLabel;
+      
+      // Show region-specific guide info in a toast/note below button
+      const note = document.getElementById('guides-location-note');
+      if(note){
+        note.textContent = (t('guides_region_note')||'Région détectée:') + ' ' + regionLabel;
+        note.style.display='block';
+      }
+    },
+    ()=>{ if(btn) btn.querySelector('span:last-child').textContent = t('guides_near_me_text')||'Guides près de moi'; }
+  );
 }
 
 function haversine(lat1,lng1,lat2,lng2){
@@ -2363,17 +2420,17 @@ function renderRigs(){
       <div class="rig-header">
         <div>
           <div class="rig-title">${r.name[L]||r.name.fr}</div>
-          <div class="rig-subtitle">${r.target[L]||r.target.fr}</div>
+          <div class="rig-subtitle">${r.target[L]||(L==='zgh'?r.target.en:null)||r.target.fr}</div>
         </div>
         <span class="rig-chevron">▶</span>
       </div>
       <div class="rig-body">
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">${r.desc[L]||r.desc.fr}</p>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">${r.desc[L]||(L==='zgh'?r.desc.en:null)||r.desc.fr}</p>
         ${r.svg}
         <ol class="rig-steps">
-          ${(r.steps[L]||r.steps.fr||r.steps.en||[]).map(s=>`<li>${s}</li>`).join('')}
+          ${(r.steps[L]||(L==='zgh'?r.steps.en:null)||r.steps.fr||r.steps.en||[]).map(s=>`<li>${s}</li>`).join('')}
         </ol>
-        <a href="https://www.decathlon.ma/Sport/Peche" target="_blank" class="affiliate-link">🛒 ${t('buy_gear')}</a>
+        <a href="https://www.decathlon.ma/search?Ntt=peche" target="_blank" class="affiliate-link">🛒 ${t('buy_gear')}</a>
       </div>
     </div>
   `).join('');
@@ -2389,15 +2446,15 @@ function renderKnots(){
       <div class="knot-header">
         <div>
           <div class="knot-title">${typeof k.name==='object'?(k.name[L]||k.name.fr):k.name}</div>
-          <div class="knot-use">${k.use[L]||k.use.fr} · ${k.strength[L]||k.strength.fr}</div>
+          <div class="knot-use">${k.use[L]||(L==='zgh'?k.use.en:null)||k.use.fr} · ${k.strength[L]||k.strength.fr}</div>
         </div>
         <span style="color:var(--text-dim);font-size:12px">▶</span>
       </div>
       <div class="knot-body">
-        <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">${k.desc[L]||k.desc.fr}</p>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.6">${k.desc[L]||(L==='zgh'?k.desc.en:null)||k.desc.fr}</p>
         ${k.svg}
         <ol class="knot-steps">
-          ${(k.steps[L]||k.steps.fr||k.steps.en||[]).map(s=>`<li>${s}</li>`).join('')}
+          ${(k.steps[L]||(L==='zgh'?k.steps.en:null)||k.steps.fr||k.steps.en||[]).map(s=>`<li>${s}</li>`).join('')}
         </ol>
       </div>
     </div>
@@ -2734,7 +2791,7 @@ async function loadTides(){
   const timeStr = (d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   el.innerHTML = `
     <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">
-      ${loc.name} — ${isMed?'Méditerranée (faible marnage)':'Atlantique (grand marnage)'}
+      ${loc.name} — ${isMed?(t('tide_med_label')||'Méditerranée (faible marnage)'):(t('tide_atl_label')||'Atlantique (grand marnage)')}
     </p>
     <table class="tide-table">
       <thead><tr><th>${t('tide_time')}</th><th>${t('tide_height')}</th><th>${t('tide_type')}</th></tr></thead>
