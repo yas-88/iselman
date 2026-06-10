@@ -688,7 +688,7 @@ body{
       <div class="newsletter-title" id="newsletter-title">LE RAPPORT DE TERRAIN</div>
       <p class="newsletter-sub" id="newsletter-sub">Conditions, espèces, spots — un email par mois. Aucune pub.</p>
       <div class="newsletter-form">
-        <input type="email" class="newsletter-input" id="newsletter-email" placeholder="${t('newsletter_placeholder')}">
+        <input type="email" class="newsletter-input" id="newsletter-email" placeholder="email">
         <button class="newsletter-submit" onclick="subscribeNewsletter()" id="newsletter-btn">S'inscrire</button>
       </div>
     </div>
@@ -1009,6 +1009,7 @@ const I18N = {
     bite_excellent:'Excellent — conditions idéales',bite_good:'Bon — conditions favorables',
     bite_fair:'Moyen — tentez votre chance',bite_poor:'Faible — conditions difficiles',
     moon_new:'Nouvelle lune',moon_waxing:'Premier quartier',moon_full:'Pleine lune',moon_waning:'Dernier quartier',
+    tide_source:'Source: Open-Meteo Marine',
     best_time:'Aube & crépuscule',nav_conditions_title:'CONDITIONS',nav_species_title:'ESPÈCES',
     nav_spots_title:'SPOTS',nav_regs_title:'RÉGLEMENTS',nav_rigs_title:'MONTAGES',
     nav_knots_title:'NŒUDS',nav_tips_title:'CONSEILS',nav_triplog_title:'JOURNAL',
@@ -1059,6 +1060,7 @@ const I18N = {
     bite_excellent:'Excellent — ideal conditions',bite_good:'Good — favourable conditions',
     bite_fair:'Fair — worth a try',bite_poor:'Poor — tough conditions',
     moon_new:'New moon',moon_waxing:'First quarter',moon_full:'Full moon',moon_waning:'Last quarter',
+    tide_source:'Source: Open-Meteo Marine',
     best_time:'Dawn & dusk',
     page_conditions_title:'CONDITIONS',page_species_title:'SPECIES',
   },
@@ -1107,6 +1109,7 @@ const I18N = {
     bite_excellent:'Excelente — condiciones ideales',bite_good:'Bueno — condiciones favorables',
     bite_fair:'Regular — vale la pena intentar',bite_poor:'Malo — condiciones difíciles',
     moon_new:'Luna nueva',moon_waxing:'Cuarto creciente',moon_full:'Luna llena',moon_waning:'Cuarto menguante',
+    tide_source:'Fuente: Open-Meteo Marine',
     best_time:'Amanecer y atardecer',
     page_conditions_title:'CONDICIONES',page_species_title:'ESPECIES',
   },
@@ -1155,6 +1158,7 @@ const I18N = {
     bite_excellent:'ممتاز — ظروف مثالية',bite_good:'جيد — ظروف مواتية',
     bite_fair:'متوسط — يستحق المحاولة',bite_poor:'ضعيف — ظروف صعبة',
     moon_new:'محاق',moon_waxing:'الربع الأول',moon_full:'بدر',moon_waning:'الربع الأخير',
+    tide_source:'المصدر: Open-Meteo Marine',
     best_time:'الفجر والغروب',
     page_conditions_title:'الأحوال',page_species_title:'الأسماك',
   },
@@ -1203,6 +1207,7 @@ const I18N = {
     bite_excellent:'ⴰⵎⵙⴽⴰⵔ — ⵜⴰⵏⵣⵣⴰⵢⵜ ⵜⴰⵎⵥⵍⴰⵢⵜ',bite_good:'ⵉⴼⴼⵓⵍⴽⵉ',
     bite_fair:'ⴰⵎⵣⵢⴰⵏ',bite_poor:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     moon_new:'ⴰⵟⵟⴰⵙ',moon_waxing:'ⵜⴰⵙⴽⴽⵉⵡⵜ',moon_full:'ⴰⵡⵔⴰⴽ ⴰⵎⵇⵇⵔⴰⵏ',moon_waning:'ⵜⴰⴼⵓⵍⵍⵓⵜ',
+    tide_source:'Open-Meteo Marine',
     best_time:'ⵜⴰⴼⵓⵍⴽⵉ ⴷ ⵜⴰⴼⵓⵍⵍⵓⵜ',
     page_conditions_title:'ⵜⴰⵏⵣⵣⴰⵢⵜ',page_species_title:'ⵉⵙⵍⵎⴰⵏ',
   }
@@ -1309,6 +1314,24 @@ function applyTranslations(){
   // Update newsletter placeholder
   const nlEmail = document.getElementById('newsletter-email');
   if(nlEmail) nlEmail.placeholder = t('newsletter_placeholder')||'email';
+  // Re-render home preview and tides with new language
+  loadHomeConditionsPreview();
+  loadTides();
+  // Update tide station options
+  const tideSelect = document.getElementById('tide-station-select');
+  if(tideSelect){
+    const stationNames = {
+      fr:{tanger:'Tanger',casablanca:'Casablanca',agadir:'Agadir',dakhla:'Dakhla',nador:'Nador / Méditerranée'},
+      en:{tanger:'Tangier',casablanca:'Casablanca',agadir:'Agadir',dakhla:'Dakhla',nador:'Nador / Mediterranean'},
+      es:{tanger:'Tánger',casablanca:'Casablanca',agadir:'Agadir',dakhla:'Dajla',nador:'Nador / Mediterráneo'},
+      ar:{tanger:'طنجة',casablanca:'الدار البيضاء',agadir:'أكادير',dakhla:'الداخلة',nador:'الناظور / المتوسط'},
+      zgh:{tanger:'ⵜⴰⵏⵊⴰ',casablanca:'ⴰⵏⴼⴰ',agadir:'ⴰⴳⴰⴷⵉⵔ',dakhla:'ⵜⴷⴰⵅⵍⴰ',nador:'ⵏⴰⴷⵓⵔ'}
+    };
+    const names = stationNames[currentLang]||stationNames.fr;
+    Array.from(tideSelect.options).forEach(opt=>{
+      if(names[opt.value]) opt.text = names[opt.value];
+    });
+  }
 }
 </script>
 <script>
@@ -2435,7 +2458,7 @@ function renderBiteScience(data){
   const setVal = (id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
   setVal('sci-pressure-val', Math.round(pressure)+' hPa');
   setVal('sci-wind-val', Math.round(wind)+' km/h');
-  setVal('sci-temp-val', Math.round(temp-3)+'–'+Math.round(temp+2)+'°C (estimée)');
+  setVal('sci-temp-val', Math.round(temp-3)+'–'+Math.round(temp+2)+'°C');
   setVal('sci-moon-val', moon.label);
   setVal('sci-time-val', t('best_time'));
 
@@ -2518,7 +2541,7 @@ async function loadTides(){
       </tbody>
     </table>
     <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">
-      Données indicatives. Pour données officielles: <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM →</a>
+      ${t('tide_source')||'Source: Open-Meteo Marine'} · <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM →</a>
     </p>
   `;
 }
@@ -2558,10 +2581,31 @@ async function loadHomeConditionsPreview(){
 // ── NEWSLETTER ──
 function subscribeNewsletter(){
   const email = document.getElementById('newsletter-email').value;
-  if(!email||!email.includes('@')) return;
-  document.getElementById('newsletter-email').value='';
-  const btn = document.getElementById('newsletter-submit');
-  if(btn){btn.textContent='✓';btn.style.background='var(--teal)';setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
+  if(!email||!email.includes('@')){
+    const input = document.getElementById('newsletter-email');
+    if(input){input.style.borderColor='var(--crimson)';setTimeout(()=>input.style.borderColor='',1500);}
+    return;
+  }
+  // Send to Beehiiv via their embed API
+  // Replace BEEHIIV_PUB_ID with your actual publication ID from beehiiv.com/settings
+  const BEEHIIV_PUB_ID = 'YOUR_PUB_ID'; // TODO: replace with real ID from beehiiv.com
+  const btn = document.getElementById('newsletter-btn');
+  if(btn){btn.textContent='...';btn.disabled=true;}
+  fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email,utm_source:'iselman_app',utm_medium:'pwa'})
+  }).then(r=>{
+    document.getElementById('newsletter-email').value='';
+    if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
+      setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
+  }).catch(()=>{
+    // Fallback: open Beehiiv signup page
+    window.open('https://iselman.beehiiv.com/subscribe?email='+encodeURIComponent(email),'_blank');
+    document.getElementById('newsletter-email').value='';
+    if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
+      setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
+  });
 }
 
 // ── INIT ──
