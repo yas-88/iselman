@@ -2043,7 +2043,7 @@ function renderSpeciesGrid(){
     const label = sp.type==='saltwater'?t('filter_salt'):t('filter_fresh');
     return `<div class="species-card ${sp.type}" onclick="showSpeciesOverlay('${sp.id}')">
       <div style="width:100%;height:72px;margin-bottom:8px;overflow:hidden;border-radius:4px;background:var(--surface2);display:flex;align-items:center;justify-content:center">
-        <img src="/species/${sp.id}.png" alt="${sp.name[L]||sp.name.fr}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:32px\'>${sp.icon}</span>'">
+        <img src="/species/${sp.id}.jpg" alt="${sp.name[L]||sp.name.fr}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:32px\'>${sp.icon}</span>'">
       </div>
       <div class="species-name">${sp.name[L]||sp.name.fr}</div>
       <div class="species-local">${sp.local[L]||sp.local.fr}</div>
@@ -2570,7 +2570,7 @@ function renderBig5(){
     const name = sp.name[L]||sp.name.fr;
     return `<div class="big5-card" onclick="showSpeciesById('${id}')">
       <div class="big5-icon" style="width:100%;height:44px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:4px;margin-bottom:4px">
-        <img src="/species/${id}.png" alt="${name}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:26px\'>${sp.icon}</span>'">
+        <img src="/species/${id}.jpg" alt="${name}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:26px\'>${sp.icon}</span>'">
       </div>
       <div class="big5-name">${name}</div>
     </div>`;
