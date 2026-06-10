@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="theme-color" content="#0c0d0b">
 <link rel="manifest" href="/manifest.json">
-<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/Main_Logo.png">
+<link rel="icon" type="image/png" href="/icons/Main_Logo.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Iselman">
@@ -71,6 +72,14 @@ body{
   padding-bottom:var(--safe-bottom);
 }
 #bottom-nav::-webkit-scrollbar{display:none}
+#bottom-nav::after{
+  content:'';position:fixed;bottom:0;right:0;
+  width:40px;height:calc(var(--nav-h) + var(--safe-bottom));
+  background:linear-gradient(to right,transparent,rgba(14,15,11,0.96));
+  pointer-events:none;z-index:101;
+  transition:opacity 0.3s;
+}
+#bottom-nav.at-end::after{opacity:0}
 .nav-item{
   flex:0 0 auto;min-width:58px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -475,7 +484,7 @@ body{
   border-bottom:1px solid var(--border);
 }
 .hero-logo{display:flex;align-items:center;gap:12px;margin-bottom:4px}
-.hero-logo-img{width:56px;height:56px;object-fit:contain;cursor:pointer}
+.hero-logo-img{width:56px;height:56px;object-fit:contain;cursor:pointer;background:#fff;border-radius:50%;padding:2px}
 .hero-logo-text{display:flex;flex-direction:column;flex:1}
 .hero-logo-meta{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .hero-app-name{font-family:var(--font-display);font-size:36px;color:var(--gold);letter-spacing:0.06em;line-height:1}
@@ -696,7 +705,7 @@ body{
       <div class="guides-band-header">
         <div class="guides-band-title" id="guides-title">GUIDES &amp; CHARTERS</div>
         <button class="near-me-btn" id="guides-near-me-btn" onclick="findNearbyGuides()" style="margin:8px 0 4px;font-size:11px;padding:7px 12px">
-          <span>📍</span><span id="guides-near-me-text">Guides près de moi</span>
+          <span>📍</span><span id="guides-near-me-text">Guides &amp; shops near me</span>
         </button>
       </div>
       <div id="guides-location-note" style="display:none;font-family:var(--font-mono);font-size:10px;color:var(--teal);padding:0 0 8px;letter-spacing:0.06em"></div>
@@ -721,7 +730,7 @@ body{
         <div class="guide-info">
           <div class="guide-name" id="list-your-boat">Listez votre bateau</div>
           <div class="guide-region" id="list-your-boat-sub">Votre charter ici — yassir@safjob.com</div>
-          <a href="mailto:yassir@safjob.com" class="guide-contact" id="list-btn" target="_blank">Nous écrire</a>
+          <a href="mailto:yassir@safjob.com?subject=Listing%20Iselman&body=Bonjour%2C%20je%20souhaite%20lister%20mon%20bateau%20sur%20Iselman." class="guide-contact" id="list-btn">Nous écrire</a>
         </div>
       </div>
     </div>
@@ -997,7 +1006,7 @@ const I18N = {
     hero_tagline:'Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces',
     big5_title:'LES 5 DU MOMENT',home_conditions_title:'CONDITIONS LIVE',
     seasonal_title:'CALENDRIER SAISONNIER',
-    city_placeholder:'— Choisir une ville —',coming_soon:'— Bientôt disponible',tide_atl_label:'Atlantique (grand marnage)',tide_med_label:'Méditerranée (faible marnage)',
+    city_placeholder:'— Choisir une ville —',coming_soon:'— Bientôt disponible',tide_atl_label:'Atlantique (grand marnage)',tide_med_label:'Méditerranée (faible marnage)',guides_near_me_text:'Guides et commerces près de moi',guides_region_note:'Région:',
     newsletter_title:'LE RAPPORT DE TERRAIN',newsletter_sub:'Conditions, espèces, spots — un email par mois. Aucune pub.',
     newsletter_btn:'S\'inscrire',newsletter_placeholder:'votre@email.com',
     guides_title:'GUIDES & CHARTERS',guide1_region:'Sahara Atlantique — Surf & Bateau',
@@ -1054,7 +1063,7 @@ const I18N = {
     hero_tagline:'Morocco Fishing Guide — Atlantic · Mediterranean · Freshwater',
     big5_title:'BIG 5 RIGHT NOW',home_conditions_title:'LIVE CONDITIONS',
     seasonal_title:'SEASONAL CALENDAR',
-    city_placeholder:'— Choose a city —',coming_soon:'— Coming soon',tide_atl_label:'Atlantic (macrotidal)',tide_med_label:'Mediterranean (microtidal)',
+    city_placeholder:'— Choose a city —',coming_soon:'— Coming soon',tide_atl_label:'Atlantic (macrotidal)',tide_med_label:'Mediterranean (microtidal)',guides_near_me_text:'Guides & shops near me',guides_region_note:'Region:',
     newsletter_title:'THE FIELD REPORT',newsletter_sub:'Conditions, species, spots — one email a month. No ads.',
     newsletter_btn:'Subscribe',newsletter_placeholder:'your@email.com',
     guides_title:'GUIDES & CHARTERS',guide1_region:'Atlantic Sahara — Surf & Boat',
@@ -1111,7 +1120,7 @@ const I18N = {
     hero_tagline:'Guía de pesca de Marruecos — Atlántico · Mediterráneo · Agua dulce',
     big5_title:'LOS 5 AHORA',home_conditions_title:'CONDICIONES EN VIVO',
     seasonal_title:'CALENDARIO ESTACIONAL',
-    city_placeholder:'— Elegir ciudad —',coming_soon:'— Próximamente',tide_atl_label:'Atlántico (gran mareal)',tide_med_label:'Mediterráneo (pequeño mareal)',
+    city_placeholder:'— Elegir ciudad —',coming_soon:'— Próximamente',tide_atl_label:'Atlántico (gran mareal)',tide_med_label:'Mediterráneo (pequeño mareal)',guides_near_me_text:'Guías y tiendas cercanas',guides_region_note:'Región:',
     newsletter_title:'EL INFORME DE CAMPO',newsletter_sub:'Condiciones, especies, zonas — un correo al mes. Sin publicidad.',
     newsletter_btn:'Suscribirse',newsletter_placeholder:'tu@email.com',
     guides_title:'GUÍAS & CHARTERS',guide1_region:'Sáhara Atlántico — Surf & Barco',
@@ -1168,7 +1177,7 @@ const I18N = {
     hero_tagline:'دليل الصيد في المغرب — المحيط الأطلسي · البحر الأبيض المتوسط · المياه العذبة',
     big5_title:'أفضل 5 الآن',home_conditions_title:'الأحوال الآن',
     seasonal_title:'التقويم الموسمي',
-    city_placeholder:'— اختر مدينة —',coming_soon:'— قريباً',tide_atl_label:'الأطلسي (مد كبير)',tide_med_label:'المتوسط (مد صغير)',
+    city_placeholder:'— اختر مدينة —',coming_soon:'— قريباً',tide_atl_label:'الأطلسي (مد كبير)',tide_med_label:'المتوسط (مد صغير)',guides_near_me_text:'أدلاء ومتاجر قريبة',guides_region_note:'المنطقة:',
     newsletter_title:'تقرير الميدان',newsletter_sub:'الأحوال والأسماك والأماكن — بريد إلكتروني واحد شهرياً. بدون إعلانات.',
     newsletter_btn:'اشتراك',newsletter_placeholder:'بريدك@الإلكتروني.com',
     guides_title:'المرشدون والتأجير',guide1_region:'الصحراء الأطلسية — صيد الشاطئ والقوارب',
@@ -1866,7 +1875,8 @@ const RIGS = [
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet surfcasting','Bas de ligne 0.35–0.40mm nylon 1.5–2m','Plomb fuseau 80–150g selon courant','2 hameçons taille 2–4 sur potences 20cm','Appâts: ver de sable, moule, crevette','Lancer à 60–80m — attendre 15–20min'],
           en:['Braid 0.28–0.35mm on surfcasting reel','Leader 0.35–0.40mm nylon 1.5–2m','Torpedo lead 80–150g to match current','2 hooks size 2–4 on 20cm snoods','Baits: sandworm, mussel, shrimp','Cast 60–80m — wait 15–20 min'],
           es:['Trenzado 0.28–0.35mm en carrete surfcasting','Bajo de línea 0.35–0.40mm nylon 1.5–2m','Plomo torpedo 80–150g según corriente','2 anzuelos talla 2–4 en brazoladas 20cm','Cebos: gusano de arena, mejillón, gamba','Lanzar 60–80m — esperar 15–20 min'],
-          ar:['جدل 0.28–0.35 ملم على بكرة سيرف كاستينغ','قاعدة خط 0.35–0.40 ملم نايلون 1.5–2م','رصاصة مغزلية 80–150 غ حسب التيار','2 صنار مقاس 2–4 على ذراعين 20 سم','طعم: دودة رملية، بلح البحر، جمبري','رمي 60–80 متر — انتظر 15–20 دقيقة']},
+          ar:['جدل 0.28–0.35 ملم على بكرة سيرف كاستينغ','قاعدة خط 0.35–0.40 ملم نايلون 1.5–2م','رصاصة مغزلية 80–150 غ حسب التيار','2 صنار مقاس 2–4 على ذراعين 20 سم','طعم: دودة رملية، بلح البحر، جمبري','رمي 60–80 متر — انتظر 15–20 دقيقة'],
+          zgh:['Braid 0.28–0.35mm surfcasting reel','Leader 0.35–0.40mm nylon 1.5–2m','Lead 80–150g for current','2 hooks size 2–4 on 20cm snoods','Baits: sandworm, mussel, shrimp','Cast 60–80m — wait 15–20 min']},
    svg:`<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="160" y1="10" x2="160" y2="60" stroke="#c9a44a" stroke-width="2"/>
   <line x1="100" y1="60" x2="220" y2="60" stroke="#c9a44a" stroke-width="2"/>
@@ -1879,7 +1889,7 @@ const RIGS = [
   <text x="112" y="75" fill="#8a8578" font-size="9" font-family="monospace">20cm</text>
   <text x="168" y="75" fill="#8a8578" font-size="9" font-family="monospace">20cm</text>
   <text x="130" y="155" fill="#8a8578" font-size="9" font-family="monospace">100g</text>
-  <text x="10" y="55" fill="#c9a44a" font-size="9" font-family="monospace">Tressée</text>
+  <text x="10" y="55" fill="#c9a44a" font-size="9" font-family="monospace">Braid</text>
   <text x="60" y="115" fill="#2a8f7e" font-size="9" font-family="monospace">Hook</text>
 </svg>`
   },
@@ -1890,7 +1900,8 @@ const RIGS = [
    steps:{fr:['Fil principal tressé ou nylon 0.40–0.50mm','Bas de ligne plus fin 0.30–0.35mm','Plomb 60–120g en bas du montage','1–2 hameçons en potences au-dessus du plomb','Appâts: moule, crevette, calamar','Pêche à la touche — remonter dès mordu'],
           en:['Main line braid or nylon 0.40–0.50mm','Leader 0.30–0.35mm','Lead 60–120g at bottom','1–2 hooks on snoods above lead','Baits: mussel, shrimp, squid','Bite detection — strike immediately'],
           es:['Línea principal trenzada o nylon 0.40–0.50mm','Bajo de línea 0.30–0.35mm','Plomo 60–120g en la parte inferior','1–2 anzuelos en brazoladas sobre el plomo','Cebos: mejillón, gamba, calamar','Detección de mordida — sacudir inmediatamente'],
-          ar:['خيط رئيسي جدل أو نايلون 0.40–0.50 ملم','قاعدة خط أرفع 0.30–0.35 ملم','رصاصة 60–120 غ في أسفل المونتاج','1–2 صنار على ذراعين فوق الرصاصة','طعم: بلح البحر، جمبري، حبار','انتظار اللمسة — اسحب فور العض']},
+          ar:['خيط رئيسي جدل أو نايلون 0.40–0.50 ملم','قاعدة خط أرفع 0.30–0.35 ملم','رصاصة 60–120 غ في أسفل المونتاج','1–2 صنار على ذراعين فوق الرصاصة','طعم: بلح البحر، جمبري، حبار','انتظار اللمسة — اسحب فور العض'],
+          zgh:['Main line braid or nylon 0.40–0.50mm','Leader 0.30–0.35mm','Lead 60–120g at bottom','1–2 hooks on snoods above lead','Baits: mussel, shrimp, squid','Bite detection — strike immediately']},
    svg:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="160" y1="10" x2="160" y2="170" stroke="#c9a44a" stroke-width="2"/>
   <line x1="160" y1="80" x2="200" y2="80" stroke="#8a8578" stroke-width="1.5"/>
@@ -1910,17 +1921,18 @@ const RIGS = [
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet baitrunner','Bas de ligne coated braid 25cm','Hameçon carpe taille 4–6 avec hair','Boilie 16–20mm sur le hair','Plomb poire 60–100g coulissant','Posée — attente au posé, détecteur conseillé'],
           en:['Braid 0.28–0.35mm on baitrunner reel','Coated braid hooklink 25cm','Carp hook size 4–6 with hair','Boilie 16–20mm on hair','Pear lead 60–100g running','Bolt rig setup — bite alarm recommended'],
           es:['Trenzado 0.28–0.35mm en carrete baitrunner','Bajo de línea coated braid 25cm','Anzuelo carpa talla 4–6 con pelo','Boilie 16–20mm en el pelo','Plomo pera 60–100g deslizante','Montura bolt — detector de picada recomendado'],
-          ar:['جدل 0.28–0.35 ملم على بكرة بيت رانر','قاعدة خط مغلف 25 سم','صنار كارب مقاس 4–6 مع الشعر','بويلي 16–20 ملم على الشعر','رصاصة كمثرى 60–100 غ منزلقة','وضعية البولت — جهاز كشف العض موصى به']},
+          ar:['جدل 0.28–0.35 ملم على بكرة بيت رانر','قاعدة خط مغلف 25 سم','صنار كارب مقاس 4–6 مع الشعر','بويلي 16–20 ملم على الشعر','رصاصة كمثرى 60–100 غ منزلقة','وضعية البولت — جهاز كشف العض موصى به'],
+          zgh:['Braid 0.28–0.35mm on baitrunner reel','Coated braid hooklink 25cm','Carp hook size 4–6 with hair','Boilie 16–20mm on hair','Pear lead 60–100g running','Bolt rig — bite alarm recommended']},
    svg:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="30" y1="100" x2="200" y2="100" stroke="#c9a44a" stroke-width="2"/>
   <path d="M200 100 C220 100 230 90 225 80 C220 70 210 72 210 80" fill="none" stroke="#2a8f7e" stroke-width="2"/>
   <line x1="210" y1="80" x2="220" y2="105" stroke="#2a8f7e" stroke-width="1.5"/>
   <ellipse cx="225" cy="110" rx="7" ry="9" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
   <ellipse cx="130" cy="115" rx="14" ry="10" fill="#5a5750" stroke="#8a8578" stroke-width="1"/>
-  <text x="100" y="128" fill="#8a8578" font-size="9" font-family="monospace">Plomb poire</text>
+  <text x="100" y="128" fill="#8a8578" font-size="9" font-family="monospace">Pear lead</text>
   <text x="210" y="75" fill="#2a8f7e" font-size="9" font-family="monospace">Hook</text>
   <text x="215" y="125" fill="#c9a44a" font-size="9" font-family="monospace">Boilie</text>
-  <text x="30" y="92" fill="#c9a44a" font-size="9" font-family="monospace">Tressée</text>
+  <text x="30" y="92" fill="#c9a44a" font-size="9" font-family="monospace">Braid</text>
 </svg>`
   },
   {id:'spinning-truite',
@@ -1930,7 +1942,8 @@ const RIGS = [
    steps:{fr:['Canne spinning 1.8–2.1m action UL','Nylon 0.16–0.20mm ou tressée fine 0.10mm','Cuiller tournante Mepps 0–2 ou inline','Lancer en amont — récupérer dans le courant','Nymphe ou mouche sèche si canne fly disponible','Toujours remettre les petites — taille min 20cm'],
           en:['Spinning rod 1.8–2.1m UL action','Nylon 0.16–0.20mm or fine braid 0.10mm','Mepps 0–2 spinner or inline spoon','Cast upstream — retrieve with current','Nymph or dry fly if fly rod available','Always release sub-20cm fish'],
           es:['Caña spinning 1.8–2.1m acción UL','Nylon 0.16–0.20mm o trenzado fino 0.10mm','Cucharilla Mepps 0–2 o inline','Lanzar aguas arriba — recuperar con la corriente','Ninfa o mosca seca si hay caña fly','Siempre soltar menores de 20cm'],
-          ar:['قضيب سبينينغ 1.8–2.1م خفيف','نايلون 0.16–0.20 ملم أو جدل رفيع 0.10 ملم','ملعقة ميبس 0–2 أو إينلاين','الرمي عكس التيار — السحب مع التيار','نمفة أو ذبابة جافة إن توفرت قصبة ذبابي','أفرج دائماً عن ما دون 20 سم']},
+          ar:['قضيب سبينينغ 1.8–2.1م خفيف','نايلون 0.16–0.20 ملم أو جدل رفيع 0.10 ملم','ملعقة ميبس 0–2 أو إينلاين','الرمي عكس التيار — السحب مع التيار','نمفة أو ذبابة جافة إن توفرت قصبة ذبابي','أفرج دائماً عن ما دون 20 سم'],
+          zgh:['Spinning rod 1.8–2.1m UL action','Nylon 0.16–0.20mm or fine braid 0.10mm','Mepps 0–2 spinner or inline','Cast upstream — retrieve with current','Nymph or dry fly if fly rod available','Always release sub-20cm fish']},
    svg:`<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="20" y1="80" x2="240" y2="80" stroke="#c9a44a" stroke-width="1.5"/>
   <ellipse cx="255" cy="80" rx="16" ry="10" fill="none" stroke="#2a8f7e" stroke-width="2"/>
@@ -1950,7 +1963,8 @@ const RIGS = [
    steps:{fr:['Canne eging 2.4–2.8m, action tip','Tressée PE 0.6–0.8 + fluorocarbone 2–3m','Turlutte 3.5–4.5 couleur vive ou naturelle','Lancer, laisser couler, action saccadée','Récupération lente — seiche saisit par derrière','Automne: concentration sur les spots rocheux'],
           en:['Egi rod 2.4–2.8m tip action','PE braid 0.6–0.8 + fluoro leader 2–3m','Egi 3.5–4.5 bright or natural colour','Cast, let sink, jerk retrieve','Slow retrieve — cuttlefish attacks from behind','Autumn: concentrate on rocky spots at dusk'],
           es:['Caña eging 2.4–2.8m acción tip','Trenzado PE 0.6–0.8 + líder fluorocarbono 2–3m','Egi 3.5–4.5 color vivo o natural','Lanzar, dejar hundir, recuperación sacudida','Recuperación lenta — la sepia ataca por detrás','Otoño: concentrarse en zonas rocosas al atardecer'],
-          ar:['قضيب إيجينغ 2.4–2.8م طرفي','جدل PE 0.6–0.8 + فلوروكربون 2–3م','طعم تورلوت 3.5–4.5 ألوان زاهية أو طبيعية','رمي، اترك يغوص، سحب متقطع','سحب بطيء — السبيا تهجم من الخلف','الخريف: تركيز على الأماكن الصخرية عند الغروب']},
+          ar:['قضيب إيجينغ 2.4–2.8م طرفي','جدل PE 0.6–0.8 + فلوروكربون 2–3م','طعم تورلوت 3.5–4.5 ألوان زاهية أو طبيعية','رمي، اترك يغوص، سحب متقطع','سحب بطيء — السبيا تهجم من الخلف','الخريف: تركيز على الأماكن الصخرية عند الغروب'],
+          zgh:['Egi rod 2.4–2.8m tip action','PE braid 0.6–0.8 + fluoro leader 2–3m','Egi 3.5–4.5 bright or natural colour','Cast, let sink, jerk retrieve','Slow retrieve — cuttlefish attacks from behind','Autumn: rocky spots at dusk']},
    svg:`<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="20" y1="70" x2="220" y2="70" stroke="#c9a44a" stroke-width="1.5"/>
   <rect x="220" y="55" width="50" height="20" rx="10" fill="#2a8f7e" opacity="0.8"/>
@@ -2000,7 +2014,7 @@ const KNOTS = [
   <path d="M200 70 L220 70" stroke="#c9a44a" stroke-width="2.5"/>
   <path d="M225 55 Q240 50 245 65 Q250 80 240 85 Q230 90 225 80" fill="none" stroke="#2a8f7e" stroke-width="2.5"/>
   <line x1="240" y1="83" x2="245" y2="100" stroke="#2a8f7e" stroke-width="2"/>
-  <text x="20" y="115" fill="#8a8578" font-size="10" font-family="monospace">5–6 tours → serrer progressivement</text>
+  <text x="20" y="115" fill="#8a8578" font-size="10" font-family="monospace">5–6 wraps → tighten progressively</text>
 </svg>`
   },
   {id:'fg',
@@ -2011,7 +2025,8 @@ const KNOTS = [
    steps:{fr:['Faire une boucle avec le fluorocarbone','Passer la tressée 15–20 fois alternée','Demi-clé finale sur le fluo','Demi-clé de finition','Couper proprement — tête très fine'],
           en:['Make a loop with the fluorocarbon','Alternate braid 15–20 passes','Half hitch to lock on fluoro','Final locking half hitch','Trim close — very slim profile'],
           es:['Hacer bucle con el fluorocarbono','Alternar trenzado 15–20 pasadas','Media clave final en el flúor','Media clave de acabado','Cortar limpio — perfil muy fino'],
-          ar:['اشكّل حلقة مع الفلوروكربون','مرر الجدل 15–20 مرة بالتناوب','نصف عقدة قفل على الفلوروكربون','نصف عقدة تشطيب','اقطع بشكل نظيف — رأس رفيع جداً']},
+          ar:['اشكّل حلقة مع الفلوروكربون','مرر الجدل 15–20 مرة بالتناوب','نصف عقدة قفل على الفلوروكربون','نصف عقدة تشطيب','اقطع بشكل نظيف — رأس رفيع جداً'],
+          zgh:['Make loop with fluorocarbon','Alternate braid 15–20 passes','Half hitch to lock on fluoro','Final locking half hitch','Trim close — very slim profile']},
    svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
   <line x1="20" y1="65" x2="200" y2="65" stroke="#c9a44a" stroke-width="2"/>
   <line x1="60" y1="75" x2="200" y2="75" stroke="#2a8f7e" stroke-width="2.5"/>
@@ -2019,7 +2034,7 @@ const KNOTS = [
   <path d="M90 65 Q95 55 105 65 Q110 75 105 75" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
   <path d="M115 65 Q120 55 130 65 Q135 75 130 75" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
   <path d="M145 65 Q150 55 160 65 Q165 75 160 75" fill="none" stroke="#c9a44a" stroke-width="1.5"/>
-  <text x="20" y="110" fill="#8a8578" font-size="9" font-family="monospace">Tressée (or) wraps fluoro (teal)</text>
+  <text x="20" y="110" fill="#8a8578" font-size="9" font-family="monospace">Braid (gold) wraps fluoro (teal)</text>
 </svg>`
   },
   {id:'blood',
@@ -2057,7 +2072,7 @@ const KNOTS = [
   <ellipse cx="165" cy="70" rx="25" ry="18" fill="none" stroke="#2a8f7e" stroke-width="2.5"/>
   <line x1="190" y1="70" x2="260" y2="70" stroke="#2a8f7e" stroke-width="2.5"/>
   <path d="M90 70 C100 52 130 52 140 70" fill="none" stroke="#c9a44a" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <text x="90" y="115" fill="#8a8578" font-size="10" font-family="monospace">Boucle dans boucle → tirer</text>
+  <text x="90" y="115" fill="#8a8578" font-size="10" font-family="monospace">Loop to loop → pull</text>
 </svg>`
   }
 ];
@@ -2243,7 +2258,16 @@ function renderSpots(userLat, userLng, forceRegion){
   ];
   const activeRegion = forceRegion || (filterBar&&filterBar.querySelector('.pill.active')?.dataset.region)||'all';
   if(filterBar){
-    filterBar.innerHTML = REGIONS.map(r=>`<button class="pill${r.key===activeRegion?' active':''}" data-region="${r.key}" onclick="setSpotRegion('${r.key}')">${t(r.i18nKey)||r.key}</button>`).join('');
+    filterBar.innerHTML = REGIONS.map(r=>`<button class="pill${r.key===activeRegion?' active':''}" data-region="${r.key}" style="touch-action:manipulation">${t(r.i18nKey)||r.key}</button>`).join('');
+    // Remove old listener to avoid duplicates, then add new one
+    filterBar.onclick = (e)=>{
+      const pill = e.target.closest('[data-region]');
+      if(pill) setSpotRegion(pill.dataset.region);
+    };
+    filterBar.ontouchend = (e)=>{
+      const pill = e.target.closest('[data-region]');
+      if(pill){ e.preventDefault(); setSpotRegion(pill.dataset.region); }
+    };
   }
 
   let spots = activeRegion==='all'?[...SPOTS]:SPOTS.filter(s=>s.region===activeRegion);
@@ -2430,7 +2454,7 @@ function renderRigs(){
         <ol class="rig-steps">
           ${(r.steps[L]||(L==='zgh'?r.steps.en:null)||r.steps.fr||r.steps.en||[]).map(s=>`<li>${s}</li>`).join('')}
         </ol>
-        <a href="https://www.decathlon.ma/search?Ntt=peche" target="_blank" class="affiliate-link">🛒 ${t('buy_gear')}</a>
+        <a href="https://www.decathlon.ma/search?q=p%C3%AAche" target="_blank" class="affiliate-link">🛒 ${t('buy_gear')}</a>
       </div>
     </div>
   `).join('');
