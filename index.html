@@ -27,6 +27,8 @@
   --teal-dim: rgba(42,143,126,0.15);
   --crimson: #a83232;
   --crimson-dim: rgba(168,50,50,0.15);
+  --blue: #2a6db5;
+  --blue-dim: rgba(42,109,181,0.15);
   --text: #e8e4da;
   --text-muted: #8a8578;
   --text-dim: #5a5750;
@@ -53,7 +55,7 @@ body{
 
 /* ── LAYOUT ── */
 #app{display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
-#main-content{flex:1;overflow-y:auto;padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 16px)}
+#main-content{flex:1;overflow-y:auto;padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 16px);padding-top:44px}
 .page{display:none;padding:0 0 8px}
 .page.active{display:block}
 
@@ -84,7 +86,7 @@ body{
 .lang-bar{
   display:flex;align-items:center;gap:6px;padding:10px 16px;
   background:var(--surface);border-bottom:1px solid var(--border);
-  overflow-x:auto;scrollbar-width:none;position:sticky;top:0;z-index:50;
+  overflow-x:auto;scrollbar-width:none;position:fixed;top:0;left:0;right:0;z-index:300;
 }
 .lang-bar::-webkit-scrollbar{display:none}
 .lang-btn{
@@ -154,6 +156,7 @@ body{
 .tag-gold{background:var(--gold-dim);color:var(--gold)}
 .tag-teal{background:var(--teal-dim);color:var(--teal)}
 .tag-crimson{background:var(--crimson-dim);color:var(--crimson)}
+.tag-blue{background:var(--blue-dim);color:var(--blue)}
 .tag-dim{background:rgba(255,255,255,0.06);color:var(--text-muted)}
 
 /* ── PILL FILTERS ── */
@@ -171,6 +174,9 @@ body{
   -webkit-tap-highlight-color:transparent;
 }
 .pill.active{background:var(--gold);border-color:var(--gold);color:#0c0d0b}
+.pill.active[data-filter="freshwater"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill.active[data-filter="saltwater"]{background:var(--gold);border-color:var(--gold);color:#0c0d0b}
+.pill.active[data-filter="all"]{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);color:var(--text)}
 .pill:hover{border-color:var(--text-dim);color:var(--text)}
 
 /* ── SPECIES CARDS ── */
@@ -200,7 +206,7 @@ body{
 
 /* ── SPECIES OVERLAY ── */
 #species-overlay{
-  position:fixed;inset:0;z-index:200;
+  position:fixed;inset:0;top:44px;z-index:200;
   display:none;flex-direction:column;
   background:var(--bg);overflow-y:auto;
   transform:translateX(100%);transition:transform 0.28s cubic-bezier(0.4,0,0.2,1);
@@ -662,13 +668,7 @@ body{
     <div style="padding:8px 16px 4px">
       <div class="section-title" id="big5-title" style="margin-bottom:8px">LES 5 DU MOMENT</div>
     </div>
-    <div class="big5-grid" id="big5-grid">
-      <div class="big5-card" onclick="showSpeciesById('daurade')"><div class="big5-icon">🐠</div><div class="big5-name" id="b5-daurade" data-species-id="daurade">Daurade</div></div>
-      <div class="big5-card" onclick="showSpeciesById('loup')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-loup" data-species-id="loup">Loup</div></div>
-      <div class="big5-card" onclick="showSpeciesById('maquereau')"><div class="big5-icon">🐡</div><div class="big5-name" id="b5-maquereau" data-species-id="maquereau">Maquereau</div></div>
-      <div class="big5-card" onclick="showSpeciesById('carpe')"><div class="big5-icon">🎣</div><div class="big5-name" id="b5-carpe" data-species-id="carpe">Carpe</div></div>
-      <div class="big5-card" onclick="showSpeciesById('truite')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-truite" data-species-id="truite">Truite</div></div>
-    </div>
+    <div class="big5-grid" id="big5-grid"></div>
 
     <div class="divider"></div>
     <div style="padding:12px 16px 4px">
@@ -747,9 +747,14 @@ body{
 
     <div style="padding:8px 16px 4px">
       <div class="section-title" id="tide-title">MARÉES</div>
-      <select class="tide-station-select" id="tide-station-select" onchange="loadTides()">
+      <select class="tide-station-select" id="tide-station-select" onchange="loadConditions()">
         <option value="tanger">Tanger</option>
+        <option value="kenitra">Kénitra</option>
+        <option value="rabat">Rabat</option>
         <option value="casablanca">Casablanca</option>
+        <option value="eljadida">El Jadida</option>
+        <option value="safi">Safi</option>
+        <option value="essaouira">Essaouira</option>
         <option value="agadir">Agadir</option>
         <option value="dakhla">Dakhla</option>
         <option value="nador">Nador / Méditerranée</option>
@@ -810,17 +815,7 @@ body{
     <button class="near-me-btn" id="near-me-btn" onclick="findNearMe()">
       <span>📍</span><span id="near-me-text">Spots à proximité</span>
     </button>
-    <div class="filter-bar" id="region-filter-bar">
-      <button class="pill active" data-region="all" id="region-all">Toutes</button>
-      <button class="pill" data-region="nord-atl">Nord Atl.</button>
-      <button class="pill" data-region="gibraltar">Gibraltar</button>
-      <button class="pill" data-region="med">Méditerranée</button>
-      <button class="pill" data-region="centrale">Côte Centrale</button>
-      <button class="pill" data-region="sud">Côte Sud</button>
-      <button class="pill" data-region="agadir">Agadir</button>
-      <button class="pill" data-region="sahara">Sahara</button>
-      <button class="pill" data-region="interieur">Intérieur</button>
-    </div>
+    <div class="filter-bar" id="region-filter-bar"></div>
     <div class="spots-list" id="spots-list"></div>
   </div>
 
@@ -984,6 +979,9 @@ const I18N = {
     filter_all:'Toutes',filter_salt:'Mer',filter_fresh:'Eau douce',
     overlay_back:'← Retour',species_title:'ESPÈCES',
     spots_subtitle:'20 spots · 8 régions',near_me_text:'Spots à proximité',region_all:'Toutes',
+    region_nord_atl:'Nord Atl.',region_gibraltar:'Gibraltar',region_med:'Méditerranée',
+    region_centrale:'Côte Centrale',region_sud:'Côte Sud',region_agadir:'Agadir',
+    region_sahara:'Sahara',region_interieur:'Intérieur',
     regs_subtitle:'Tailles, saisons, permis — vérifiez toujours les textes officiels',
     reg_authority:'Sources officielles: Direction des Pêches Maritimes (côtier) · Département des Eaux & Forêts (intérieur).',
     license_title:'PERMIS & LICENCES',lic_coastal:'Pêche côtière',lic_inland:'Eaux douces & barrages',lic_tuna:'Grands pélagiques',
@@ -1010,7 +1008,8 @@ const I18N = {
     bite_fair:'Moyen — tentez votre chance',bite_poor:'Faible — conditions difficiles',
     moon_new:'Nouvelle lune',moon_waxing:'Premier quartier',moon_full:'Pleine lune',moon_waning:'Dernier quartier',
     tide_source:'Source: Open-Meteo Marine',
-    best_time:'Aube & crépuscule',nav_conditions_title:'CONDITIONS',nav_species_title:'ESPÈCES',
+    best_time:'Aube & crépuscule',
+    season_peak:'Pic',season_good:'Bon',season_slow:'Faible',nav_conditions_title:'CONDITIONS',nav_species_title:'ESPÈCES',
     nav_spots_title:'SPOTS',nav_regs_title:'RÉGLEMENTS',nav_rigs_title:'MONTAGES',
     nav_knots_title:'NŒUDS',nav_tips_title:'CONSEILS',nav_triplog_title:'JOURNAL',
     page_conditions_title:'CONDITIONS',page_species_title:'ESPÈCES',
@@ -1035,6 +1034,9 @@ const I18N = {
     filter_all:'All',filter_salt:'Saltwater',filter_fresh:'Freshwater',
     overlay_back:'← Back',
     spots_subtitle:'20 spots · 8 regions',near_me_text:'Spots near me',region_all:'All',
+    region_nord_atl:'N. Atlantic',region_gibraltar:'Gibraltar',region_med:'Mediterranean',
+    region_centrale:'Central Coast',region_sud:'South Coast',region_agadir:'Agadir',
+    region_sahara:'Sahara',region_interieur:'Inland',
     regs_subtitle:'Sizes, seasons, permits — always verify official regulations',
     reg_authority:'Official sources: Direction des Pêches Maritimes (coastal) · Département des Eaux & Forêts (inland).',
     license_title:'PERMITS & LICENCES',lic_coastal:'Coastal fishing',lic_inland:'Freshwater & reservoirs',lic_tuna:'Big pelagics',
@@ -1062,6 +1064,7 @@ const I18N = {
     moon_new:'New moon',moon_waxing:'First quarter',moon_full:'Full moon',moon_waning:'Last quarter',
     tide_source:'Source: Open-Meteo Marine',
     best_time:'Dawn & dusk',
+    season_peak:'Peak',season_good:'Good',season_slow:'Slow',
     nav_spots_title:'SPOTS',nav_regs_title:'REGS',nav_rigs_title:'RIGS',
     nav_knots_title:'KNOTS',nav_tips_title:'TIPS',nav_triplog_title:'LOG',
     page_conditions_title:'CONDITIONS',page_species_title:'SPECIES',
@@ -1086,6 +1089,9 @@ const I18N = {
     filter_all:'Todas',filter_salt:'Mar',filter_fresh:'Dulce',
     overlay_back:'← Volver',
     spots_subtitle:'20 zonas · 8 regiones',near_me_text:'Zonas cercanas',region_all:'Todas',
+    region_nord_atl:'Atl. Norte',region_gibraltar:'Gibraltar',region_med:'Mediterráneo',
+    region_centrale:'Costa Central',region_sud:'Costa Sur',region_agadir:'Agadir',
+    region_sahara:'Sáhara',region_interieur:'Interior',
     regs_subtitle:'Tallas, vedas, permisos — verificar siempre la normativa oficial',
     reg_authority:'Fuentes oficiales: Direction des Pêches Maritimes (costera) · Département des Eaux & Forêts (interior).',
     license_title:'PERMISOS & LICENCIAS',lic_coastal:'Pesca costera',lic_inland:'Aguas dulces y embalses',lic_tuna:'Grandes pelágicos',
@@ -1113,6 +1119,7 @@ const I18N = {
     moon_new:'Luna nueva',moon_waxing:'Cuarto creciente',moon_full:'Luna llena',moon_waning:'Cuarto menguante',
     tide_source:'Fuente: Open-Meteo Marine',
     best_time:'Amanecer y atardecer',
+    season_peak:'Pico',season_good:'Bueno',season_slow:'Bajo',
     nav_spots_title:'ZONAS',nav_regs_title:'NORMAS',nav_rigs_title:'MONTAJES',
     nav_knots_title:'NUDOS',nav_tips_title:'CONSEJOS',nav_triplog_title:'DIARIO',
     page_conditions_title:'CONDICIONES',page_species_title:'ESPECIES',
@@ -1137,6 +1144,9 @@ const I18N = {
     filter_all:'الكل',filter_salt:'البحر',filter_fresh:'المياه العذبة',
     overlay_back:'→ رجوع',
     spots_subtitle:'20 مكان · 8 مناطق',near_me_text:'أماكن قريبة',region_all:'الكل',
+    region_nord_atl:'شمال أطلسي',region_gibraltar:'جبل طارق',region_med:'متوسط',
+    region_centrale:'الوسط',region_sud:'الجنوب',region_agadir:'أكادير',
+    region_sahara:'الصحراء',region_interieur:'الداخل',
     regs_subtitle:'الأحجام والمواسم والتصاريح — تحقق دائماً من الأنظمة الرسمية',
     reg_authority:'المصادر الرسمية: إدارة الصيد البحري (السواحل) · قسم المياه والغابات (الداخل).',
     license_title:'التصاريح والرخص',lic_coastal:'الصيد الساحلي',lic_inland:'المياه العذبة والسدود',lic_tuna:'الأسماك الكبيرة',
@@ -1164,6 +1174,7 @@ const I18N = {
     moon_new:'محاق',moon_waxing:'الربع الأول',moon_full:'بدر',moon_waning:'الربع الأخير',
     tide_source:'المصدر: Open-Meteo Marine',
     best_time:'الفجر والغروب',
+    season_peak:'ذروة',season_good:'جيد',season_slow:'ضعيف',
     nav_spots_title:'الأماكن',nav_regs_title:'الأنظمة',nav_rigs_title:'التجهيزات',
     nav_knots_title:'العقد',nav_tips_title:'نصائح',nav_triplog_title:'اليومية',
     page_conditions_title:'الأحوال',page_species_title:'الأسماك',
@@ -1188,6 +1199,9 @@ const I18N = {
     filter_all:'ⴰⴽⴽ',filter_salt:'ⴰⵍⵍⵓⵙ',filter_fresh:'ⵡⴰⵎⴰⵏ ⴰⵎⴰⵍⵓ',
     overlay_back:'→ ⴳⵓⵜ',
     spots_subtitle:'20 ⵏ ⵉⵖⵔⵎⴰⵏ · 8 ⵜⵉⵎⵏⴰⴹⵉⵏ',near_me_text:'ⵉⵖⵔⵎⴰⵏ ⵢⴰⵏⵏ',region_all:'ⴰⴽⴽ',
+    region_nord_atl:'ⴰⵜⵍⴰⵙ ⴰⴳⴳⵯⵓⵔ',region_gibraltar:'ⵊⴱⵍ ⵟⴰⵕⵉⵇ',region_med:'ⵓⵔⵉⵔ ⴰⵎⵓⵙⵙⵓ',
+    region_centrale:'ⵓⵍⵍⵓⵙ ⵏ ⵓⵎⵎⴰ',region_sud:'ⴰⴳⵓⵏⵙ',region_agadir:'ⴰⴳⴰⴷⵉⵔ',
+    region_sahara:'ⵜⵉⵏⵉⵔⵉ',region_interieur:'ⴰⴷⴰⴼⵏ',
     regs_subtitle:'ⵉⵙⴼⴽⴰ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵍⵎⵖⵔⵉⴱ',
     reg_authority:'ⵜⵉⵔⵎⵉⵙⵉⵏ ⵜⵉⵙⵏⵙⵉⵢⵉⵏ.',
     license_title:'ⵜⵉⵔⵙⵍⵉⵏ ⴷ ⵉⵙⴼⴽⴰ',lic_coastal:'ⴰⵙⵍⵎⴷ ⴰⴳⵔⴰⵡⴰⵏ',lic_inland:'ⵡⴰⵎⴰⵏ ⴰⵎⴰⵍⵓ',lic_tuna:'ⵉⵙⵍⵎⴰⵏ ⵉⵎⵇⵇⵔⴰⵏⵏ',
@@ -1215,6 +1229,7 @@ const I18N = {
     moon_new:'ⴰⵟⵟⴰⵙ',moon_waxing:'ⵜⴰⵙⴽⴽⵉⵡⵜ',moon_full:'ⴰⵡⵔⴰⴽ ⴰⵎⵇⵇⵔⴰⵏ',moon_waning:'ⵜⴰⴼⵓⵍⵍⵓⵜ',
     tide_source:'Open-Meteo Marine',
     best_time:'ⵜⴰⴼⵓⵍⴽⵉ ⴷ ⵜⴰⴼⵓⵍⵍⵓⵜ',
+    season_peak:'ⵜⵉⵣⵉ',season_good:'ⵉⴼⴼⵓⵍⴽⵉ',season_slow:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     page_conditions_title:'ⵜⴰⵏⵣⵣⴰⵢⵜ',page_species_title:'ⵉⵙⵍⵎⴰⵏ',
   }
 };
@@ -1327,11 +1342,11 @@ function applyTranslations(){
   const tideSelect = document.getElementById('tide-station-select');
   if(tideSelect){
     const stationNames = {
-      fr:{tanger:'Tanger',casablanca:'Casablanca',agadir:'Agadir',dakhla:'Dakhla',nador:'Nador / Méditerranée'},
-      en:{tanger:'Tangier',casablanca:'Casablanca',agadir:'Agadir',dakhla:'Dakhla',nador:'Nador / Mediterranean'},
-      es:{tanger:'Tánger',casablanca:'Casablanca',agadir:'Agadir',dakhla:'Dajla',nador:'Nador / Mediterráneo'},
-      ar:{tanger:'طنجة',casablanca:'الدار البيضاء',agadir:'أكادير',dakhla:'الداخلة',nador:'الناظور / المتوسط'},
-      zgh:{tanger:'ⵜⴰⵏⵊⴰ',casablanca:'ⴰⵏⴼⴰ',agadir:'ⴰⴳⴰⴷⵉⵔ',dakhla:'ⵜⴷⴰⵅⵍⴰ',nador:'ⵏⴰⴷⵓⵔ'}
+      fr:{tanger:'Tanger',kenitra:'Kénitra',rabat:'Rabat',casablanca:'Casablanca',eljadida:'El Jadida',safi:'Safi',essaouira:'Essaouira',agadir:'Agadir',dakhla:'Dakhla',nador:'Nador / Méditerranée'},
+      en:{tanger:'Tangier',kenitra:'Kenitra',rabat:'Rabat',casablanca:'Casablanca',eljadida:'El Jadida',safi:'Safi',essaouira:'Essaouira',agadir:'Agadir',dakhla:'Dakhla',nador:'Nador / Mediterranean'},
+      es:{tanger:'Tánger',kenitra:'Kénitra',rabat:'Rabat',casablanca:'Casablanca',eljadida:'El Jadida',safi:'Safi',essaouira:'Esauira',agadir:'Agadir',dakhla:'Dajla',nador:'Nador / Mediterráneo'},
+      ar:{tanger:'طنجة',kenitra:'القنيطرة',rabat:'الرباط',casablanca:'الدار البيضاء',eljadida:'الجديدة',safi:'آسفي',essaouira:'الصويرة',agadir:'أكادير',dakhla:'الداخلة',nador:'الناظور / المتوسط'},
+      zgh:{tanger:'ⵜⴰⵏⵊⴰ',kenitra:'ⵇⵏⵉⵟⵕⴰ',rabat:'ⵕⵕⴱⴰⵟ',casablanca:'ⴰⵏⴼⴰ',eljadida:'ⵍⵊⴷⵉⴷⴰ',safi:'ⴰⵙⴼⵉ',essaouira:'ⵜⵙⵡⵉⵔⴰ',agadir:'ⴰⴳⴰⴷⵉⵔ',dakhla:'ⵜⴷⴰⵅⵍⴰ',nador:'ⵏⴰⴷⵓⵔ'}
     };
     const names = stationNames[currentLang]||stationNames.fr;
     Array.from(tideSelect.options).forEach(opt=>{
@@ -1781,7 +1796,9 @@ const RIGS = [
    target:{fr:'Daurade, loup, sole, raie',ar:'دنيس، قاروص، موسى، شفنين',en:'Sea bream, bass, sole, ray'},
    desc:{fr:'La technique reine sur les côtes atlantiques marocaines. Plombs fuseaux 80–150g selon le courant.',ar:'التقنية الملكية على السواحل الأطلسية المغربية. رصاصات 80–150 غ.',en:'The dominant technique on Moroccan Atlantic beaches. Leads 80–150g depending on current.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet surfcasting','Bas de ligne 0.35–0.40mm nylon 1.5–2m','Plomb fuseau 80–150g selon courant','2 hameçons taille 2–4 sur potences 20cm','Appâts: ver de sable, moule, crevette','Lancer à 60–80m — attendre 15–20min'],
-          en:['Braid 0.28–0.35mm on surfcasting reel','Leader 0.35–0.40mm nylon 1.5–2m','Torpedo lead 80–150g to match current','2 hooks size 2–4 on 20cm snoods','Baits: sandworm, mussel, shrimp','Cast 60–80m — wait 15–20 min']},
+          en:['Braid 0.28–0.35mm on surfcasting reel','Leader 0.35–0.40mm nylon 1.5–2m','Torpedo lead 80–150g to match current','2 hooks size 2–4 on 20cm snoods','Baits: sandworm, mussel, shrimp','Cast 60–80m — wait 15–20 min'],
+          es:['Trenzado 0.28–0.35mm en carrete surfcasting','Bajo de línea 0.35–0.40mm nylon 1.5–2m','Plomo torpedo 80–150g según corriente','2 anzuelos talla 2–4 en brazoladas 20cm','Cebos: gusano de arena, mejillón, gamba','Lanzar 60–80m — esperar 15–20 min'],
+          ar:['جدل 0.28–0.35 ملم على بكرة سيرف كاستينغ','قاعدة خط 0.35–0.40 ملم نايلون 1.5–2م','رصاصة مغزلية 80–150 غ حسب التيار','2 صنار مقاس 2–4 على ذراعين 20 سم','طعم: دودة رملية، بلح البحر، جمبري','رمي 60–80 متر — انتظر 15–20 دقيقة']},
    svg:`<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="160" y1="10" x2="160" y2="60" stroke="#c9a44a" stroke-width="2"/>
   <line x1="100" y1="60" x2="220" y2="60" stroke="#c9a44a" stroke-width="2"/>
@@ -1803,7 +1820,9 @@ const RIGS = [
    target:{fr:'Mérou, rouget, daurade, poulpe',ar:'هامور، بربوني، دنيس، أخطبوط',en:'Grouper, red mullet, bream, octopus'},
    desc:{fr:'Pêche depuis les rochers ou le bateau. Plomb lourd pour tenir le fond.',ar:'الصيد من الصخور أو القارب بمونتاج ثقيل.',en:'Rock or boat fishing. Heavy lead to hold bottom in current.',zgh:'ⴰⵙⵍⵎⴷ ⵙⴳ ⵉⵡⵔⵉⵙⵏ ⵏⵖ ⵜⴰⴱⵔⴽⵓⴽⵜ.'},
    steps:{fr:['Fil principal tressé ou nylon 0.40–0.50mm','Bas de ligne plus fin 0.30–0.35mm','Plomb 60–120g en bas du montage','1–2 hameçons en potences au-dessus du plomb','Appâts: moule, crevette, calamar','Pêche à la touche — remonter dès mordu'],
-          en:['Main line braid or nylon 0.40–0.50mm','Leader 0.30–0.35mm','Lead 60–120g at bottom','1–2 hooks on snoods above lead','Baits: mussel, shrimp, squid','Bite detection — strike immediately']},
+          en:['Main line braid or nylon 0.40–0.50mm','Leader 0.30–0.35mm','Lead 60–120g at bottom','1–2 hooks on snoods above lead','Baits: mussel, shrimp, squid','Bite detection — strike immediately'],
+          es:['Línea principal trenzada o nylon 0.40–0.50mm','Bajo de línea 0.30–0.35mm','Plomo 60–120g en la parte inferior','1–2 anzuelos en brazoladas sobre el plomo','Cebos: mejillón, gamba, calamar','Detección de mordida — sacudir inmediatamente'],
+          ar:['خيط رئيسي جدل أو نايلون 0.40–0.50 ملم','قاعدة خط أرفع 0.30–0.35 ملم','رصاصة 60–120 غ في أسفل المونتاج','1–2 صنار على ذراعين فوق الرصاصة','طعم: بلح البحر، جمبري، حبار','انتظار اللمسة — اسحب فور العض']},
    svg:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="160" y1="10" x2="160" y2="170" stroke="#c9a44a" stroke-width="2"/>
   <line x1="160" y1="80" x2="200" y2="80" stroke="#8a8578" stroke-width="1.5"/>
@@ -1821,7 +1840,9 @@ const RIGS = [
    target:{fr:'Carpe, barbeau',ar:'كارب، بربوط',en:'Carp, barbel'},
    desc:{fr:'Montage standard carpe, dominant dans les barrages marocains depuis 15 ans. Boilies 16–20mm.',ar:'المونتاج الأساسي لصيد الكارب. بويلي 16–20 ملم.',en:'Standard carp rig dominant in Moroccan reservoirs for 15 years. Boilies 16–20mm.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵡⴰⴱⵔⵉⴷ ⴳ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ ⵏ ⵍⵎⵖⵔⵉⴱ.'},
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet baitrunner','Bas de ligne coated braid 25cm','Hameçon carpe taille 4–6 avec hair','Boilie 16–20mm sur le hair','Plomb poire 60–100g coulissant','Posée — attente au posé, détecteur conseillé'],
-          en:['Braid 0.28–0.35mm on baitrunner reel','Coated braid hooklink 25cm','Carp hook size 4–6 with hair','Boilie 16–20mm on hair','Pear lead 60–100g running','Bolt rig setup — bite alarm recommended']},
+          en:['Braid 0.28–0.35mm on baitrunner reel','Coated braid hooklink 25cm','Carp hook size 4–6 with hair','Boilie 16–20mm on hair','Pear lead 60–100g running','Bolt rig setup — bite alarm recommended'],
+          es:['Trenzado 0.28–0.35mm en carrete baitrunner','Bajo de línea coated braid 25cm','Anzuelo carpa talla 4–6 con pelo','Boilie 16–20mm en el pelo','Plomo pera 60–100g deslizante','Montura bolt — detector de picada recomendado'],
+          ar:['جدل 0.28–0.35 ملم على بكرة بيت رانر','قاعدة خط مغلف 25 سم','صنار كارب مقاس 4–6 مع الشعر','بويلي 16–20 ملم على الشعر','رصاصة كمثرى 60–100 غ منزلقة','وضعية البولت — جهاز كشف العض موصى به']},
    svg:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="30" y1="100" x2="200" y2="100" stroke="#c9a44a" stroke-width="2"/>
   <path d="M200 100 C220 100 230 90 225 80 C220 70 210 72 210 80" fill="none" stroke="#2a8f7e" stroke-width="2"/>
@@ -1839,7 +1860,9 @@ const RIGS = [
    target:{fr:'Truite fario, barbeau',ar:'تراوت، بربوط',en:'Brown trout, barbel'},
    desc:{fr:'Ultra-léger en rivière de montagne. Canne 1.8–2.1m, 1–8g. Cuillers Mepps 0–2.',ar:'سبينينغ خفيف جداً في الأنهار الجبلية. قضيب 1.8–2.1م، 1–8 غ.',en:'Ultra-light in mountain streams. Rod 1.8–2.1m, 1–8g. Mepps spinners #0–2.',zgh:'ⵙⴱⵉⵏⵉⵏⴳ ⴰⵎⵣⵢⴰⵏ ⴳ ⵉⴼⵔⴷⵉⵙⵏ ⵏ ⵓⴷⵔⴰⵔ.'},
    steps:{fr:['Canne spinning 1.8–2.1m action UL','Nylon 0.16–0.20mm ou tressée fine 0.10mm','Cuiller tournante Mepps 0–2 ou inline','Lancer en amont — récupérer dans le courant','Nymphe ou mouche sèche si canne fly disponible','Toujours remettre les petites — taille min 20cm'],
-          en:['Spinning rod 1.8–2.1m UL action','Nylon 0.16–0.20mm or fine braid 0.10mm','Mepps 0–2 spinner or inline spoon','Cast upstream — retrieve with current','Nymph or dry fly if fly rod available','Always release sub-20cm fish']},
+          en:['Spinning rod 1.8–2.1m UL action','Nylon 0.16–0.20mm or fine braid 0.10mm','Mepps 0–2 spinner or inline spoon','Cast upstream — retrieve with current','Nymph or dry fly if fly rod available','Always release sub-20cm fish'],
+          es:['Caña spinning 1.8–2.1m acción UL','Nylon 0.16–0.20mm o trenzado fino 0.10mm','Cucharilla Mepps 0–2 o inline','Lanzar aguas arriba — recuperar con la corriente','Ninfa o mosca seca si hay caña fly','Siempre soltar menores de 20cm'],
+          ar:['قضيب سبينينغ 1.8–2.1م خفيف','نايلون 0.16–0.20 ملم أو جدل رفيع 0.10 ملم','ملعقة ميبس 0–2 أو إينلاين','الرمي عكس التيار — السحب مع التيار','نمفة أو ذبابة جافة إن توفرت قصبة ذبابي','أفرج دائماً عن ما دون 20 سم']},
    svg:`<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="20" y1="80" x2="240" y2="80" stroke="#c9a44a" stroke-width="1.5"/>
   <ellipse cx="255" cy="80" rx="16" ry="10" fill="none" stroke="#2a8f7e" stroke-width="2"/>
@@ -1857,7 +1880,9 @@ const RIGS = [
    target:{fr:'Seiche, poulpe',ar:'سبيا، أخطبوط',en:'Cuttlefish, octopus'},
    desc:{fr:'Technique en pleine expansion sur les côtes atlantiques. Turlutte 3.5–4.5, fil PE 0.6–0.8.',ar:'تقنية في توسع على الساحل الأطلسي. طعم خاص 3.5–4.5.',en:'Rapidly growing technique on Atlantic coasts. Eging jig 3.5–4.5, PE line 0.6–0.8.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵊⵊⵓⵜ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
    steps:{fr:['Canne eging 2.4–2.8m, action tip','Tressée PE 0.6–0.8 + fluorocarbone 2–3m','Turlutte 3.5–4.5 couleur vive ou naturelle','Lancer, laisser couler, action saccadée','Récupération lente — seiche saisit par derrière','Automne: concentration sur les spots rocheux'],
-          en:['Egi rod 2.4–2.8m tip action','PE braid 0.6–0.8 + fluoro leader 2–3m','Egi 3.5–4.5 bright or natural colour','Cast, let sink, jerk retrieve','Slow retrieve — cuttlefish attacks from behind','Autumn: concentrate on rocky spots at dusk']},
+          en:['Egi rod 2.4–2.8m tip action','PE braid 0.6–0.8 + fluoro leader 2–3m','Egi 3.5–4.5 bright or natural colour','Cast, let sink, jerk retrieve','Slow retrieve — cuttlefish attacks from behind','Autumn: concentrate on rocky spots at dusk'],
+          es:['Caña eging 2.4–2.8m acción tip','Trenzado PE 0.6–0.8 + líder fluorocarbono 2–3m','Egi 3.5–4.5 color vivo o natural','Lanzar, dejar hundir, recuperación sacudida','Recuperación lenta — la sepia ataca por detrás','Otoño: concentrarse en zonas rocosas al atardecer'],
+          ar:['قضيب إيجينغ 2.4–2.8م طرفي','جدل PE 0.6–0.8 + فلوروكربون 2–3م','طعم تورلوت 3.5–4.5 ألوان زاهية أو طبيعية','رمي، اترك يغوص، سحب متقطع','سحب بطيء — السبيا تهجم من الخلف','الخريف: تركيز على الأماكن الصخرية عند الغروب']},
    svg:`<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" class="rig-diagram">
   <line x1="20" y1="70" x2="220" y2="70" stroke="#c9a44a" stroke-width="1.5"/>
   <rect x="220" y="55" width="50" height="20" rx="10" fill="#2a8f7e" opacity="0.8"/>
@@ -1910,7 +1935,9 @@ const KNOTS = [
    strength:{fr:'99%',ar:'99%',en:'99%'},
    desc:{fr:'Le nœud de connexion tressée–fluorocarbone le plus résistant. Passe dans les anneaux. Indispensable en surfcasting.',ar:'أقوى عقدة لربط الجدل بالفلوروكربون. يمر في الحلقات.',en:'Strongest braid-to-fluoro connection. Passes through guides. Essential for surfcasting.',zgh:'ⴰⴽⴽⴰⵛ ⵉⴷⴷⴰⵏ ⴳ ⵉⵎⵓⵔⴰⵔⵏ.'},
    steps:{fr:['Faire une boucle avec le fluorocarbone','Passer la tressée 15–20 fois alternée','Demi-clé finale sur le fluo','Demi-clé de finition','Couper proprement — tête très fine'],
-          en:['Make a loop with the fluorocarbon','Alternate braid 15–20 passes','Half hitch to lock on fluoro','Final locking half hitch','Trim close — very slim profile']},
+          en:['Make a loop with the fluorocarbon','Alternate braid 15–20 passes','Half hitch to lock on fluoro','Final locking half hitch','Trim close — very slim profile'],
+          es:['Hacer bucle con el fluorocarbono','Alternar trenzado 15–20 pasadas','Media clave final en el flúor','Media clave de acabado','Cortar limpio — perfil muy fino'],
+          ar:['اشكّل حلقة مع الفلوروكربون','مرر الجدل 15–20 مرة بالتناوب','نصف عقدة قفل على الفلوروكربون','نصف عقدة تشطيب','اقطع بشكل نظيف — رأس رفيع جداً']},
    svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
   <line x1="20" y1="65" x2="200" y2="65" stroke="#c9a44a" stroke-width="2"/>
   <line x1="60" y1="75" x2="200" y2="75" stroke="#2a8f7e" stroke-width="2.5"/>
@@ -1927,7 +1954,9 @@ const KNOTS = [
    strength:{fr:'85%',ar:'85%',en:'85%'},
    desc:{fr:'Nœud de jonction deux fils similaires. Utile pour rallonger le bas de ligne sur le terrain.',ar:'ربط خيطين متماثلين. مفيد لتطويل الخيط في الميدان.',en:'Join two similar lines. Useful for extending hooklinks in the field.',zgh:'ⴰⵙⵎⵓⵏ ⵏ ⵉⵅⵉⵟⴰⵏ ⴷ ⵙⵏⴰⵜ ⵜⵓⴳⴷⵉⵡⵉⵏ.'},
    steps:{fr:['Croiser les deux fils en X','5 tours fil A autour de fil B','5 tours fil B autour de fil A','Passer les deux extrémités dans la croix','Mouiller fortement et serrer simultanément'],
-          en:['Cross two lines in an X','5 wraps line A around line B','5 wraps line B around line A','Pass both tag ends through the cross','Wet thoroughly and tighten simultaneously']},
+          en:['Cross two lines in an X','5 wraps line A around line B','5 wraps line B around line A','Pass both tag ends through the cross','Wet thoroughly and tighten simultaneously'],
+          es:['Cruzar los dos hilos en X','5 vueltas hilo A alrededor de hilo B','5 vueltas hilo B alrededor de hilo A','Pasar ambos extremos por la cruz','Mojar bien y apretar simultáneamente'],
+          ar:['تقاطع الخيطين على شكل X','5 لفات خيط A حول خيط B','5 لفات خيط B حول خيط A','مرر كلا الطرفين عبر التقاطع','بلل جيداً وشد في نفس الوقت']},
    svg:`<svg viewBox="0 0 280 140" xmlns="http://www.w3.org/2000/svg" class="knot-svg">
   <line x1="20" y1="60" x2="100" y2="80" stroke="#c9a44a" stroke-width="2.5"/>
   <line x1="20" y1="80" x2="100" y2="60" stroke="#2a8f7e" stroke-width="2.5"/>
@@ -2008,17 +2037,20 @@ function renderSpeciesGrid(){
   if(!grid) return;
   const filter = document.querySelector('.pill[data-filter].active')?.dataset.filter||'all';
   const filtered = filter==='all'?SPECIES:SPECIES.filter(s=>s.type===filter);
-  grid.innerHTML = filtered.map(sp=>`
-    <div class="species-card ${sp.type}" onclick="showSpeciesOverlay('${sp.id}')">
-      <span class="species-icon">${sp.icon}</span>
-      <div class="species-name">${sp.name[currentLang]||sp.name.fr}</div>
-      <div class="species-local">${sp.local[currentLang]||sp.local.fr}</div>
-      <div class="species-sci">${sp.sci}</div>
-      <div style="margin-top:6px">
-        <span class="tag ${sp.type==='saltwater'?'tag-teal':'tag-gold'}">${sp.type==='saltwater'?t('filter_salt'):t('filter_fresh')}</span>
+  const L = currentLang;
+  grid.innerHTML = filtered.map(sp=>{
+    const badgeClass = sp.type==='saltwater'?'tag-gold':'tag-blue';
+    const label = sp.type==='saltwater'?t('filter_salt'):t('filter_fresh');
+    return `<div class="species-card ${sp.type}" onclick="showSpeciesOverlay('${sp.id}')">
+      <div style="width:100%;height:72px;margin-bottom:8px;overflow:hidden;border-radius:4px;background:var(--surface2);display:flex;align-items:center;justify-content:center">
+        <img src="/species/${sp.id}.png" alt="${sp.name[L]||sp.name.fr}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:32px\'>${sp.icon}</span>'">
       </div>
-    </div>
-  `).join('');
+      <div class="species-name">${sp.name[L]||sp.name.fr}</div>
+      <div class="species-local">${sp.local[L]||sp.local.fr}</div>
+      <div class="species-sci">${sp.sci}</div>
+      <div style="margin-top:6px"><span class="tag ${badgeClass}">${label}</span></div>
+    </div>`;
+  }).join('');
 }
 
 document.addEventListener('click',function(e){
@@ -2115,22 +2147,51 @@ function closeOverlay(){
 // ── SPOTS ──
 function renderSpots(userLat, userLng){
   const list = document.getElementById('spots-list');
+  const filterBar = document.getElementById('region-filter-bar');
   if(!list) return;
-  const region = document.querySelector('.pill[data-region].active')?.dataset.region||'all';
-  let spots = region==='all'?[...SPOTS]:SPOTS.filter(s=>s.region===region);
 
+  const REGIONS = [
+    {key:'all',i18nKey:'region_all'},
+    {key:'nord-atl',i18nKey:'region_nord_atl'},
+    {key:'gibraltar',i18nKey:'region_gibraltar'},
+    {key:'med',i18nKey:'region_med'},
+    {key:'centrale',i18nKey:'region_centrale'},
+    {key:'sud',i18nKey:'region_sud'},
+    {key:'agadir',i18nKey:'region_agadir'},
+    {key:'sahara',i18nKey:'region_sahara'},
+    {key:'interieur',i18nKey:'region_interieur'}
+  ];
+  const activeRegion = (filterBar&&filterBar.querySelector('.pill.active')?.dataset.region)||'all';
+  if(filterBar){
+    filterBar.innerHTML = REGIONS.map(r=>`<button class="pill${r.key===activeRegion?' active':''}" data-region="${r.key}" onclick="setSpotRegion('${r.key}')">${t(r.i18nKey)||r.key}</button>`).join('');
+  }
+
+  let spots = activeRegion==='all'?[...SPOTS]:SPOTS.filter(s=>s.region===activeRegion);
   if(userLat!=null){
     spots = spots.map(s=>({...s,dist:haversine(userLat,userLng,s.lat,s.lng)}));
     spots.sort((a,b)=>a.dist-b.dist);
   }
 
   const L = currentLang;
-  list.innerHTML = spots.map(sp=>`
-    <div class="spot-card">
+  const TAG_LABELS = {
+    fr:{surf:'Surf',port:'Port',beach:'Plage',offshore:'Offshore',atlantic:'Atlantique',mediterranean:'Méditerranée',river:'Rivière',reservoir:'Barrage',freshwater:'Eau douce','surf-fishing':'Surfcasting','big-game':'Grand jeu',atlas:'Atlas',trout:'Truite','national-park':'Parc nat.',sandy:'Sableux',strait:'Détroit'},
+    en:{surf:'Surf',port:'Port',beach:'Beach',offshore:'Offshore',atlantic:'Atlantic',mediterranean:'Mediterranean',river:'River',reservoir:'Reservoir',freshwater:'Freshwater','surf-fishing':'Surf fishing','big-game':'Big game',atlas:'Atlas',trout:'Trout','national-park':'Nat. park',sandy:'Sandy',strait:'Strait'},
+    es:{surf:'Surf',port:'Puerto',beach:'Playa',offshore:'Offshore',atlantic:'Atlántico',mediterranean:'Mediterráneo',river:'Río',reservoir:'Embalse',freshwater:'Dulce','surf-fishing':'Surfcasting','big-game':'Pesca mayor',atlas:'Atlas',trout:'Trucha','national-park':'P. nacional',sandy:'Arenoso',strait:'Estrecho'},
+    ar:{surf:'شاطئ',port:'ميناء',beach:'شاطئ',offshore:'عرض البحر',atlantic:'أطلسي',mediterranean:'متوسط',river:'نهر',reservoir:'سد',freshwater:'مياه عذبة','surf-fishing':'سيرف كاستينغ','big-game':'أسماك كبيرة',atlas:'أطلس',trout:'تراوت','national-park':'محمية',sandy:'رملي',strait:'مضيق'},
+    zgh:{surf:'ⵙⵓⵔⴼ',port:'ⵙⵓⵖⵔⵜ',beach:'ⵜⵓⵍⴰⵢⵜ',offshore:'ⵡⴰⵎⴰⵏ ⵉⵔⴰⵡⵏ',atlantic:'ⴰⵜⵍⴰⵙ',mediterranean:'ⵓⵔⵉⵔ',river:'ⴰⵙⵉⴼ',reservoir:'ⵜⴰⵙⴻⵔⴷⴰⵙⵜ',freshwater:'ⵡⴰⵎⴰⵏ ⴰⵎⴰⵍⵓ','surf-fishing':'ⵙⵓⵔⴼ','big-game':'ⵉⵙⵍⵎⴰⵏ ⵉⵎⵇⵇⵔⴰⵏⵏ',atlas:'ⵓⴷⵔⴰⵔ',trout:'ⵜⵔⵓⵜⵜⴰ','national-park':'ⵜⴰⵣⵓⵏⵉⵜ',sandy:'ⵜⵓⴱⴱⴰⵏⵜ',strait:'ⴰⴼⵓⵙ'}
+  };
+  const tagMap = TAG_LABELS[L]||TAG_LABELS.fr;
+  const typeColor = {offshore:'tag-crimson',reservoir:'tag-gold',river:'tag-gold',freshwater:'tag-blue',surf:'tag-teal',port:'tag-teal',beach:'tag-teal'};
+
+  list.innerHTML = spots.map(sp=>{
+    const allTags = [...new Set([...sp.tags].map(x=>x.toLowerCase()))].filter(x=>x!==sp.type.toLowerCase());
+    const primaryClass = typeColor[sp.type]||'tag-teal';
+    const typeStr = (tagMap[sp.type]||sp.type).toUpperCase();
+    return `<div class="spot-card">
       <div class="spot-header">
         <div>
           <div class="spot-name">${sp.name[L]||sp.name.fr}</div>
-          <div class="spot-region-tag">${sp.region.replace('-',' ')}</div>
+          <div class="spot-region-tag">${t('region_'+sp.region.replace('-','_'))||sp.region.replace('-',' ')}</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
           ${sp.dist!=null?`<span class="spot-distance">📍 ${sp.dist<1?(sp.dist*1000).toFixed(0)+'m':sp.dist.toFixed(1)+'km'}</span>`:''}
@@ -2139,13 +2200,38 @@ function renderSpots(userLat, userLng){
       </div>
       <div class="spot-species">${sp.species[L]||sp.species.fr||sp.species.en||''}</div>
       <div class="spot-meta">
-        <span class="tag ${sp.type==='offshore'?'tag-crimson':sp.type==='reservoir'||sp.type==='river'?'tag-gold':'tag-teal'}">${sp.type}</span>
-        ${sp.tags.map(t=>`<span class="tag tag-dim">${t}</span>`).join('')}
+        <span class="tag ${primaryClass}">${typeStr}</span>
+        ${allTags.map(tag=>`<span class="tag tag-dim">${(tagMap[tag]||tag).toUpperCase()}</span>`).join('')}
       </div>
       ${sp.access?`<div style="font-size:11px;color:var(--text-dim);margin-top:8px;font-family:var(--font-mono)">${sp.access[L]||sp.access.fr||sp.access.en||''}</div>`:''}
-      ${sp.permit?`<div class="permit-warning">⚠️ ${t('permit_inland')} — <a href="https://www.eauxetforets.gov.ma" target="_blank" style="color:var(--crimson)">eauxetforets.gov.ma</a></div>`:''}
-    </div>
-  `).join('')||'<div class="loading">—</div>';
+      ${sp.permit?`<div class="permit-warning">⚠️ <a href="https://www.eauxetforets.gov.ma" target="_blank" style="color:var(--crimson);font-family:var(--font-mono)">${t('permit_inland')}</a></div>`:''}
+    </div>`;
+  }).join('')||'<div class="loading">—</div>';
+}
+
+function setSpotRegion(region){
+  const filterBar = document.getElementById('region-filter-bar');
+  if(filterBar) filterBar.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.region===region));
+  renderSpots();
+  // After re-render the region resets; force it
+  if(filterBar) filterBar.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active',p.dataset.region===region));
+}
+
+function renderLicenseBlock(){
+  const L = currentLang;
+  const AUTH_TRANSLATE = {
+    lic_coastal:{fr:'Pêche côtière',ar:'الصيد الساحلي',en:'Coastal fishing',es:'Pesca costera',zgh:'ⴰⵙⵍⵎⴷ ⴰⴳⵔⴰⵡⴰⵏ'},
+    lic_inland:{fr:'Eaux douces & barrages',ar:'المياه العذبة والسدود',en:'Freshwater & reservoirs',es:'Aguas dulces y embalses',zgh:'ⵡⴰⵎⴰⵏ ⴰⵎⴰⵍⵓ ⴷ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ'},
+    lic_tuna:{fr:'Grands pélagiques',ar:'الأسماك الكبيرة',en:'Big pelagics',es:'Grandes pelágicos',zgh:'ⵉⵙⵍⵎⴰⵏ ⵉⵎⵇⵇⵔⴰⵏⵏ'},
+  };
+  const licTitle = document.getElementById('license-title');
+  const licCoastal = document.getElementById('lic-coastal');
+  const licInland = document.getElementById('lic-inland');
+  const licTuna = document.getElementById('lic-tuna');
+  if(licTitle) licTitle.textContent = t('license_title');
+  if(licCoastal) licCoastal.textContent = (AUTH_TRANSLATE.lic_coastal[L]||AUTH_TRANSLATE.lic_coastal.fr);
+  if(licInland) licInland.textContent = (AUTH_TRANSLATE.lic_inland[L]||AUTH_TRANSLATE.lic_inland.fr);
+  if(licTuna) licTuna.textContent = (AUTH_TRANSLATE.lic_tuna[L]||AUTH_TRANSLATE.lic_tuna.fr);
 }
 
 function haversine(lat1,lng1,lat2,lng2){
@@ -2172,13 +2258,21 @@ function renderRegs(){
   const list = document.getElementById('regs-list');
   if(!list) return;
   const L = currentLang;
+  const AUTH_LABELS = {
+    'Eaux & Forêts':{fr:'Eaux & Forêts',ar:'مياه وغابات',en:'Eaux & Forêts',es:'Eaux & Forêts',zgh:'ⵡⴰⵎⴰⵏ ⴷ ⵉⴳⵔⵔⴰⵏ'},
+    'DPM':{fr:'DPM',ar:'إدارة الصيد البحري',en:'DPM',es:'DPM',zgh:'DPM'},
+    'ICCAT':{fr:'ICCAT',ar:'ICCAT',en:'ICCAT',es:'ICCAT',zgh:'ICCAT'},
+    'CITES':{fr:'CITES',ar:'CITES',en:'CITES',es:'CITES',zgh:'CITES'},
+    'DPM + ICCAT':{fr:'DPM + ICCAT',ar:'DPM + ICCAT',en:'DPM + ICCAT',es:'DPM + ICCAT',zgh:'DPM + ICCAT'},
+  };
+  const authLabel = (a)=>{const m=AUTH_LABELS[a]; return m?(m[L]||m.fr):a;};
   list.innerHTML = REGS.map(r=>`
     <div class="reg-card">
       <div class="reg-species">${r.species[L]||r.species.fr}</div>
       <div class="reg-row"><span class="reg-key">${t('overlay_legal_size')}</span><span class="${r.warn?'reg-warning':'reg-ok'}">${r.min_size}</span></div>
       <div class="reg-row"><span class="reg-key">${t('overlay_limit')}</span><span class="reg-val">${r.bag[L]||r.bag.fr}</span></div>
       <div class="reg-row"><span class="reg-key">${t('overlay_season')}</span><span class="reg-val">${r.season[L]||r.season.fr}</span></div>
-      <div class="reg-row"><span class="reg-key">${t('overlay_authority')||'Autorité'}</span><span class="reg-val ${r.warn?'reg-warning':''}">${r.authority}</span></div>
+      <div class="reg-row"><span class="reg-key">${t('overlay_authority')||'Autorité'}</span><span class="reg-val ${r.warn?'reg-warning':''}">${authLabel(r.authority)}</span></div>
     </div>
   `).join('');
 }
@@ -2346,7 +2440,12 @@ function exportTrips(){
 // ── WEATHER & CONDITIONS ──
 const TIDE_STATIONS = {
   tanger:{lat:35.78,lng:-5.81,name:'Tanger'},
+  kenitra:{lat:34.26,lng:-6.57,name:'Kénitra'},
+  rabat:{lat:34.02,lng:-6.84,name:'Rabat'},
   casablanca:{lat:33.60,lng:-7.62,name:'Casablanca'},
+  eljadida:{lat:33.25,lng:-8.51,name:'El Jadida'},
+  safi:{lat:32.30,lng:-9.24,name:'Safi'},
+  essaouira:{lat:31.51,lng:-9.77,name:'Essaouira'},
   agadir:{lat:30.41,lng:-9.59,name:'Agadir'},
   dakhla:{lat:23.69,lng:-15.93,name:'Dakhla'},
   nador:{lat:35.17,lng:-2.94,name:'Nador'}
@@ -2460,6 +2559,24 @@ function renderLiveConditions(data){
   `;
 }
 
+function renderBig5(){
+  const BIG5 = ['daurade','loup','maquereau','carpe','truite'];
+  const L = currentLang;
+  const grid = document.getElementById('big5-grid');
+  if(!grid) return;
+  grid.innerHTML = BIG5.map(id=>{
+    const sp = SPECIES.find(s=>s.id===id);
+    if(!sp) return '';
+    const name = sp.name[L]||sp.name.fr;
+    return `<div class="big5-card" onclick="showSpeciesById('${id}')">
+      <div class="big5-icon" style="width:100%;height:44px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:4px;margin-bottom:4px">
+        <img src="/species/${id}.png" alt="${name}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:26px\'>${sp.icon}</span>'">
+      </div>
+      <div class="big5-name">${name}</div>
+    </div>`;
+  }).join('');
+}
+
 function renderBiteScience(data){
   if(!data||!data.hourly) return;
   const now = new Date();
@@ -2525,6 +2642,7 @@ async function loadTides(){
   // Generate synthetic tidal data based on location (SHOM/Worldtides not free without key)
   // Realistic semi-diurnal pattern for Atlantic Morocco; Nador uses smaller Mediterranean range
   const isMed = stationKey==='nador';
+  const isSmallRange = isMed;
   const range = isMed?0.6:3.2; // metres
   const period = 12.42; // hours (semi-diurnal)
   const now = new Date();
@@ -2634,6 +2752,7 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 
   // Initial render
+  renderBig5();
   renderSpeciesGrid();
   renderSpots();
   renderRegs();
@@ -2643,6 +2762,7 @@ document.addEventListener('DOMContentLoaded',function(){
   renderTripHistory();
   renderSeasonalCal();
   populateSpeciesSelect();
+  renderLicenseBlock();
   loadHomeConditionsPreview();
 
   // Service worker
