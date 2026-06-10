@@ -474,10 +474,12 @@ body{
   background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);
   border-bottom:1px solid var(--border);
 }
-.hero-logo{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.hero-logo-img{width:56px;height:56px;object-fit:contain}
-.hero-logo-text{display:flex;flex-direction:column}
+.hero-logo{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.hero-logo-img{width:56px;height:56px;object-fit:contain;cursor:pointer}
+.hero-logo-text{display:flex;flex-direction:column;flex:1}
+.hero-logo-meta{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
 .hero-app-name{font-family:var(--font-display);font-size:36px;color:var(--gold);letter-spacing:0.06em;line-height:1}
+.hero-version{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.08em}
 .hero-tifinagh{font-family:var(--font-tifinagh);font-size:16px;color:var(--text-muted);margin-top:2px}
 .hero-tagline{font-size:13px;color:var(--text-muted);line-height:1.5;margin-top:4px}
 .big5-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:12px 16px}
@@ -656,13 +658,16 @@ body{
   <div class="page active" id="page-home">
     <div class="home-hero">
       <div class="hero-logo">
-        <img src="/icons/Main_Logo.png" class="hero-logo-img" alt="Iselman logo" onerror="this.style.display='none'">
+        <img src="/icons/Main_Logo.png" class="hero-logo-img" alt="Iselman logo" onclick="window.scrollTo({top:document.getElementById('newsletter-email')?.offsetTop-80,behavior:'smooth'})" onerror="this.style.display='none'">
         <div class="hero-logo-text">
-          <div class="hero-app-name">ISELMAN</div>
+          <div class="hero-logo-meta">
+            <div class="hero-app-name">ISELMAN</div>
+            <span class="hero-version">V2.2 · 2026</span>
+          </div>
           <div class="hero-tifinagh">ⵉⵙⴻⵍⵎⴰⵏ</div>
+          <p class="hero-tagline" id="hero-tagline" style="margin-top:4px">Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces</p>
         </div>
       </div>
-      <p class="hero-tagline" id="hero-tagline">Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces</p>
     </div>
 
     <div style="padding:8px 16px 4px">
@@ -683,15 +688,6 @@ body{
       <div class="section-title" id="seasonal-title">CALENDRIER SAISONNIER</div>
     </div>
     <div id="seasonal-cal" style="padding:0 4px 4px"></div>
-
-    <div class="newsletter-band">
-      <div class="newsletter-title" id="newsletter-title">LE RAPPORT DE TERRAIN</div>
-      <p class="newsletter-sub" id="newsletter-sub">Conditions, espèces, spots — un email par mois. Aucune pub.</p>
-      <div class="newsletter-form">
-        <input type="email" class="newsletter-input" id="newsletter-email" placeholder="email">
-        <button class="newsletter-submit" onclick="subscribeNewsletter()" id="newsletter-btn">S'inscrire</button>
-      </div>
-    </div>
 
     <div class="guides-band">
       <div class="guides-band-header">
@@ -722,6 +718,15 @@ body{
         </div>
       </div>
     </div>
+
+    <div class="newsletter-band">
+      <div class="newsletter-title" id="newsletter-title">LE RAPPORT DE TERRAIN</div>
+      <p class="newsletter-sub" id="newsletter-sub">Conditions, espèces, spots — un email par mois. Aucune pub.</p>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" id="newsletter-email" placeholder="email">
+        <button class="newsletter-submit" onclick="subscribeNewsletter()" id="newsletter-btn">S'inscrire</button>
+      </div>
+    </div>
   </div>
 
   <!-- ══ CONDITIONS ══ -->
@@ -748,6 +753,7 @@ body{
     <div style="padding:8px 16px 4px">
       <div class="section-title" id="tide-title">MARÉES</div>
       <select class="tide-station-select" id="tide-station-select" onchange="loadConditions()">
+        <option value="" disabled id="city-placeholder">— Choisir une ville —</option>
         <option value="tanger">Tanger</option>
         <option value="kenitra">Kénitra</option>
         <option value="rabat">Rabat</option>
@@ -984,6 +990,7 @@ const I18N = {
     hero_tagline:'Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces',
     big5_title:'LES 5 DU MOMENT',home_conditions_title:'CONDITIONS LIVE',
     seasonal_title:'CALENDRIER SAISONNIER',
+    city_placeholder:'— Choisir une ville —',
     newsletter_title:'LE RAPPORT DE TERRAIN',newsletter_sub:'Conditions, espèces, spots — un email par mois. Aucune pub.',
     newsletter_btn:'S\'inscrire',newsletter_placeholder:'votre@email.com',
     guides_title:'GUIDES & CHARTERS',guide1_region:'Sahara Atlantique — Surf & Bateau',
@@ -1040,6 +1047,7 @@ const I18N = {
     hero_tagline:'Morocco Fishing Guide — Atlantic · Mediterranean · Freshwater',
     big5_title:'BIG 5 RIGHT NOW',home_conditions_title:'LIVE CONDITIONS',
     seasonal_title:'SEASONAL CALENDAR',
+    city_placeholder:'— Choose a city —',
     newsletter_title:'THE FIELD REPORT',newsletter_sub:'Conditions, species, spots — one email a month. No ads.',
     newsletter_btn:'Subscribe',newsletter_placeholder:'your@email.com',
     guides_title:'GUIDES & CHARTERS',guide1_region:'Atlantic Sahara — Surf & Boat',
@@ -1096,6 +1104,7 @@ const I18N = {
     hero_tagline:'Guía de pesca de Marruecos — Atlántico · Mediterráneo · Agua dulce',
     big5_title:'LOS 5 AHORA',home_conditions_title:'CONDICIONES EN VIVO',
     seasonal_title:'CALENDARIO ESTACIONAL',
+    city_placeholder:'— Elegir ciudad —',
     newsletter_title:'EL INFORME DE CAMPO',newsletter_sub:'Condiciones, especies, zonas — un correo al mes. Sin publicidad.',
     newsletter_btn:'Suscribirse',newsletter_placeholder:'tu@email.com',
     guides_title:'GUÍAS & CHARTERS',guide1_region:'Sáhara Atlántico — Surf & Barco',
@@ -1152,6 +1161,7 @@ const I18N = {
     hero_tagline:'دليل الصيد في المغرب — المحيط الأطلسي · البحر الأبيض المتوسط · المياه العذبة',
     big5_title:'أفضل 5 الآن',home_conditions_title:'الأحوال الآن',
     seasonal_title:'التقويم الموسمي',
+    city_placeholder:'— اختر مدينة —',
     newsletter_title:'تقرير الميدان',newsletter_sub:'الأحوال والأسماك والأماكن — بريد إلكتروني واحد شهرياً. بدون إعلانات.',
     newsletter_btn:'اشتراك',newsletter_placeholder:'بريدك@الإلكتروني.com',
     guides_title:'المرشدون والتأجير',guide1_region:'الصحراء الأطلسية — صيد الشاطئ والقوارب',
@@ -1258,6 +1268,7 @@ const I18N = {
   }
 };
 let currentLang = 'fr';
+let currentOverlaySpeciesId = null;
 function t(key){return (I18N[currentLang]&&I18N[currentLang][key])||I18N.fr[key]||key}
 function setLang(lang){
   currentLang = lang;
@@ -1360,6 +1371,8 @@ function applyTranslations(){
     const key=el.getAttribute('data-ph-key');
     if(key && el.tagName!=='OPTION') el.placeholder=t(key)||el.placeholder;
   });
+  // Re-render open species overlay if any
+  if(currentOverlaySpeciesId) showSpeciesOverlay(currentOverlaySpeciesId);
   // Update newsletter placeholder
   const nlEmail = document.getElementById('newsletter-email');
   if(nlEmail) nlEmail.placeholder = t('newsletter_placeholder')||'email';
@@ -1367,6 +1380,9 @@ function applyTranslations(){
   loadHomeConditionsPreview();
   loadTides();
   // Update tide station options
+  // Update city placeholder text
+  const cityPh = document.getElementById('city-placeholder');
+  if(cityPh) cityPh.textContent = t('city_placeholder')||'— Choose a city —';
   const tideSelect = document.getElementById('tide-station-select');
   if(tideSelect){
     const stationNames = {
@@ -1774,46 +1790,46 @@ const SPOTS = [
 ];
 
 const REGS = [
-  {species:{fr:'Daurade royale',ar:'الدنيس',en:'Sea bream',es:'Dorada'},
-   min_size:'20cm',bag:{fr:'Pas de limite légale',ar:'بدون حد',en:'No bag limit'},
-   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+  {species:{fr:'Daurade royale',ar:'الدنيس',en:'Sea bream',es:'Dorada',zgh:'ⴰⵎⵓⵔⵉ'},
+   min_size:'20cm',bag:{fr:'Pas de limite légale',ar:'بدون حد',en:'No bag limit',es:'Sin límite',zgh:'ⵓⵔ ⵉⵍⵍⵉ ⵓⵎⵣⵔⵓⵢ'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round',es:'Todo el año',zgh:'ⴰⵙⴳⴳⵯⴰⵙ ⴰⴽⴽ'},
    authority:'DPM',warn:false},
-  {species:{fr:'Loup de mer',ar:'قاروص',en:'Sea bass',es:'Lubina'},
-   min_size:'36cm',bag:{fr:'10 kg/jour',ar:'10 كجم/يوم',en:'10 kg/day'},
-   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+  {species:{fr:'Loup de mer',ar:'قاروص',en:'Sea bass',es:'Lubina',zgh:'ⵉⵖⵢⵓⵍ'},
+   min_size:'36cm',bag:{fr:'10 kg/jour',ar:'10 كجم/يوم',en:'10 kg/day',es:'10 kg/día',zgh:'10 kg/ⴰⵙⵙ'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round',es:'Todo el año',zgh:'ⴰⵙⴳⴳⵯⴰⵙ ⴰⴽⴽ'},
    authority:'DPM',warn:false},
-  {species:{fr:'Thon rouge',ar:'تونة حمراء',en:'Bluefin tuna',es:'Atún rojo'},
-   min_size:'115cm',bag:{fr:'Quota ICCAT — licence pro',ar:'حصص ICCAT',en:'ICCAT quota — pro licence'},
-   season:{fr:'Réglementé',ar:'منظم',en:'Regulated'},
+  {species:{fr:'Thon rouge',ar:'تونة حمراء',en:'Bluefin tuna',es:'Atún rojo',zgh:'ⴰⵙⵍⵎ ⴰⵣⴳⵣⴰⵡ'},
+   min_size:'115cm',bag:{fr:'Quota ICCAT — licence pro',ar:'حصص ICCAT',en:'ICCAT quota — pro licence',es:'Cuota ICCAT — licencia pro',zgh:'ICCAT — ⵜⴰⵔⵙⵍⵜ'},
+   season:{fr:'Réglementé',ar:'منظم',en:'Regulated',es:'Regulado',zgh:'ⵉⵜⵜⵓⵙⴽⴰⵔ'},
    authority:'ICCAT',warn:true},
-  {species:{fr:'Mérou',ar:'الهامور',en:'Grouper',es:'Mero'},
-   min_size:'45cm',bag:{fr:'C&R recommandé',ar:'الإفراج موصى به',en:'C&R recommended'},
-   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+  {species:{fr:'Mérou',ar:'الهامور',en:'Grouper',es:'Mero',zgh:'ⴰⵎⵇⵇⵔⴰⵏ'},
+   min_size:'45cm',bag:{fr:'C&R recommandé',ar:'الإفراج موصى به',en:'C&R recommended',es:'C&R recomendado',zgh:'ⵙⵓⵍ ⵙ ⵓⵍⵎⵎⵓⴷ'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round',es:'Todo el año',zgh:'ⴰⵙⴳⴳⵯⴰⵙ ⴰⴽⴽ'},
    authority:'DPM',warn:true},
-  {species:{fr:'Requin',ar:'قرش',en:'Shark',es:'Tiburón'},
+  {species:{fr:'Requin',ar:'قرش',en:'Shark',es:'Tiburón',zgh:'ⴰⵖⵡⵉⵍ'},
    min_size:{fr:'Variable',ar:'متغير',en:'Variable'},
    bag:{fr:'C&R obligatoire espèces CITES',ar:'إفراج إلزامي CITES',en:'C&R mandatory CITES spp.'},
    season:{fr:'Réglementé',ar:'منظم',en:'Regulated'},
    authority:'CITES',warn:true},
-  {species:{fr:'Anguille',ar:'ثعبان الماء',en:'Eel',es:'Anguila'},
-   min_size:'30cm',bag:{fr:'C&R fortement recommandé — CITES',ar:'الإفراج بشدة — CITES',en:'C&R strongly rec. — CITES'},
-   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+  {species:{fr:'Anguille',ar:'ثعبان الماء',en:'Eel',es:'Anguila',zgh:'ⵜⴰⵖⵛⴰⵏⵜ'},
+   min_size:'30cm',bag:{fr:'C&R fortement recommandé — CITES',ar:'الإفراج بشدة — CITES',en:'C&R strongly rec. — CITES',es:'C&R muy recomendado — CITES',zgh:'ⵙⵓⵍ ⵙ ⵓⵍⵎⵎⵓⴷ — CITES'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round',es:'Todo el año',zgh:'ⴰⵙⴳⴳⵯⴰⵙ ⴰⴽⴽ'},
    authority:'CITES',warn:true},
-  {species:{fr:'Truite fario',ar:'تراوت',en:'Brown trout',es:'Trucha'},
-   min_size:'20cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
-   season:{fr:'Mars–octobre uniquement',ar:'مارس–أكتوبر',en:'March–October only'},
+  {species:{fr:'Truite fario',ar:'تراوت',en:'Brown trout',es:'Trucha',zgh:'ⵜⵔⵓⵜⵜⴰ'},
+   min_size:'20cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day',es:'10 peces/día',zgh:'10 ⵉⵙⵍⵎⴰⵏ/ⴰⵙⵙ'},
+   season:{fr:'Mars–octobre uniquement',ar:'مارس–أكتوبر',en:'March–October only',es:'Marzo–octubre',zgh:'ⵎⴰⵕⵚ–ⴽⵟⵓⴱⵕ'},
    authority:'Eaux & Forêts',warn:false},
-  {species:{fr:'Carpe',ar:'كارب',en:'Carp',es:'Carpa'},
-   min_size:'35cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
-   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+  {species:{fr:'Carpe',ar:'كارب',en:'Carp',es:'Carpa',zgh:'ⴽⴰⵕⴱ'},
+   min_size:'35cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day',es:'10 peces/día',zgh:'10 ⵉⵙⵍⵎⴰⵏ/ⴰⵙⵙ'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round',es:'Todo el año',zgh:'ⴰⵙⴳⴳⵯⴰⵙ ⴰⴽⴽ'},
    authority:'Eaux & Forêts',warn:false},
-  {species:{fr:'Barbeau',ar:'بربوط',en:'Barbel',es:'Barbo'},
-   min_size:'20cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
-   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+  {species:{fr:'Barbeau',ar:'بربوط',en:'Barbel',es:'Barbo',zgh:'ⴰⴱⴰⵕⴱⵓ'},
+   min_size:'20cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day',es:'10 peces/día',zgh:'10 ⵉⵙⵍⵎⴰⵏ/ⴰⵙⵙ'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round',es:'Todo el año',zgh:'ⴰⵙⴳⴳⵯⴰⵙ ⴰⴽⴽ'},
    authority:'Eaux & Forêts',warn:false},
-  {species:{fr:'Black-bass',ar:'باس',en:'Bass',es:'Black bass'},
-   min_size:'25cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day'},
-   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round'},
+  {species:{fr:'Black-bass',ar:'باس',en:'Bass',es:'Black bass',zgh:'ⴱⴰⵙ'},
+   min_size:'25cm',bag:{fr:'10 poissons/jour',ar:'10 أسماك/يوم',en:'10 fish/day',es:'10 peces/día',zgh:'10 ⵉⵙⵍⵎⴰⵏ/ⴰⵙⵙ'},
+   season:{fr:'Toute l\'année',ar:'طوال العام',en:'Year-round',es:'Todo el año',zgh:'ⴰⵙⴳⴳⵯⴰⵙ ⴰⴽⴽ'},
    authority:'Eaux & Forêts',warn:false}
 ];
 </script>
@@ -1822,7 +1838,7 @@ const RIGS = [
   {id:'surfcasting',
    name:{fr:'Surfcasting Atlantique',ar:'سيرف كاستينغ الأطلسي',es:'Surfcasting Atlántico',en:'Atlantic Surfcasting',zgh:'ⵙⵉⵔⴼ ⴽⴰⵙⵜⵉⵏⴳ'},
    target:{fr:'Daurade, loup, sole, raie',ar:'دنيس، قاروص، موسى، شفنين',en:'Sea bream, bass, sole, ray'},
-   desc:{fr:'La technique reine sur les côtes atlantiques marocaines. Plombs fuseaux 80–150g selon le courant.',ar:'التقنية الملكية على السواحل الأطلسية المغربية. رصاصات 80–150 غ.',en:'The dominant technique on Moroccan Atlantic beaches. Leads 80–150g depending on current.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
+   desc:{fr:'La technique reine sur les côtes atlantiques marocaines. Plombs fuseaux 80–150g selon le courant.',ar:'التقنية الملكية على السواحل الأطلسية المغربية. رصاصات 80–150 غ.',en:'The dominant technique on Moroccan Atlantic beaches. Leads 80–150g depending on current.',es:'La técnica dominante en las playas atlánticas marroquíes. Plomos 80–150g según corriente.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵣⵡⴰⵔⵓⵜ ⵏ ⵓⵙⵍⵎⴷ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet surfcasting','Bas de ligne 0.35–0.40mm nylon 1.5–2m','Plomb fuseau 80–150g selon courant','2 hameçons taille 2–4 sur potences 20cm','Appâts: ver de sable, moule, crevette','Lancer à 60–80m — attendre 15–20min'],
           en:['Braid 0.28–0.35mm on surfcasting reel','Leader 0.35–0.40mm nylon 1.5–2m','Torpedo lead 80–150g to match current','2 hooks size 2–4 on 20cm snoods','Baits: sandworm, mussel, shrimp','Cast 60–80m — wait 15–20 min'],
           es:['Trenzado 0.28–0.35mm en carrete surfcasting','Bajo de línea 0.35–0.40mm nylon 1.5–2m','Plomo torpedo 80–150g según corriente','2 anzuelos talla 2–4 en brazoladas 20cm','Cebos: gusano de arena, mejillón, gamba','Lanzar 60–80m — esperar 15–20 min'],
@@ -1846,7 +1862,7 @@ const RIGS = [
   {id:'fond-rocher',
    name:{fr:'Fond rocheux — Paternoster',ar:'القاع الصخري — بترنوستر',es:'Fondo rocoso — Paternóster',en:'Rocky Bottom Paternoster',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵉⵡⵔⵉⵙⵏ'},
    target:{fr:'Mérou, rouget, daurade, poulpe',ar:'هامور، بربوني، دنيس، أخطبوط',en:'Grouper, red mullet, bream, octopus'},
-   desc:{fr:'Pêche depuis les rochers ou le bateau. Plomb lourd pour tenir le fond.',ar:'الصيد من الصخور أو القارب بمونتاج ثقيل.',en:'Rock or boat fishing. Heavy lead to hold bottom in current.',zgh:'ⴰⵙⵍⵎⴷ ⵙⴳ ⵉⵡⵔⵉⵙⵏ ⵏⵖ ⵜⴰⴱⵔⴽⵓⴽⵜ.'},
+   desc:{fr:'Pêche depuis les rochers ou le bateau. Plomb lourd pour tenir le fond.',ar:'الصيد من الصخور أو القارب بمونتاج ثقيل.',en:'Rock or boat fishing. Heavy lead to hold bottom in current.',es:'Pesca de fondo desde roca o barco. Plomo pesado para aguantar corriente.',zgh:'ⴰⵙⵍⵎⴷ ⵙⴳ ⵉⵡⵔⵉⵙⵏ ⵏⵖ ⵜⴰⴱⵔⴽⵓⴽⵜ.'},
    steps:{fr:['Fil principal tressé ou nylon 0.40–0.50mm','Bas de ligne plus fin 0.30–0.35mm','Plomb 60–120g en bas du montage','1–2 hameçons en potences au-dessus du plomb','Appâts: moule, crevette, calamar','Pêche à la touche — remonter dès mordu'],
           en:['Main line braid or nylon 0.40–0.50mm','Leader 0.30–0.35mm','Lead 60–120g at bottom','1–2 hooks on snoods above lead','Baits: mussel, shrimp, squid','Bite detection — strike immediately'],
           es:['Línea principal trenzada o nylon 0.40–0.50mm','Bajo de línea 0.30–0.35mm','Plomo 60–120g en la parte inferior','1–2 anzuelos en brazoladas sobre el plomo','Cebos: mejillón, gamba, calamar','Detección de mordida — sacudir inmediatamente'],
@@ -1866,7 +1882,7 @@ const RIGS = [
   {id:'hair-rig',
    name:{fr:'Hair Rig Carpe',ar:'هير ريغ للكارب',es:'Hair rig carpa',en:'Carp Hair Rig',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⴰⴽⴰⵔⴱⴰⵢⵜ'},
    target:{fr:'Carpe, barbeau',ar:'كارب، بربوط',en:'Carp, barbel'},
-   desc:{fr:'Montage standard carpe, dominant dans les barrages marocains depuis 15 ans. Boilies 16–20mm.',ar:'المونتاج الأساسي لصيد الكارب. بويلي 16–20 ملم.',en:'Standard carp rig dominant in Moroccan reservoirs for 15 years. Boilies 16–20mm.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵡⴰⴱⵔⵉⴷ ⴳ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ ⵏ ⵍⵎⵖⵔⵉⴱ.'},
+   desc:{fr:'Montage standard carpe, dominant dans les barrages marocains depuis 15 ans. Boilies 16–20mm.',ar:'المونتاج الأساسي لصيد الكارب. بويلي 16–20 ملم.',en:'Standard carp rig dominant in Moroccan reservoirs for 15 years. Boilies 16–20mm.',es:'Método dominante para carpa en embalses marroquíes. Boilies 16–20mm.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵡⴰⴱⵔⵉⴷ ⴳ ⵜⵙⴻⵔⴷⴰⵙⵉⵏ ⵏ ⵍⵎⵖⵔⵉⴱ.'},
    steps:{fr:['Tressée 0.28–0.35mm sur moulinet baitrunner','Bas de ligne coated braid 25cm','Hameçon carpe taille 4–6 avec hair','Boilie 16–20mm sur le hair','Plomb poire 60–100g coulissant','Posée — attente au posé, détecteur conseillé'],
           en:['Braid 0.28–0.35mm on baitrunner reel','Coated braid hooklink 25cm','Carp hook size 4–6 with hair','Boilie 16–20mm on hair','Pear lead 60–100g running','Bolt rig setup — bite alarm recommended'],
           es:['Trenzado 0.28–0.35mm en carrete baitrunner','Bajo de línea coated braid 25cm','Anzuelo carpa talla 4–6 con pelo','Boilie 16–20mm en el pelo','Plomo pera 60–100g deslizante','Montura bolt — detector de picada recomendado'],
@@ -1886,7 +1902,7 @@ const RIGS = [
   {id:'spinning-truite',
    name:{fr:'Spinning Truite Atlas',ar:'سبينينغ التراوت',es:'Spinning trucha Atlas',en:'Atlas Trout Spinning',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵔⵓⵜⵜⴰ'},
    target:{fr:'Truite fario, barbeau',ar:'تراوت، بربوط',en:'Brown trout, barbel'},
-   desc:{fr:'Ultra-léger en rivière de montagne. Canne 1.8–2.1m, 1–8g. Cuillers Mepps 0–2.',ar:'سبينينغ خفيف جداً في الأنهار الجبلية. قضيب 1.8–2.1م، 1–8 غ.',en:'Ultra-light in mountain streams. Rod 1.8–2.1m, 1–8g. Mepps spinners #0–2.',zgh:'ⵙⴱⵉⵏⵉⵏⴳ ⴰⵎⵣⵢⴰⵏ ⴳ ⵉⴼⵔⴷⵉⵙⵏ ⵏ ⵓⴷⵔⴰⵔ.'},
+   desc:{fr:'Ultra-léger en rivière de montagne. Canne 1.8–2.1m, 1–8g. Cuillers Mepps 0–2.',ar:'سبينينغ خفيف جداً في الأنهار الجبلية. قضيب 1.8–2.1م، 1–8 غ.',en:'Ultra-light in mountain streams. Rod 1.8–2.1m, 1–8g. Mepps spinners #0–2.',es:'Spinning ultraligero para trucha en ríos del Atlas. Caña 1.8–2.1m, cucharillas Mepps #0–2.',zgh:'ⵙⴱⵉⵏⵉⵏⴳ ⴰⵎⵣⵢⴰⵏ ⴳ ⵉⴼⵔⴷⵉⵙⵏ ⵏ ⵓⴷⵔⴰⵔ.'},
    steps:{fr:['Canne spinning 1.8–2.1m action UL','Nylon 0.16–0.20mm ou tressée fine 0.10mm','Cuiller tournante Mepps 0–2 ou inline','Lancer en amont — récupérer dans le courant','Nymphe ou mouche sèche si canne fly disponible','Toujours remettre les petites — taille min 20cm'],
           en:['Spinning rod 1.8–2.1m UL action','Nylon 0.16–0.20mm or fine braid 0.10mm','Mepps 0–2 spinner or inline spoon','Cast upstream — retrieve with current','Nymph or dry fly if fly rod available','Always release sub-20cm fish'],
           es:['Caña spinning 1.8–2.1m acción UL','Nylon 0.16–0.20mm o trenzado fino 0.10mm','Cucharilla Mepps 0–2 o inline','Lanzar aguas arriba — recuperar con la corriente','Ninfa o mosca seca si hay caña fly','Siempre soltar menores de 20cm'],
@@ -1906,7 +1922,7 @@ const RIGS = [
   {id:'turlutte',
    name:{fr:'Turlutte Seiche & Poulpe',ar:'تورلوت للسبيا والأخطبوط',es:'Pota sepia y pulpo',en:'Cuttlefish & Octopus Jig',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵏ ⵜⵉⵙⴻⵢⵢⴰ'},
    target:{fr:'Seiche, poulpe',ar:'سبيا، أخطبوط',en:'Cuttlefish, octopus'},
-   desc:{fr:'Technique en pleine expansion sur les côtes atlantiques. Turlutte 3.5–4.5, fil PE 0.6–0.8.',ar:'تقنية في توسع على الساحل الأطلسي. طعم خاص 3.5–4.5.',en:'Rapidly growing technique on Atlantic coasts. Eging jig 3.5–4.5, PE line 0.6–0.8.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵊⵊⵓⵜ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
+   desc:{fr:'Technique en pleine expansion sur les côtes atlantiques. Turlutte 3.5–4.5, fil PE 0.6–0.8.',ar:'تقنية في توسع على الساحل الأطلسي. طعم خاص 3.5–4.5.',en:'Rapidly growing technique on Atlantic coasts. Eging jig 3.5–4.5, PE line 0.6–0.8.',es:'Jigging para sepia en auge en Marruecos. Egi 3.5–4.5, sedal PE 0.6–0.8.',zgh:'ⵜⵓⴽⴽⵉⵡⵜ ⵜⴰⵎⵊⵊⵓⵜ ⴳ ⵓⵍⵍⵓⵙ ⴰⵜⵍⴰⵙⵉ.'},
    steps:{fr:['Canne eging 2.4–2.8m, action tip','Tressée PE 0.6–0.8 + fluorocarbone 2–3m','Turlutte 3.5–4.5 couleur vive ou naturelle','Lancer, laisser couler, action saccadée','Récupération lente — seiche saisit par derrière','Automne: concentration sur les spots rocheux'],
           en:['Egi rod 2.4–2.8m tip action','PE braid 0.6–0.8 + fluoro leader 2–3m','Egi 3.5–4.5 bright or natural colour','Cast, let sink, jerk retrieve','Slow retrieve — cuttlefish attacks from behind','Autumn: concentrate on rocky spots at dusk'],
           es:['Caña eging 2.4–2.8m acción tip','Trenzado PE 0.6–0.8 + líder fluorocarbono 2–3m','Egi 3.5–4.5 color vivo o natural','Lanzar, dejar hundir, recuperación sacudida','Recuperación lenta — la sepia ataca por detrás','Otoño: concentrarse en zonas rocosas al atardecer'],
@@ -1929,7 +1945,7 @@ const KNOTS = [
    name:{fr:'Palomar',en:'Palomar',es:'Palomar',ar:'عقدة بالومار',zgh:'Palomar'},
    use:{fr:'Hameçon sur fluorocarbone ou tressée',ar:'ربط الصنارة بالخيط',en:'Hook to fluoro or braid',zgh:'ⴰⵎⴽⵓⵔⴰⵢ ⵙ ⵓⵅⵉⵟ'},
    strength:{fr:'95%',ar:'95%',en:'95%'},
-   desc:{fr:'Le nœud le plus fiable pour attacher un hameçon. Résistance 95%. Fonctionne avec tressée et fluorocarbone.',ar:'العقدة الأكثر موثوقية لربط الصنارة. مقاومة 95%.',en:'Most reliable hook knot. 95% strength. Works with braid and fluoro.',zgh:'ⴰⴽⴽⴰⵛ ⴰⵎⵣⵡⴰⵔⵓ ⵉ ⵓⵎⴽⵓⵔⴰⵢ.'},
+   desc:{fr:'Le nœud le plus fiable pour attacher un hameçon. Résistance 95%. Fonctionne avec tressée et fluorocarbone.',ar:'العقدة الأكثر موثوقية لربط الصنارة. مقاومة 95%.',en:'Most reliable hook knot. 95% strength. Works with braid and fluoro.',es:'El nudo de anzuelo más fiable. 95% resistencia. Funciona con trenzado y fluoro.',zgh:'ⴰⴽⴽⴰⵛ ⴰⵎⵣⵡⴰⵔⵓ ⵉ ⵓⵎⴽⵓⵔⴰⵢ.'},
    steps:{fr:['Passer 15cm de fil dans le chas','Former une boucle — passer l\'hameçon','Faire un nœud simple sur la double','Faire passer l\'hameçon dans la boucle','Mouiller et serrer'],
           en:['Pass 15cm of line through eye','Form a loop — pass hook through','Tie a simple overhand on the double','Pass hook back through the loop','Wet and tighten'],
           es:['Pasar 15cm de hilo por el ojo','Formar un bucle — pasar el anzuelo','Hacer un nudo simple en el doble','Pasar el anzuelo por el bucle','Mojar y apretar'],
@@ -1948,7 +1964,7 @@ const KNOTS = [
    name:{fr:'Nœud Uni (Grinner)',en:'Uni Knot (Grinner)',es:'Nudo Uni (Grinner)',ar:'عقدة يوني (غرينر)',zgh:'Uni Knot'},
    use:{fr:'Hameçon, émerillon, agrafe',ar:'ربط الصنارة والحلقة',en:'Hook, swivel, clip',zgh:'ⴰⵎⴽⵓⵔⴰⵢ ⴷ ⵜⴰⵏⵥⴰⵕⵜ'},
    strength:{fr:'90%',ar:'90%',en:'90%'},
-   desc:{fr:'Nœud polyvalent universel. Idéal pour les hameçons forts en pêche de fond.',ar:'عقدة متعددة الاستخدامات. مثالية للصنار القوية.',en:'Universal knot. Ideal for strong hooks in bottom fishing.',zgh:'ⴰⴽⴽⴰⵛ ⴰⵎⵙⵜⴰⵡⵍⵉ.'},
+   desc:{fr:'Nœud polyvalent universel. Idéal pour les hameçons forts en pêche de fond.',ar:'عقدة متعددة الاستخدامات. مثالية للصنار القوية.',en:'Universal knot. Ideal for strong hooks in bottom fishing.',es:'Nudo universal. Ideal para anzuelos fuertes en pesca de fondo.',zgh:'ⴰⴽⴽⴰⵛ ⴰⵎⵙⵜⴰⵡⵍⵉ.'},
    steps:{fr:['Passer le fil dans le chas — 20cm','Former une boucle le long du fil','Faire 5–6 tours autour du double','Passer l\'extrémité dans la boucle','Mouiller, serrer, couper l\'excédent'],
           en:['Pass 20cm through eye','Form a loop alongside main line','Make 5–6 wraps around the double','Pass tag through the loop','Wet, tighten, trim excess'],
           es:['Pasar 20cm por el ojo','Formar bucle junto a la línea principal','Dar 5–6 vueltas alrededor del doble','Pasar el extremo por el bucle','Mojar, apretar, cortar el exceso'],
@@ -1967,7 +1983,7 @@ const KNOTS = [
    name:{fr:'Nœud FG',en:'FG Knot',es:'Nudo FG',ar:'عقدة FG',zgh:'FG Knot'},
    use:{fr:'Tressée → Fluorocarbone (leader)',ar:'ربط الجدل بالفلوروكربون',en:'Braid to fluorocarbon leader',zgh:'ⵉⵜⵜⵓⵙⵎⵓⵏ ⵓⵅⵉⵟ'},
    strength:{fr:'99%',ar:'99%',en:'99%'},
-   desc:{fr:'Le nœud de connexion tressée–fluorocarbone le plus résistant. Passe dans les anneaux. Indispensable en surfcasting.',ar:'أقوى عقدة لربط الجدل بالفلوروكربون. يمر في الحلقات.',en:'Strongest braid-to-fluoro connection. Passes through guides. Essential for surfcasting.',zgh:'ⴰⴽⴽⴰⵛ ⵉⴷⴷⴰⵏ ⴳ ⵉⵎⵓⵔⴰⵔⵏ.'},
+   desc:{fr:'Le nœud de connexion tressée–fluorocarbone le plus résistant. Passe dans les anneaux. Indispensable en surfcasting.',ar:'أقوى عقدة لربط الجدل بالفلوروكربون. يمر في الحلقات.',en:'Strongest braid-to-fluoro connection. Passes through guides. Essential for surfcasting.',es:'La conexión trenzado–fluoro más resistente. Pasa por los anillos. Esencial en surfcasting.',zgh:'ⴰⴽⴽⴰⵛ ⵉⴷⴷⴰⵏ ⴳ ⵉⵎⵓⵔⴰⵔⵏ.'},
    steps:{fr:['Faire une boucle avec le fluorocarbone','Passer la tressée 15–20 fois alternée','Demi-clé finale sur le fluo','Demi-clé de finition','Couper proprement — tête très fine'],
           en:['Make a loop with the fluorocarbon','Alternate braid 15–20 passes','Half hitch to lock on fluoro','Final locking half hitch','Trim close — very slim profile'],
           es:['Hacer bucle con el fluorocarbono','Alternar trenzado 15–20 pasadas','Media clave final en el flúor','Media clave de acabado','Cortar limpio — perfil muy fino'],
@@ -1986,7 +2002,7 @@ const KNOTS = [
    name:{fr:'Blood Knot',en:'Blood Knot',es:'Nudo Blood',ar:'العقدة الدموية',zgh:'Blood Knot'},
    use:{fr:'Rallonge de ligne, réparation',ar:'توصيل خيطين',en:'Line to line join, repair',zgh:'ⴰⵙⵎⵓⵏ ⵏ ⵉⵅⵉⵟⴰⵏ ⵙⵏⴰⵜ'},
    strength:{fr:'85%',ar:'85%',en:'85%'},
-   desc:{fr:'Nœud de jonction deux fils similaires. Utile pour rallonger le bas de ligne sur le terrain.',ar:'ربط خيطين متماثلين. مفيد لتطويل الخيط في الميدان.',en:'Join two similar lines. Useful for extending hooklinks in the field.',zgh:'ⴰⵙⵎⵓⵏ ⵏ ⵉⵅⵉⵟⴰⵏ ⴷ ⵙⵏⴰⵜ ⵜⵓⴳⴷⵉⵡⵉⵏ.'},
+   desc:{fr:'Nœud de jonction deux fils similaires. Utile pour rallonger le bas de ligne sur le terrain.',ar:'ربط خيطين متماثلين. مفيد لتطويل الخيط في الميدان.',en:'Join two similar lines. Useful for extending hooklinks in the field.',es:'Une dos líneas similares. Útil para alargar el bajo de línea en el campo.',zgh:'ⴰⵙⵎⵓⵏ ⵏ ⵉⵅⵉⵟⴰⵏ ⴷ ⵙⵏⴰⵜ ⵜⵓⴳⴷⵉⵡⵉⵏ.'},
    steps:{fr:['Croiser les deux fils en X','5 tours fil A autour de fil B','5 tours fil B autour de fil A','Passer les deux extrémités dans la croix','Mouiller fortement et serrer simultanément'],
           en:['Cross two lines in an X','5 wraps line A around line B','5 wraps line B around line A','Pass both tag ends through the cross','Wet thoroughly and tighten simultaneously'],
           es:['Cruzar los dos hilos en X','5 vueltas hilo A alrededor de hilo B','5 vueltas hilo B alrededor de hilo A','Pasar ambos extremos por la cruz','Mojar bien y apretar simultáneamente'],
@@ -2005,7 +2021,7 @@ const KNOTS = [
    name:{fr:'Boucle sur boucle',en:'Loop to Loop',es:'Bucle a bucle',ar:'حلقة في حلقة',zgh:'ⵜⴰⴳⵓⵔⵉ ⵙ ⵜⴰⴳⵓⵔⵉ'},
    use:{fr:'Connexion rapide bas de ligne',ar:'توصيل سريع لخيط القاعدة',en:'Quick hooklink change',zgh:'ⴰⵙⵎⵓⵏ ⴰⵎⵥⵢⴰⵏ'},
    strength:{fr:'100%',ar:'100%',en:'100%'},
-   desc:{fr:'Connexion rapide parfaite en bord de mer pour changer de bas de ligne sans couper.',ar:'توصيل سريع مثالي لتغيير الخيط دون قطع.',en:'Perfect quick connection for changing hooklinks without cutting. Used in surfcasting rigs.',zgh:'ⴰⵙⵎⵓⵏ ⵉⵃⴼⴰⵡⵏ ⵉⵣⵡⴰⵔⵏ.'},
+   desc:{fr:'Connexion rapide parfaite en bord de mer pour changer de bas de ligne sans couper.',ar:'توصيل سريع مثالي لتغيير الخيط دون قطع.',en:'Perfect quick connection for changing hooklinks without cutting. Used in surfcasting rigs.',es:'Conexión rápida perfecta para cambiar el bajo de línea sin cortar. Usada en montajes surfcasting.',zgh:'ⴰⵙⵎⵓⵏ ⵉⵃⴼⴰⵡⵏ ⵉⵣⵡⴰⵔⵏ.'},
    steps:{fr:['Nœud de boucle simple sur chaque section','Passer une boucle dans l\'autre','Faire passer l\'extrémité à travers','Tirer doucement — connexion bouclée','Changer le bas de ligne en 10 secondes'],
           en:['Perfection loop on each section','Pass one loop through the other','Pass the end piece through','Pull gently — loop-to-loop connection','Change hooklink in 10 seconds'],
           es:['Nudo de bucle simple en cada sección','Pasar un bucle por el otro','Pasar el extremo a través','Tirar suavemente — conexión bucle a bucle','Cambiar el bajo de línea en 10 segundos'],
@@ -2170,6 +2186,7 @@ function showSpeciesOverlay(id){
       <p style="font-size:13px;color:var(--text-muted);line-height:1.6">${getField(sp.notes)}</p>
     </div>`:''}
   `;
+  currentOverlaySpeciesId = id;
   overlay.style.display='flex';
   requestAnimationFrame(()=>overlay.classList.add('open'));
 }
@@ -2177,6 +2194,7 @@ function showSpeciesOverlay(id){
 function showSpeciesById(id){ showSpeciesOverlay(id); showPage('species'); }
 
 function closeOverlay(){
+  currentOverlaySpeciesId = null;
   const overlay = document.getElementById('species-overlay');
   overlay.classList.remove('open');
   setTimeout(()=>overlay.style.display='none',280);
