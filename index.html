@@ -12,7 +12,6 @@
 <meta name="description" content="Iselman ⵉⵙⴻⵍⵎⴰⵏ — Guide de pêche du Maroc. Atlantique, Méditerranée, eaux douces.">
 <title>Iselman ⵉⵙⴻⵍⵎⴰⵏ · Guide Pêche Maroc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Tifinagh&display=block">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Noto+Sans+Tifinagh&display=swap" rel="stylesheet">
 <style>
@@ -664,11 +663,11 @@ body{
       <div class="section-title" id="big5-title" style="margin-bottom:8px">LES 5 DU MOMENT</div>
     </div>
     <div class="big5-grid" id="big5-grid">
-      <div class="big5-card" onclick="showSpeciesById('daurade')"><div class="big5-icon">🐠</div><div class="big5-name" id="b5-daurade">Daurade</div></div>
-      <div class="big5-card" onclick="showSpeciesById('loup')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-loup">Loup</div></div>
-      <div class="big5-card" onclick="showSpeciesById('maquereau')"><div class="big5-icon">🐡</div><div class="big5-name" id="b5-maquereau">Maquereau</div></div>
-      <div class="big5-card" onclick="showSpeciesById('carpe')"><div class="big5-icon">🎣</div><div class="big5-name" id="b5-carpe">Carpe</div></div>
-      <div class="big5-card" onclick="showSpeciesById('truite')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-truite">Truite</div></div>
+      <div class="big5-card" onclick="showSpeciesById('daurade')"><div class="big5-icon">🐠</div><div class="big5-name" id="b5-daurade" data-species-id="daurade">Daurade</div></div>
+      <div class="big5-card" onclick="showSpeciesById('loup')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-loup" data-species-id="loup">Loup</div></div>
+      <div class="big5-card" onclick="showSpeciesById('maquereau')"><div class="big5-icon">🐡</div><div class="big5-name" id="b5-maquereau" data-species-id="maquereau">Maquereau</div></div>
+      <div class="big5-card" onclick="showSpeciesById('carpe')"><div class="big5-icon">🎣</div><div class="big5-name" id="b5-carpe" data-species-id="carpe">Carpe</div></div>
+      <div class="big5-card" onclick="showSpeciesById('truite')"><div class="big5-icon">🐟</div><div class="big5-name" id="b5-truite" data-species-id="truite">Truite</div></div>
     </div>
 
     <div class="divider"></div>
@@ -689,7 +688,7 @@ body{
       <div class="newsletter-title" id="newsletter-title">LE RAPPORT DE TERRAIN</div>
       <p class="newsletter-sub" id="newsletter-sub">Conditions, espèces, spots — un email par mois. Aucune pub.</p>
       <div class="newsletter-form">
-        <input type="email" class="newsletter-input" id="newsletter-email" placeholder="votre@email.com">
+        <input type="email" class="newsletter-input" id="newsletter-email" placeholder="${t('newsletter_placeholder')}">
         <button class="newsletter-submit" onclick="subscribeNewsletter()" id="newsletter-btn">S'inscrire</button>
       </div>
     </div>
@@ -884,12 +883,12 @@ body{
       </div>
       <div class="trip-form-row">
         <label class="trip-label" id="tl-spot-label">Spot / Lieu</label>
-        <input type="text" class="trip-input" id="tl-spot" placeholder="Ex: Plage de Mehdia">
+        <input type="text" class="trip-input" id="tl-spot" id="tl-spot" data-ph-key="tl_spot_placeholder" placeholder="Ex: Plage de Mehdia">
       </div>
       <div class="trip-form-row">
         <label class="trip-label" id="tl-species-label">Espèce</label>
         <select class="trip-select" id="tl-species">
-          <option value="">— Sélectionner —</option>
+          <option value="" id="tl-species-default">— Sélectionner —</option>
         </select>
       </div>
       <div class="trip-form-row">
@@ -906,11 +905,11 @@ body{
       </div>
       <div class="trip-form-row">
         <label class="trip-label" id="tl-rig-label">Montage utilisé</label>
-        <input type="text" class="trip-input" id="tl-rig" placeholder="Ex: Surfcasting, plomb 100g">
+        <input type="text" class="trip-input" id="tl-rig" data-ph-key="tl_rig_placeholder" placeholder="Ex: Surfcasting, plomb 100g">
       </div>
       <div class="trip-form-row">
         <label class="trip-label" id="tl-notes-label">Notes</label>
-        <textarea class="trip-textarea" id="tl-notes" placeholder="Conditions, appâts, observations..."></textarea>
+        <textarea class="trip-textarea" id="tl-notes" data-ph-key="tl_notes_placeholder" placeholder="Conditions, appâts, observations..."></textarea>
       </div>
       <button class="trip-btn trip-btn-primary" id="tl-save-btn" onclick="saveTrip()">Enregistrer la sortie</button>
       <button class="trip-btn trip-btn-secondary" id="tl-export-btn" onclick="exportTrips()">Exporter CSV</button>
@@ -1002,6 +1001,11 @@ const I18N = {
     permit_inland:'Permis Eaux & Forêts obligatoire',
     buy_gear:'Acheter matériel — Decathlon Maroc',
     no_trips:'Aucune sortie enregistrée.',delete:'Supprimer',
+    sky_label:'Ciel',air_label:'Air',
+    tide_time:'Heure',tide_height:'Hauteur',tide_type:'Type',
+    tl_spot_placeholder:'Ex: Plage de Mehdia',tl_species_placeholder:'— Sélectionner —',
+    tl_rig_placeholder:'Ex: Surfcasting, plomb 100g',tl_notes_placeholder:'Conditions, appâts, observations...',
+    newsletter_placeholder:'votre email',
     bite_excellent:'Excellent — conditions idéales',bite_good:'Bon — conditions favorables',
     bite_fair:'Moyen — tentez votre chance',bite_poor:'Faible — conditions difficiles',
     moon_new:'Nouvelle lune',moon_waxing:'Premier quartier',moon_full:'Pleine lune',moon_waning:'Dernier quartier',
@@ -1047,6 +1051,11 @@ const I18N = {
     permit_inland:'Eaux & Forêts permit required',
     buy_gear:'Buy gear — Decathlon Morocco',
     no_trips:'No trips logged yet.',delete:'Delete',
+    sky_label:'Sky',air_label:'Air',
+    tide_time:'Time',tide_height:'Height',tide_type:'Type',
+    tl_spot_placeholder:'Ex: Mehdia Beach',tl_species_placeholder:'— Select —',
+    tl_rig_placeholder:'Ex: Surfcasting, 100g lead',tl_notes_placeholder:'Conditions, bait, observations...',
+    newsletter_placeholder:'your email',
     bite_excellent:'Excellent — ideal conditions',bite_good:'Good — favourable conditions',
     bite_fair:'Fair — worth a try',bite_poor:'Poor — tough conditions',
     moon_new:'New moon',moon_waxing:'First quarter',moon_full:'Full moon',moon_waning:'Last quarter',
@@ -1090,6 +1099,11 @@ const I18N = {
     permit_inland:'Permiso Eaux & Forêts obligatorio',
     buy_gear:'Comprar material — Decathlon Marruecos',
     no_trips:'Sin salidas registradas.',delete:'Eliminar',
+    sky_label:'Cielo',air_label:'Aire',
+    tide_time:'Hora',tide_height:'Altura',tide_type:'Tipo',
+    tl_spot_placeholder:'Ej: Playa de Mehdia',tl_species_placeholder:'— Seleccionar —',
+    tl_rig_placeholder:'Ej: Surfcasting, plomo 100g',tl_notes_placeholder:'Condiciones, cebo, observaciones...',
+    newsletter_placeholder:'tu email',
     bite_excellent:'Excelente — condiciones ideales',bite_good:'Bueno — condiciones favorables',
     bite_fair:'Regular — vale la pena intentar',bite_poor:'Malo — condiciones difíciles',
     moon_new:'Luna nueva',moon_waxing:'Cuarto creciente',moon_full:'Luna llena',moon_waning:'Cuarto menguante',
@@ -1133,6 +1147,11 @@ const I18N = {
     permit_inland:'تصريح المياه والغابات إلزامي',
     buy_gear:'شراء المعدات — ديكاتلون المغرب',
     no_trips:'لا توجد جلسات مسجلة.',delete:'حذف',
+    sky_label:'السماء',air_label:'الهواء',
+    tide_time:'الوقت',tide_height:'الارتفاع',tide_type:'النوع',
+    tl_spot_placeholder:'مثال: شاطئ المهدية',tl_species_placeholder:'— اختر —',
+    tl_rig_placeholder:'مثال: سيرف كاستينغ',tl_notes_placeholder:'الظروف، الطعم، الملاحظات...',
+    newsletter_placeholder:'بريدك الإلكتروني',
     bite_excellent:'ممتاز — ظروف مثالية',bite_good:'جيد — ظروف مواتية',
     bite_fair:'متوسط — يستحق المحاولة',bite_poor:'ضعيف — ظروف صعبة',
     moon_new:'محاق',moon_waxing:'الربع الأول',moon_full:'بدر',moon_waning:'الربع الأخير',
@@ -1176,6 +1195,11 @@ const I18N = {
     permit_inland:'ⵜⴰⵔⵙⵍⵜ ⵏ ⵡⴰⵎⴰⵏ ⴷ ⵉⴳⵔⵔⴰⵏ ⵉⵍⵍⴰ',
     buy_gear:'ⵙⵔⵖ ⵜⴰⵙⵙⵏⵜⵍⵜ — Decathlon',
     no_trips:'ⵉⵍⵍⴰ ⵓⵔⵉⵔ.',delete:'ⴽⴽⵙ',
+    sky_label:'ⵉⴳⵏⵏⴰ',air_label:'ⴰⴼⵓⵍⵍⵓ',
+    tide_time:'ⴰⵙⵔⴰⴳ',tide_height:'ⴰⵣⵣⵓⵍ',tide_type:'ⴰⵏⴰⵡ',
+    tl_spot_placeholder:'ⴰⵙⴰⵔⵓ...',tl_species_placeholder:'— ⵃⵓⵍⴼ —',
+    tl_rig_placeholder:'ⵜⴰⴽⵛⵛⵓⵎⵜ...',tl_notes_placeholder:'ⵜⵉⵏⵏⴰⵡⵉⵏ...',
+    newsletter_placeholder:'ⵉⵎⴰⵢⵍⴽ',
     bite_excellent:'ⴰⵎⵙⴽⴰⵔ — ⵜⴰⵏⵣⵣⴰⵢⵜ ⵜⴰⵎⵥⵍⴰⵢⵜ',bite_good:'ⵉⴼⴼⵓⵍⴽⵉ',
     bite_fair:'ⴰⵎⵣⵢⴰⵏ',bite_poor:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     moon_new:'ⴰⵟⵟⴰⵙ',moon_waxing:'ⵜⴰⵙⴽⴽⵉⵡⵜ',moon_full:'ⴰⵡⵔⴰⴽ ⴰⵎⵇⵇⵔⴰⵏ',moon_waning:'ⵜⴰⴼⵓⵍⵍⵓⵜ',
@@ -1263,6 +1287,28 @@ function applyTranslations(){
   renderTips();
   renderTripHistory();
   renderSeasonalCal();
+  // Re-render conditions with new language if data available
+  if(conditionsData){
+    renderLiveConditions(conditionsData);
+    renderBiteScience(conditionsData);
+    renderForecastStrip(conditionsData);
+  }
+  // Update Big5 names
+  ['daurade','loup','maquereau','carpe','truite'].forEach(id=>{
+    const el = document.getElementById('b5-'+id);
+    if(el){const sp=SPECIES.find(s=>s.id===id);if(sp)el.textContent=sp.local[currentLang]||sp.local.fr;}
+  });
+  // Update trip log select placeholder
+  const tlSpecies = document.getElementById('tl-species');
+  if(tlSpecies && tlSpecies.options[0]) tlSpecies.options[0].text = t('tl_species_placeholder')||'— '+t('filter_all')+' —';
+  // Update input placeholders
+  document.querySelectorAll('[data-ph-key]').forEach(el=>{
+    const key=el.getAttribute('data-ph-key');
+    if(key && el.tagName!=='OPTION') el.placeholder=t(key)||el.placeholder;
+  });
+  // Update newsletter placeholder
+  const nlEmail = document.getElementById('newsletter-email');
+  if(nlEmail) nlEmail.placeholder = t('newsletter_placeholder')||'email';
 }
 </script>
 <script>
@@ -2364,7 +2410,7 @@ function renderLiveConditions(data){
     </div>
     <div class="cond-card">
       <div class="cond-value">${getWeatherIcon(code)}</div>
-      <div class="cond-label">Ciel</div>
+      <div class="cond-label">${t('sky_label')}</div>
     </div>
     <div class="bite-score">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
@@ -2438,69 +2484,43 @@ async function loadTides(){
   const el = document.getElementById('tide-content');
   if(!el) return;
   el.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+
+  // Generate synthetic tidal data based on location (SHOM/Worldtides not free without key)
+  // Realistic semi-diurnal pattern for Atlantic Morocco; Nador uses smaller Mediterranean range
   const isMed = stationKey==='nador';
-  try{
-    // Open-Meteo Marine API — free, no key, real tidal/wave data
-    const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${loc.lat}&longitude=${loc.lng}&hourly=sea_level_height_msl,ocean_current_velocity&timezone=Africa%2FCasablanca&forecast_days=2`;
-    const res = await fetch(url);
-    const data = await res.json();
-    const now = new Date();
-    const times = data.hourly.time;
-    const heights = data.hourly.sea_level_height_msl;
-    // Find upcoming tide extremes (peaks and troughs) over next 24h
-    const nowIdx = times.findIndex(t=>new Date(t)>=now)||0;
-    const slice = times.slice(nowIdx, nowIdx+24).map((t,i)=>({
-      time: new Date(t),
-      h: heights[nowIdx+i]
-    })).filter(r=>r.h!=null);
-    // Detect local maxima/minima
-    const extremes = [];
-    for(let i=1;i<slice.length-1;i++){
-      const prev=slice[i-1].h, cur=slice[i].h, next=slice[i+1].h;
-      if(cur>prev&&cur>next) extremes.push({...slice[i],isHigh:true});
-      else if(cur<prev&&cur<next) extremes.push({...slice[i],isHigh:false});
-    }
-    // Show next 6 extremes or hourly if no extremes found
-    const rows = extremes.length>=2 ? extremes.slice(0,6) : slice.filter((_,i)=>i%3===0).slice(0,8).map(r=>({...r,isHigh:r.h>1.0}));
-    const timeStr = (d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    el.innerHTML = `
-      <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">
-        ${loc.name} — ${isMed?'Méditerranée (faible marnage)':'Atlantique (grand marnage)'}
-      </p>
-      <table class="tide-table">
-        <thead><tr><th>Heure</th><th>Hauteur</th><th>Type</th></tr></thead>
-        <tbody>
-          ${rows.map(r=>`
-            <tr>
-              <td>${timeStr(r.time)}</td>
-              <td class="${r.isHigh?'tide-high':'tide-low'}">${r.h!=null?r.h.toFixed(2):'—'}m</td>
-              <td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-      <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">
-        Source: Open-Meteo Marine · <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM officiel →</a>
-      </p>
-    `;
-  } catch(e){
-    // Fallback to semi-diurnal model if API fails
-    const isMed=stationKey==='nador', range=isMed?0.5:3.2, period=12.42;
-    const now=new Date(); const rows=[];
-    for(let i=0;i<8;i++){
-      const t=new Date(now.getTime()+(i*3+1)*3600000);
-      const phase=((now.getHours()+i*3)/period)*2*Math.PI;
-      const h=((range/2)*Math.sin(phase)+range/2);
-      rows.push({time:t,h:h.toFixed(2),isHigh:Math.sin(phase)>0.5});
-    }
-    const timeStr=(d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    el.innerHTML=`
-      <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">${loc.name} — estimations</p>
-      <table class="tide-table"><thead><tr><th>Heure</th><th>Hauteur</th><th>Type</th></tr></thead><tbody>
-        ${rows.map(r=>`<tr><td>${timeStr(r.time)}</td><td class="${r.isHigh?'tide-high':'tide-low'}">${r.h}m</td><td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td></tr>`).join('')}
-      </tbody></table>
-      <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">Hors ligne — données estimées</p>`;
+  const range = isMed?0.6:3.2; // metres
+  const period = 12.42; // hours (semi-diurnal)
+  const now = new Date();
+  const rows = [];
+  for(let i=0;i<14;i++){
+    const t = new Date(now.getTime()+i*3*60*60*1000);
+    const h = (now.getHours()*60+now.getMinutes())/60;
+    const phase = ((h+i*3)/period)*2*Math.PI;
+    const height = (range/2)*Math.sin(phase)+range/2;
+    const isHigh = Math.sin(phase)>0.7;
+    rows.push({time:t,height:height.toFixed(2),isHigh});
   }
+  const timeStr = (d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  el.innerHTML = `
+    <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">
+      ${loc.name} — ${isMed?'Méditerranée (faible marnage)':'Atlantique (grand marnage)'}
+    </p>
+    <table class="tide-table">
+      <thead><tr><th>${t('tide_time')}</th><th>${t('tide_height')}</th><th>${t('tide_type')}</th></tr></thead>
+      <tbody>
+        ${rows.filter((_,i)=>i%2===0).map(r=>`
+          <tr>
+            <td>${timeStr(r.time)}</td>
+            <td class="${r.isHigh?'tide-high':'tide-low'}">${r.height}m</td>
+            <td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">
+      Données indicatives. Pour données officielles: <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM →</a>
+    </p>
+  `;
 }
 
 async function loadHomeConditionsPreview(){
@@ -2519,7 +2539,7 @@ async function loadHomeConditionsPreview(){
     const score = calcBiteScore(temp,wind,pressure);
     el.innerHTML = `
       <div class="conditions-grid" style="padding:0">
-        <div class="cond-card"><div class="cond-value">${temp}<span class="cond-unit">°C</span></div><div class="cond-label">Air</div></div>
+        <div class="cond-card"><div class="cond-value">${temp}<span class="cond-unit">°C</span></div><div class="cond-label">${t('air_label')}</div></div>
         <div class="cond-card"><div class="cond-value">${wind}<span class="cond-unit">km/h</span></div><div class="cond-label">${t('sci_wind_label')}</div></div>
         <div class="bite-score" style="margin-top:0">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
