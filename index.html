@@ -2840,10 +2840,9 @@ async function loadHomeConditionsPreview(){
   if(!el) return;
   const loc = TIDE_STATIONS.casablanca;
   try{
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,surface_pressure&timezone=Africa%2FCasablanca&forecast_days=1`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,surface_pressure&wind_speed_unit=kmh&timezone=Africa%2FCasablanca&forecast_days=1`;
     const res = await fetch(url);
     const data = await res.json();
-    localStorage.setItem('iselman_weather_cache', JSON.stringify({ts: Date.now(), data}));
     const now = new Date();
     const idx = Math.min(data.hourly.time.findIndex(t=>new Date(t)>=now),23)||0;
     const temp = Math.round(data.hourly.temperature_2m[idx]);
@@ -2853,7 +2852,7 @@ async function loadHomeConditionsPreview(){
     el.innerHTML = `
       <div class="conditions-grid" style="padding:0">
         <div class="cond-card"><div class="cond-value">${temp}<span class="cond-unit">°C</span></div><div class="cond-label">${t('air_label')}</div></div>
-        <div class="cond-card"><div class="cond-value">${wind}<span class="cond-unit">km/h</span></div><div class="cond-label">${t('wind_label')||'VENT'}</div></div>
+        <div class="cond-card"><div class="cond-value">${wind}<span class="cond-unit">km/h</span></div><div class="cond-label">${t('sci_wind_label')}</div></div>
         <div class="bite-score" style="margin-top:0">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
             <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim)">${t('bite_score_label')}</span>
@@ -2864,34 +2863,7 @@ async function loadHomeConditionsPreview(){
       </div>
     `;
   } catch(e){
-    const cached = localStorage.getItem('iselman_weather_cache');
-    if(cached){
-      try{
-        const {ts, data} = JSON.parse(cached);
-        const ageHours = Math.round((Date.now()-ts)/3600000);
-        const idx = 0;
-        const temp = Math.round(data.hourly.temperature_2m[idx]);
-        const wind = Math.round(data.hourly.windspeed_10m[idx]);
-        const pressure = data.hourly.surface_pressure[idx];
-        const score = calcBiteScore(temp,wind,pressure);
-        el.innerHTML = `
-          <div class="conditions-grid" style="padding:0">
-            <div class="cond-card"><div class="cond-value">${temp}<span class="cond-unit">°C</span></div><div class="cond-label">${t('air_label')}</div></div>
-            <div class="cond-card"><div class="cond-value">${wind}<span class="cond-unit">km/h</span></div><div class="cond-label">${t('wind_label')||'VENT'}</div></div>
-            <div class="bite-score" style="margin-top:0">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-                <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim)">${t('bite_score_label')}</span>
-                <span style="font-family:var(--font-display);font-size:22px;color:var(--gold)">${score}/100</span>
-              </div>
-              <div class="bite-bar"><div class="bite-fill" style="width:${score}%"></div></div>
-            </div>
-          </div>
-          <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-top:6px;text-align:center">Données mises en cache · il y a ${ageHours}h</p>
-        `;
-      } catch(_){ el.innerHTML = `<p style="font-size:12px;font-family:var(--font-mono);color:var(--text-dim);padding:8px 0">Hors ligne — ouvrez l'app en ligne d'abord</p>`; }
-    } else {
-      el.innerHTML = `<p style="font-size:12px;font-family:var(--font-mono);color:var(--text-dim);padding:8px 0">Hors ligne — ouvrez l'app en ligne d'abord</p>`;
-    }
+    el.innerHTML = `<p style="font-size:12px;font-family:var(--font-mono);color:var(--text-dim);padding:8px 0">Hors ligne — ouvrez l'onglet Météo</p>`;
   }
 }
 
