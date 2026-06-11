@@ -2877,7 +2877,7 @@ function subscribeNewsletter(){
   }
   // Send to Beehiiv via their embed API
   // Replace BEEHIIV_PUB_ID with your actual publication ID from beehiiv.com/settings
-  const BEEHIIV_PUB_ID = 'YOUR_PUB_ID'; // TODO: replace with real ID from beehiiv.com
+const BEEHIIV_PUB_ID = 'pub_3f78f0da-4e60-41e4-b1f5-0506cbef0c52';
   const btn = document.getElementById('newsletter-btn');
   if(btn){btn.textContent='...';btn.disabled=true;}
   fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`, {
