@@ -745,7 +745,7 @@ body{
   <!-- ══ CONDITIONS ══ -->
   <div class="page" id="page-conditions">
     <div class="page-header">
-      <div class="page-title" id="nav-conditions-title">CONDITIONS</div>
+      <div class="page-title" id="nav-conditions-title">CONDITIONS</div><span id="conditions-cache-indicator" style="display:none;font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-left:8px;">CACHED</span>
       <div class="page-subtitle" id="conditions-subtitle">Météo, marées &amp; score de morsure</div>
     </div>
 
@@ -2836,10 +2836,27 @@ async function loadHomeConditionsPreview(){
   const el = document.getElementById('home-conditions-preview');
   if(!el) return;
   const loc = TIDE_STATIONS.casablanca;
-  try{
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,surface_pressure&wind_speed_unit=kmh&timezone=Africa%2FCasablanca&forecast_days=1`;
-    const res = await fetch(url);
-    const data = await res.json();
+try{
+    const CACHE_KEY = 'iselman_weather_cache';
+    const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+    let data;
+    const cached = localStorage.getItem(CACHE_KEY);
+    if(cached){
+      const {timestamp, payload} = JSON.parse(cached);
+      if(Date.now() - timestamp < CACHE_TTL){
+        data = payload;
+        const cacheEl = document.getElementById('conditions-cache-indicator');
+        if(cacheEl) cacheEl.style.display='inline';
+      }
+    }
+    if(!data){
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,surface_pressure&wind_speed_unit=km&timezone=Africa/Casablanca&forecast_days=1`;
+      const res = await fetch(url);
+      data = await res.json();
+      localStorage.setItem(CACHE_KEY, JSON.stringify({timestamp: Date.now(), payload: data}));
+      const cacheEl = document.getElementById('conditions-cache-indicator');
+      if(cacheEl) cacheEl.style.display='none';
+    }
     const now = new Date();
     const idx = Math.min(data.hourly.time.findIndex(t=>new Date(t)>=now),23)||0;
     const temp = Math.round(data.hourly.temperature_2m[idx]);
