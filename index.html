@@ -2839,6 +2839,54 @@ async function loadHomeConditionsPreview(){
   const el = document.getElementById('home-conditions-preview');
   if(!el) return;
   const loc = TIDE_STATIONS.casablanca;
+  const CACHE_KEY = 'iselman_home_wx';
+  const CACHE_TTL = 10 * 60 * 1000;
+
+  let cached = null;
+  try{
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(Date.now() - parsed.ts < CACHE_TTL) cached = parsed.data;
+    }
+  } catch(e){}
+
+  try{
+    let temp, wind, pressure;
+    if(cached){
+      temp = cached.temp; wind = cached.wind; pressure = cached.pressure;
+    } else {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,surface_pressure&wind_speed_unit=kmh&timezone=Africa%2FCasablanca&forecast_days=1`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const now = new Date();
+      const idx = Math.min(data.hourly.time.findIndex(t=>new Date(t)>=now),23)||0;
+      temp = Math.round(data.hourly.temperature_2m[idx]);
+      wind = Math.round(data.hourly.windspeed_10m[idx]);
+      pressure = data.hourly.surface_pressure[idx];
+      try{ sessionStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(),data:{temp,wind,pressure}})); }catch(e){}
+    }
+    const score = calcBiteScore(temp,wind,pressure);
+    el.innerHTML = `
+      <div class="conditions-grid" style="padding:0">
+        <div class="cond-card"><div class="cond-value">${temp}<span class="cond-unit">°C</span></div><div class="cond-label">${t('air_label')}</div></div>
+        <div class="cond-card"><div class="cond-value">${wind}<span class="cond-unit">km/h</span></div><div class="cond-label">${t('sci_wind_label')}</div></div>
+        <div class="bite-score" style="margin-top:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim)">${t('bite_score_label')}</span>
+            <span style="font-family:var(--font-display);font-size:22px;color:var(--gold)">${score}/100</span>
+          </div>
+          <div class="bite-bar"><div class="bite-fill" style="width:${score}%"></div></div>
+        </div>
+      </div>
+    `;
+  } catch(e){
+    el.innerHTML = `<p style="font-size:12px;font-family:var(--font-mono);color:var(--text-dim);padding:8px 0">Hors ligne — ouvrez l'onglet Météo</p>`;
+  }
+}
+  const el = document.getElementById('home-conditions-preview');
+  if(!el) return;
+  const loc = TIDE_STATIONS.casablanca;
   try{
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lng}&hourly=temperature_2m,windspeed_10m,surface_pressure&wind_speed_unit=kmh&timezone=Africa%2FCasablanca&forecast_days=1`;
     const res = await fetch(url);
