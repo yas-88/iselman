@@ -738,9 +738,10 @@ body{
 <div class="newsletter-band">
   <div class="newsletter-title" id="newsletter-title">LE RAPPORT DE TERRAIN</div>
   <p class="newsletter-sub" id="newsletter-sub">Conditions, espèces, spots — un email par mois. Aucune pub.</p>
-  <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="322a7990-f232-4924-92e3-bc6b95c39ff7"></script>
-</div>
-
+  <div class="newsletter-form">
+    <input type="email" class="newsletter-input" id="newsletter-email" placeholder="email">
+    <button class="newsletter-submit" onclick="subscribeNewsletter()" id="newsletter-btn">S'inscrire</button>
+  </div>
   <!-- ══ CONDITIONS ══ -->
   <div class="page" id="page-conditions">
     <div class="page-header">
@@ -2872,9 +2873,7 @@ function subscribeNewsletter(){
     return;
   }
   const btn = document.getElementById('newsletter-btn');
-  if(btn){btn.textContent='...';btn.disabled=true;}
-  window.open('https://iselman.beehiiv.com/subscribe?email='+encodeURIComponent(email),'_blank');
-  document.getElementById('newsletter-email').value='';
+window.open('https://iselman.beehiiv.com/subscribe','_blank');  document.getElementById('newsletter-email').value='';
   if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
     setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
 }
