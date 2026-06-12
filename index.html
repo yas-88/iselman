@@ -2875,28 +2875,13 @@ function subscribeNewsletter(){
     if(input){input.style.borderColor='var(--crimson)';setTimeout(()=>input.style.borderColor='',1500);}
     return;
   }
-  // Send to Beehiiv via their embed API
-  // Replace BEEHIIV_PUB_ID with your actual publication ID from beehiiv.com/settings
-const BEEHIIV_PUB_ID = 'pub_3f78f0da-4e60-41e4-b1f5-0506cbef0c52';
   const btn = document.getElementById('newsletter-btn');
   if(btn){btn.textContent='...';btn.disabled=true;}
-  fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email,utm_source:'iselman_app',utm_medium:'pwa'})
-  }).then(r=>{
-    document.getElementById('newsletter-email').value='';
-    if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
-      setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
-  }).catch(()=>{
-    // Fallback: open Beehiiv signup page
-    window.open('https://iselman.beehiiv.com/subscribe?email='+encodeURIComponent(email),'_blank');
-    document.getElementById('newsletter-email').value='';
-    if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
-      setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
-  });
+  window.open('https://iselman.beehiiv.com/subscribe?email='+encodeURIComponent(email),'_blank');
+  document.getElementById('newsletter-email').value='';
+  if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
+    setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
 }
-
 // ── INIT ──
 document.addEventListener('DOMContentLoaded',function(){
   // Set today's date in trip log
