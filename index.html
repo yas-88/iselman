@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="theme-color" content="#0c0d0b">
+<script>
+(function(){
+  try{
+    if(localStorage.getItem('iselman_theme')==='light'){
+      document.documentElement.setAttribute('data-theme','light');
+    }
+  }catch(e){}
+})();
+</script>
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icons/Main_Logo.png">
 <link rel="icon" type="image/png" href="/icons/Main_Logo.png">
@@ -18,10 +27,12 @@
 <style>
 :root {
   --bg: #0c0d0b;
+  --bg-rgb: 12,13,11;
   --surface: #141510;
   --surface2: #1c1e18;
-  --border: rgba(255,255,255,0.07);
+  --border: rgba(var(--text-rgb),0.07);
   --gold: #c9a44a;
+  --gold-text: var(--gold);
   --gold-dim: rgba(201,164,74,0.15);
   --gold-glow: rgba(201,164,74,0.08);
   --teal: #2a8f7e;
@@ -31,6 +42,7 @@
   --blue: #2a6db5;
   --blue-dim: rgba(42,109,181,0.15);
   --text: #e8e4da;
+  --text-rgb: 232,228,218;
   --text-muted: #8a8578;
   --text-dim: #5a5750;
   --font-display: 'Bebas Neue', 'Impact', sans-serif;
@@ -41,6 +53,18 @@
   --nav-h: 64px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --radius: 8px;
+}
+[data-theme="light"]{
+  --bg: #f7f5ef;
+  --bg-rgb: 247,245,239;
+  --surface: #ffffff;
+  --surface2: #f0ede4;
+  --text: #141510;
+  --text-rgb: 20,21,16;
+  --text-muted: #6b6658;
+  --text-dim: #9c9686;
+  --gold-text: #7a5f24;
+  --teal: #1f6b5e;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -64,7 +88,7 @@ body{
 #bottom-nav{
   position:fixed;bottom:0;left:0;right:0;
   height:calc(var(--nav-h) + var(--safe-bottom));
-  background:rgba(14,15,11,0.96);
+  background:rgba(var(--bg-rgb),0.96);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-top:1px solid var(--border);
   display:flex;overflow-x:auto;overflow-y:hidden;
@@ -75,7 +99,7 @@ body{
 #bottom-nav::after{
   content:'';position:fixed;bottom:0;right:0;
   width:40px;height:calc(var(--nav-h) + var(--safe-bottom));
-  background:linear-gradient(to right,transparent,rgba(14,15,11,0.96));
+  background:linear-gradient(to right,transparent,rgba(var(--bg-rgb),0.96));
   pointer-events:none;z-index:101;
   transition:opacity 0.3s;
 }
@@ -90,14 +114,29 @@ body{
 }
 .nav-item .nav-icon{font-size:20px;line-height:1}
 .nav-item .nav-label{font-size:9.5px;font-weight:600;letter-spacing:0.04em;white-space:nowrap;text-transform:uppercase}
-.nav-item.active{color:var(--gold)}
+.nav-item.active{color:var(--gold-text)}
 .nav-item:hover{color:var(--text)}
 .lang-bar{
   display:flex;align-items:center;gap:6px;padding:10px 16px;
   background:var(--surface);border-bottom:1px solid var(--border);
-  overflow-x:auto;scrollbar-width:none;position:fixed;top:0;left:0;right:0;z-index:300;
+  position:fixed;top:0;left:0;right:0;z-index:300;
 }
-.lang-bar::-webkit-scrollbar{display:none}
+.lang-scroll{
+  display:flex;align-items:center;gap:6px;flex:1;min-width:0;
+  overflow-x:auto;scrollbar-width:none;padding-right:40px;
+}
+.lang-scroll::-webkit-scrollbar{display:none}
+.theme-toggle{
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  width:32px;height:32px;flex-shrink:0;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;border:1px solid var(--border);
+  background:var(--surface2);cursor:pointer;font-size:16px;line-height:1;
+  transition:background 0.18s,transform 0.18s;
+  -webkit-tap-highlight-color:transparent;
+}
+.theme-toggle:hover{background:var(--gold-dim)}
+.theme-toggle:active{transform:translateY(-50%) scale(0.92)}
 .lang-btn{
   padding:5px 12px;border-radius:20px;border:1px solid var(--border);
   background:none;color:var(--text-muted);cursor:pointer;
@@ -124,7 +163,7 @@ body{
   font-family:var(--font-display);
   font-size:clamp(28px,6vw,38px);
   letter-spacing:0.04em;
-  color:var(--gold);
+  color:var(--gold-text);
   line-height:1;
 }
 .page-subtitle{
@@ -162,11 +201,11 @@ body{
   letter-spacing:0.05em;text-transform:uppercase;
   font-family:var(--font-mono);
 }
-.tag-gold{background:var(--gold-dim);color:var(--gold)}
+.tag-gold{background:var(--gold-dim);color:var(--gold-text)}
 .tag-teal{background:var(--teal-dim);color:var(--teal)}
 .tag-crimson{background:var(--crimson-dim);color:var(--crimson)}
 .tag-blue{background:var(--blue-dim);color:var(--blue)}
-.tag-dim{background:rgba(255,255,255,0.06);color:var(--text-muted)}
+.tag-dim{background:rgba(var(--text-rgb),0.06);color:var(--text-muted)}
 
 /* ── PILL FILTERS ── */
 .filter-bar{
@@ -185,7 +224,7 @@ body{
 .pill.active{background:var(--gold);border-color:var(--gold);color:#0c0d0b}
 .pill.active[data-filter="freshwater"]{background:var(--blue);border-color:var(--blue);color:#fff}
 .pill.active[data-filter="saltwater"]{background:var(--gold);border-color:var(--gold);color:#0c0d0b}
-.pill.active[data-filter="all"]{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);color:var(--text)}
+.pill.active[data-filter="all"]{background:rgba(var(--text-rgb),0.12);border-color:rgba(var(--text-rgb),0.25);color:var(--text)}
 .pill:hover{border-color:var(--text-dim);color:var(--text)}
 
 /* ── SPECIES CARDS ── */
@@ -232,7 +271,7 @@ body{
   color:var(--text);cursor:pointer;font-size:13px;
   font-family:var(--font-body);
 }
-.overlay-title{font-family:var(--font-display);font-size:28px;color:var(--gold);letter-spacing:0.04em}
+.overlay-title{font-family:var(--font-display);font-size:28px;color:var(--gold-text);letter-spacing:0.04em}
 .overlay-body{padding:16px}
 .overlay-section{margin-bottom:20px}
 .overlay-section-title{
@@ -254,7 +293,7 @@ body{
 }
 .month-cell.peak{background:var(--gold)}
 .month-cell.good{background:var(--teal)}
-.month-cell.poor{background:rgba(255,255,255,0.05)}
+.month-cell.poor{background:rgba(var(--text-rgb),0.05)}
 .season-legend{display:flex;gap:12px;margin-top:6px}
 .legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted);font-family:var(--font-mono)}
 .legend-dot{width:10px;height:10px;border-radius:2px}
@@ -289,7 +328,7 @@ body{
 .cond-value{
   font-family:var(--font-display);
   font-size:clamp(28px,7vw,40px);
-  color:var(--gold);letter-spacing:0.02em;
+  color:var(--gold-text);letter-spacing:0.02em;
   line-height:1;
 }
 .cond-unit{font-size:14px;color:var(--text-muted);margin-left:3px}
@@ -312,7 +351,7 @@ body{
   font-size:10px;text-transform:uppercase;letter-spacing:0.08em;
   border-bottom:1px solid var(--border);
 }
-.tide-table td{padding:8px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.tide-table td{padding:8px;border-bottom:1px solid rgba(var(--text-rgb),0.04)}
 .tide-high{color:var(--teal)}
 .tide-low{color:var(--text-muted)}
 .tide-station-select{
@@ -361,20 +400,20 @@ body{
 .rig-steps{list-style:none;counter-reset:step}
 .rig-steps li{
   counter-increment:step;padding:8px 0;
-  border-bottom:1px solid rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(var(--text-rgb),0.04);
   font-size:13px;color:var(--text-muted);line-height:1.5;
   display:flex;gap:10px;align-items:flex-start;
 }
 .rig-steps li::before{
   content:counter(step);
   font-family:var(--font-mono);font-size:11px;
-  color:var(--gold);min-width:20px;margin-top:1px;
+  color:var(--gold-text);min-width:20px;margin-top:1px;
 }
 .affiliate-link{
   display:flex;align-items:center;gap:8px;
   background:var(--gold-glow);border:1px solid var(--gold-dim);
   border-radius:6px;padding:10px 12px;margin-top:12px;
-  text-decoration:none;color:var(--gold);font-size:12px;
+  text-decoration:none;color:var(--gold-text);font-size:12px;
   font-family:var(--font-mono);transition:background 0.18s;
 }
 .affiliate-link:hover{background:var(--gold-dim)}
@@ -396,7 +435,7 @@ body{
 .knot-steps{list-style:none;counter-reset:kstep}
 .knot-steps li{
   counter-increment:kstep;padding:7px 0;
-  border-bottom:1px solid rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(var(--text-rgb),0.04);
   font-size:13px;color:var(--text-muted);line-height:1.5;
   display:flex;gap:10px;
 }
@@ -424,7 +463,7 @@ body{
   border-radius:var(--radius);padding:14px;margin:0 16px 8px;
 }
 .reg-species{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px}
-.reg-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px}
+.reg-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(var(--text-rgb),0.04);font-size:12px}
 .reg-key{color:var(--text-muted);font-family:var(--font-mono)}
 .reg-val{color:var(--text)}
 .reg-warning{color:var(--crimson)}
@@ -450,7 +489,7 @@ body{
   padding:9px 12px;border-radius:6px;outline:none;
   transition:border-color 0.18s;
 }
-.trip-input:focus,.trip-select:focus,.trip-textarea:focus{border-color:var(--gold)}
+.trip-input:focus,.trip-select:focus,.trip-textarea:focus{border-color:var(--gold-text)}
 .trip-textarea{resize:vertical;min-height:80px}
 .trip-select{-webkit-appearance:none;appearance:none}
 .trip-btn{
@@ -469,7 +508,7 @@ body{
 }
 .trip-entry-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
 .trip-entry-date{font-size:11px;font-family:var(--font-mono);color:var(--text-dim)}
-.trip-entry-species{font-size:13px;font-weight:600;color:var(--gold)}
+.trip-entry-species{font-size:13px;font-weight:600;color:var(--gold-text)}
 .trip-entry-details{font-size:12px;color:var(--text-muted);line-height:1.5}
 .trip-entry-delete{
   background:none;border:1px solid var(--border);border-radius:4px;
@@ -487,7 +526,7 @@ body{
 .hero-logo-img{width:56px;height:56px;object-fit:contain;cursor:pointer;background:#fff;border-radius:50%;padding:2px}
 .hero-logo-text{display:flex;flex-direction:column;flex:1}
 .hero-logo-meta{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.hero-app-name{font-family:var(--font-display);font-size:36px;color:var(--gold);letter-spacing:0.06em;line-height:1}
+.hero-app-name{font-family:var(--font-display);font-size:36px;color:var(--gold-text);letter-spacing:0.06em;line-height:1}
 .hero-version{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.08em}
 .hero-tifinagh{font-family:var(--font-tifinagh);font-size:16px;color:var(--text-muted);margin-top:2px}
 .hero-tagline{font-size:13px;color:var(--text-muted);line-height:1.5;margin-top:4px}
@@ -538,7 +577,7 @@ body{
   border:1px solid var(--gold-dim);border-radius:var(--radius);
   padding:16px;
 }
-.newsletter-title{font-family:var(--font-display);font-size:22px;color:var(--gold);letter-spacing:0.04em;margin-bottom:4px}
+.newsletter-title{font-family:var(--font-display);font-size:22px;color:var(--gold-text);letter-spacing:0.04em;margin-bottom:4px}
 .newsletter-sub{font-size:12px;color:var(--text-muted);line-height:1.5;margin-bottom:12px}
 .newsletter-form{display:flex;gap:8px;flex-wrap:wrap}
 .newsletter-input{
@@ -547,7 +586,7 @@ body{
   font-size:13px;padding:9px 12px;border-radius:6px;
   font-family:var(--font-body);outline:none;
 }
-.newsletter-input:focus{border-color:var(--gold)}
+.newsletter-input:focus{border-color:var(--gold-text)}
 .newsletter-submit{
   padding:9px 16px;background:var(--gold);border:none;
   border-radius:6px;color:#0c0d0b;font-weight:600;font-size:13px;
@@ -597,7 +636,7 @@ body{
 .license-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px}
 .license-row{
   display:flex;justify-content:space-between;align-items:center;
-  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  padding:8px 0;border-bottom:1px solid rgba(var(--text-rgb),0.04);
   font-size:12px;
 }
 .license-row:last-child{border-bottom:none}
@@ -612,7 +651,7 @@ body{
 }
 .loading-spinner{
   width:24px;height:24px;border:2px solid var(--border);
-  border-top-color:var(--gold);border-radius:50%;
+  border-top-color:var(--gold-text);border-radius:50%;
   animation:spin 0.8s linear infinite;margin:0 auto 12px;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -656,11 +695,14 @@ body{
 <div id="app">
 <!-- LANG BAR -->
 <div class="lang-bar" id="lang-bar">
-  <button class="lang-btn active" data-lang="fr">FR</button>
-  <button class="lang-btn" data-lang="ar" lang="ar">العربية</button>
-  <button class="lang-btn" data-lang="es">ES</button>
-  <button class="lang-btn" data-lang="en">EN</button>
-  <button class="lang-btn" data-lang="zgh" lang="zgh">ⵣ</button>
+  <div class="lang-scroll" id="lang-scroll">
+    <button class="lang-btn active" data-lang="fr">FR</button>
+    <button class="lang-btn" data-lang="ar" lang="ar">العربية</button>
+    <button class="lang-btn" data-lang="es">ES</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="zgh" lang="zgh">ⵣ</button>
+  </div>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Mode clair / sombre" title="Mode clair / sombre">☀️</button>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -674,7 +716,7 @@ body{
         <div class="hero-logo-text">
           <div class="hero-logo-meta">
             <div class="hero-app-name">ISELMAN</div>
-            <span class="hero-version">V2.6 · 2026</span>
+            <span class="hero-version">V2.7 · 2026</span>
           </div>
           <div class="hero-tifinagh">ⵉⵙⴻⵍⵎⴰⵏ</div>
           <p class="hero-tagline" id="hero-tagline" style="margin-top:4px">Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces</p>
@@ -805,7 +847,7 @@ body{
         <div class="bite-score" style="margin-top:12px;padding:0">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
             <span class="section-title" style="margin:0;font-size:12px" id="bite-score-label">SCORE MORSURE</span>
-            <span style="font-family:var(--font-display);font-size:24px;color:var(--gold)" id="bite-score-val">—</span>
+            <span style="font-family:var(--font-display);font-size:24px;color:var(--gold-text)" id="bite-score-val">—</span>
           </div>
           <div class="bite-bar"><div class="bite-fill" id="bite-fill" style="width:0%"></div></div>
           <p style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)" id="bite-advice">Chargement des données...</p>
@@ -943,12 +985,12 @@ body{
     text-align:center;
     margin-top:8px;
   ">
-    <div style="font-family:var(--font-display);font-size:28px;color:var(--gold);letter-spacing:0.1em;line-height:1">YASSIR BAZA</div>
+    <div style="font-family:var(--font-display);font-size:28px;color:var(--gold-text);letter-spacing:0.1em;line-height:1">YASSIR BAZA</div>
     <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-top:4px">AKA YAB.OFFICIAL</div>
     <div style="width:40px;height:1px;background:var(--gold);opacity:0.3;margin:12px auto"></div>
     <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.08em;line-height:1.8;text-transform:uppercase">
       RESEARCHED · WRITTEN · DESIGNED<br>
-      <span id="footer-version">ISELMAN ⵉⵙⴻⵍⵎⴰⵏ · V2.6</span><br>
+      <span id="footer-version">ISELMAN ⵉⵙⴻⵍⵎⴰⵏ · V2.7</span><br>
       © 2026 · ALL RIGHTS RESERVED
     </div>
     <div style="margin-top:12px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
@@ -1304,6 +1346,24 @@ function setLang(lang){
   document.body.style.fontFamily = lang==='ar'?'var(--font-arabic)':(lang==='zgh'?'var(--font-tifinagh)':'var(--font-body)');
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
   applyTranslations();
+}
+function setTheme(theme){
+  const isLight = theme==='light';
+  document.documentElement.setAttribute('data-theme', isLight?'light':'dark');
+  const btn = document.getElementById('theme-toggle');
+  if(btn) btn.textContent = isLight ? '🌙' : '☀️';
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if(metaTheme) metaTheme.setAttribute('content', isLight ? '#f7f5ef' : '#0c0d0b');
+  try{ localStorage.setItem('iselman_theme', theme); }catch(e){}
+}
+function toggleTheme(){
+  const current = document.documentElement.getAttribute('data-theme')==='light' ? 'light' : 'dark';
+  setTheme(current==='light' ? 'dark' : 'light');
+}
+function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('iselman_theme'); }catch(e){}
+  setTheme(saved==='light' ? 'light' : 'dark');
 }
 function applyTranslations(){
   const ids = [
@@ -2708,7 +2768,7 @@ function renderLiveConditions(data){
     <div class="bite-score">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <span class="section-title" style="margin:0;font-size:12px">${t('bite_score_label')}</span>
-        <span style="font-family:var(--font-display);font-size:24px;color:var(--gold)">${score}/100</span>
+        <span style="font-family:var(--font-display);font-size:24px;color:var(--gold-text)">${score}/100</span>
       </div>
       <div class="bite-bar"><div class="bite-fill" style="width:${score}%"></div></div>
       <p style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);margin-top:4px">${scoreLabel}</p>
@@ -2874,7 +2934,7 @@ async function loadHomeConditionsPreview(){
         <div class="bite-score" style="margin-top:0">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
             <span style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim)">${t('bite_score_label')}</span>
-            <span style="font-family:var(--font-display);font-size:22px;color:var(--gold)">${score}/100</span>
+            <span style="font-family:var(--font-display);font-size:22px;color:var(--gold-text)">${score}/100</span>
           </div>
           <div class="bite-bar"><div class="bite-fill" style="width:${score}%"></div></div>
         </div>
@@ -2924,6 +2984,11 @@ document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.lang-btn').forEach(btn=>{
     btn.addEventListener('click',()=>setLang(btn.dataset.lang));
   });
+
+  // Theme toggle
+  initTheme();
+  const themeBtn = document.getElementById('theme-toggle');
+  if(themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
   // Initial render
   renderBig5();
