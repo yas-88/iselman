@@ -1,4 +1,4 @@
-const CACHE = 'iselman-v2.6';
+const CACHE = 'iselman-v2.7';
 const ASSETS = ['/', '/index.html', '/manifest.json', '/icons/Main_Logo.png'];
 
 self.addEventListener('install', e => {
