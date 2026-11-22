@@ -1,8 +1,12 @@
-const CACHE = 'iselman-v2.7';
-const ASSETS = ['/', '/index.html', '/manifest.json', '/icons/Main_Logo.png'];
+const CACHE = 'iselman-v2.8';
+const SPECIES = ['anchois','anguille','barbeau','bass','carpe','daurade','espadon','loup','maquereau','merou',
+  'perche','poulpe','raie','requin','rouget','sardine','seiche','silure','thon','truite'];
+const ASSETS = ['/', '/index.html', '/manifest.json', '/icons/Main_Logo.png', '/icons/icon-192.png', '/icons/icon-512.png',
+  ...SPECIES.map(id => '/species/' + id + '.jpg')];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(() => {})));
+  // Precache shell + species photos so the guide is complete offline from first install.
+  e.waitUntil(caches.open(CACHE).then(c => Promise.all(ASSETS.map(a => c.add(a).catch(() => {})))));
   self.skipWaiting();
 });
 
@@ -15,14 +19,24 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  if (e.request.url.includes('open-meteo.com')) return; // always live
+  const url = new URL(e.request.url);
+  if (url.hostname.endsWith('open-meteo.com')) return; // always live; app caches its own copy
+  if (url.origin !== location.origin) return;           // fonts, beehiiv: let the browser handle
+
+  // Pages: network first so updates arrive without waiting on a cache bump; cache as offline fallback.
+  if (e.request.mode === 'navigate') {
+    e.respondWith(fetch(e.request).then(res => {
+      if (res.ok) { const clone = res.clone(); caches.open(CACHE).then(c => c.put('/index.html', clone)); }
+      return res;
+    }).catch(() => caches.match('/index.html')));
+    return;
+  }
+
+  // Static assets: cache first.
   e.respondWith(
     caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
-      if (res.ok) {
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
-      }
+      if (res.ok) { const clone = res.clone(); caches.open(CACHE).then(c => c.put(e.request, clone)); }
       return res;
-    }).catch(() => caches.match('/index.html')))
+    }))
   );
 });

@@ -716,7 +716,7 @@ body{
         <div class="hero-logo-text">
           <div class="hero-logo-meta">
             <div class="hero-app-name">ISELMAN</div>
-            <span class="hero-version">V2.7 · 2026</span>
+            <span class="hero-version">V2.8 · 2026</span>
           </div>
           <div class="hero-tifinagh">ⵉⵙⴻⵍⵎⴰⵏ</div>
           <p class="hero-tagline" id="hero-tagline" style="margin-top:4px">Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces</p>
@@ -990,7 +990,7 @@ body{
     <div style="width:40px;height:1px;background:var(--gold);opacity:0.3;margin:12px auto"></div>
     <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.08em;line-height:1.8;text-transform:uppercase">
       RESEARCHED · WRITTEN · DESIGNED<br>
-      <span id="footer-version">ISELMAN ⵉⵙⴻⵍⵎⴰⵏ · V2.7</span><br>
+      <span id="footer-version">ISELMAN ⵉⵙⴻⵍⵎⴰⵏ · V2.8</span><br>
       © 2026 · ALL RIGHTS RESERVED
     </div>
     <div style="margin-top:12px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
@@ -1091,7 +1091,7 @@ const I18N = {
     bite_excellent:'Excellent — conditions idéales',bite_good:'Bon — conditions favorables',
     bite_fair:'Moyen — tentez votre chance',bite_poor:'Faible — conditions difficiles',
     moon_new:'Nouvelle lune',moon_waxing:'Premier quartier',moon_full:'Pleine lune',moon_waning:'Dernier quartier',
-    tide_source:'Source: Open-Meteo Marine',
+    tide_source:'Source: Open-Meteo Marine',tide_disclaimer:'Estimation modèle (niveau moyen, maille ~8 km). Pas pour la navigation : vérifiez l\'annuaire des marées local.',tide_unavailable:'Marées indisponibles hors ligne. Reconnectez-vous pour actualiser.',
     best_time:'Aube & crépuscule',
     season_peak:'Pic',season_good:'Bon',season_slow:'Faible',
     overlay_info:'INFO',bait_rig_title:'Appâts & Montage',legal_size_title:'Taille légale & Limite',nav_conditions_title:'CONDITIONS',nav_species_title:'ESPÈCES',
@@ -1148,7 +1148,7 @@ const I18N = {
     bite_excellent:'Excellent — ideal conditions',bite_good:'Good — favourable conditions',
     bite_fair:'Fair — worth a try',bite_poor:'Poor — tough conditions',
     moon_new:'New moon',moon_waxing:'First quarter',moon_full:'Full moon',moon_waning:'Last quarter',
-    tide_source:'Source: Open-Meteo Marine',
+    tide_source:'Source: Open-Meteo Marine',tide_disclaimer:'Model estimate (mean sea level, ~8 km grid). Not for navigation: check local tide tables.',tide_unavailable:'Tides unavailable offline. Reconnect to refresh.',
     best_time:'Dawn & dusk',
     season_peak:'Peak',season_good:'Good',season_slow:'Slow',
     overlay_info:'INFO',bait_rig_title:'Bait & Rig',legal_size_title:'Legal Size & Bag Limit',
@@ -1205,7 +1205,7 @@ const I18N = {
     bite_excellent:'Excelente — condiciones ideales',bite_good:'Bueno — condiciones favorables',
     bite_fair:'Regular — vale la pena intentar',bite_poor:'Malo — condiciones difíciles',
     moon_new:'Luna nueva',moon_waxing:'Cuarto creciente',moon_full:'Luna llena',moon_waning:'Cuarto menguante',
-    tide_source:'Fuente: Open-Meteo Marine',
+    tide_source:'Fuente: Open-Meteo Marine',tide_disclaimer:'Estimación de modelo (nivel medio, malla ~8 km). No apto para navegación: consulte las tablas de mareas locales.',tide_unavailable:'Mareas no disponibles sin conexión. Vuelva a conectarse para actualizar.',
     best_time:'Amanecer y atardecer',
     season_peak:'Pico',season_good:'Bueno',season_slow:'Bajo',
     overlay_info:'INFO',bait_rig_title:'Cebo & Montaje',legal_size_title:'Talla & Cupo',
@@ -1262,7 +1262,7 @@ const I18N = {
     bite_excellent:'ممتاز — ظروف مثالية',bite_good:'جيد — ظروف مواتية',
     bite_fair:'متوسط — يستحق المحاولة',bite_poor:'ضعيف — ظروف صعبة',
     moon_new:'محاق',moon_waxing:'الربع الأول',moon_full:'بدر',moon_waning:'الربع الأخير',
-    tide_source:'المصدر: Open-Meteo Marine',
+    tide_source:'المصدر: Open-Meteo Marine',tide_disclaimer:'تقدير نموذجي (متوسط مستوى البحر، شبكة ~8 كم). غير مخصص للملاحة: راجع جداول المد والجزر المحلية.',tide_unavailable:'بيانات المد غير متاحة دون اتصال. أعد الاتصال للتحديث.',
     best_time:'الفجر والغروب',
     season_peak:'ذروة',season_good:'جيد',season_slow:'ضعيف',
     overlay_info:'معلومات',bait_rig_title:'الطعم والتجهيز',legal_size_title:'الحجم القانوني والحد',
@@ -1318,7 +1318,7 @@ const I18N = {
     bite_excellent:'ⴰⵎⵙⴽⴰⵔ — ⵜⴰⵏⵣⵣⴰⵢⵜ ⵜⴰⵎⵥⵍⴰⵢⵜ',bite_good:'ⵉⴼⴼⵓⵍⴽⵉ',
     bite_fair:'ⴰⵎⵣⵢⴰⵏ',bite_poor:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     moon_new:'ⴰⵟⵟⴰⵙ',moon_waxing:'ⵜⴰⵙⴽⴽⵉⵡⵜ',moon_full:'ⴰⵡⵔⴰⴽ ⴰⵎⵇⵇⵔⴰⵏ',moon_waning:'ⵜⴰⴼⵓⵍⵍⵓⵜ',
-    tide_source:'Open-Meteo Marine',
+    tide_source:'Open-Meteo Marine',tide_disclaimer:'Model estimate (mean sea level, ~8 km grid). Not for navigation: check local tide tables.',tide_unavailable:'Tides unavailable offline. Reconnect to refresh.',
     best_time:'ⵜⴰⴼⵓⵍⴽⵉ ⴷ ⵜⴰⴼⵓⵍⵍⵓⵜ',
     season_peak:'ⵜⵉⵣⵉ',season_good:'ⵉⴼⴼⵓⵍⴽⵉ',season_slow:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     overlay_info:'ⵉⵙⴰⵍⴰⵏ',bait_rig_title:'ⴰⵎⵏⴹⴰⵡ & ⵜⵓⴽⴽⵉⵡⵜ',legal_size_title:'ⵜⴰⵏⵏⵉⵢⵜ & ⵜⴰⵕⵚⵓⵏⵜ',
@@ -2196,7 +2196,7 @@ function renderSpeciesGrid(){
     const label = sp.type==='saltwater'?t('filter_salt'):t('filter_fresh');
     return `<div class="species-card ${sp.type}" onclick="showSpeciesOverlay('${sp.id}')">
       <div style="width:100%;height:72px;margin-bottom:8px;overflow:hidden;border-radius:4px;background:var(--surface2);display:flex;align-items:center;justify-content:center">
-        <img src="/species/${sp.id}.jpg" alt="${sp.name[L]||sp.name.fr}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:32px\'>${sp.icon}</span>'">
+        <img src="/species/${sp.id}.jpg" loading="lazy" decoding="async" width="800" height="450" alt="${sp.name[L]||sp.name.fr}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:32px\'>${sp.icon}</span>'">
       </div>
       <div class="species-name">${sp.name[L]||sp.name.fr}</div>
       <div class="species-local">${sp.local[L]||sp.local.fr}</div>
@@ -2688,10 +2688,10 @@ async function loadConditions(){
     renderForecastStrip(data);
     renderLiveConditions(data);
     renderBiteScience(data);
-    loadTides();
   } catch(e){
     if(forecastStrip) forecastStrip.innerHTML = `<div class="error-msg">${t('loading')} — erreur réseau</div>`;
   }
+  loadTides();
 }
 
 function getWeatherIcon(code){
@@ -2787,7 +2787,7 @@ function renderBig5(){
     const name = sp.name[L]||sp.name.fr;
     return `<div class="big5-card" onclick="showSpeciesById('${id}')">
       <div class="big5-icon" style="width:100%;height:44px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--surface2);border-radius:4px;margin-bottom:4px">
-        <img src="/species/${id}.jpg" alt="${name}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:26px\'>${sp.icon}</span>'">
+        <img src="/species/${id}.jpg" loading="lazy" decoding="async" width="800" height="450" alt="${name}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<span style=\'font-size:26px\'>${sp.icon}</span>'">
       </div>
       <div class="big5-name">${name}</div>
     </div>`;
@@ -2851,28 +2851,48 @@ function getMoonPhase(){
 
 async function loadTides(){
   const stationKey = document.getElementById('tide-station-select')?.value||'casablanca';
-  const loc = TIDE_STATIONS[stationKey];
+  const loc = TIDE_STATIONS[stationKey]||TIDE_STATIONS.casablanca;
   const el = document.getElementById('tide-content');
   if(!el) return;
   el.innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-
-  // Generate synthetic tidal data based on location (SHOM/Worldtides not free without key)
-  // Realistic semi-diurnal pattern for Atlantic Morocco; Nador uses smaller Mediterranean range
   const isMed = stationKey==='nador';
-  const isSmallRange = isMed;
-  const range = isMed?0.6:3.2; // metres
-  const period = 12.42; // hours (semi-diurnal)
-  const now = new Date();
-  const rows = [];
-  for(let i=0;i<14;i++){
-    const t = new Date(now.getTime()+i*3*60*60*1000);
-    const h = (now.getHours()*60+now.getMinutes())/60;
-    const phase = ((h+i*3)/period)*2*Math.PI;
-    const height = (range/2)*Math.sin(phase)+range/2;
-    const isHigh = Math.sin(phase)>0.7;
-    rows.push({time:t,height:height.toFixed(2),isHigh});
+  const CK = 'iselman_tide_'+stationKey;
+  let data = null;
+  // Real model tides: Open-Meteo Marine sea_level_height_msl (free, no key). Cached for offline use.
+  try{
+    const url = 'https://marine-api.open-meteo.com/v1/marine?latitude='+loc.lat+'&longitude='+loc.lng+'&hourly=sea_level_height_msl&forecast_days=4&timeformat=unixtime';
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('http '+res.status);
+    data = await res.json();
+    try{ localStorage.setItem(CK, JSON.stringify({ts:Date.now(),data})); }catch(e){}
+  } catch(e){
+    try{
+      const c = JSON.parse(localStorage.getItem(CK)||'null');
+      if(c && Date.now()-c.ts < 3*864e5) data = c.data;
+    }catch(_){}
   }
-  const timeStr = (d)=>d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const T = (data&&data.hourly&&data.hourly.time)||[];
+  const H = (data&&data.hourly&&data.hourly.sea_level_height_msl)||[];
+  const ext = [];
+  for(let i=1;i<H.length-1;i++){
+    const a=H[i-1], b=H[i], c=H[i+1];
+    if(a==null||b==null||c==null) continue;
+    const high = b>a && b>=c, low = b<a && b<=c;
+    if(!high && !low) continue;
+    // Parabolic refinement of hourly samples to the actual turning point
+    const den = a-2*b+c;
+    const d = den ? (a-c)/(2*den) : 0;
+    ext.push({time:new Date((T[i]+d*3600)*1000), height:b-0.25*(a-c)*d, isHigh:high});
+  }
+  const now = Date.now();
+  const rows = ext.filter(r=>r.time.getTime()>now-3600e3).slice(0,8);
+  if(!rows.length){
+    el.innerHTML = '<div class="error-msg">'+(t('tide_unavailable')||'Tides unavailable offline. Reconnect to refresh.')+'</div>';
+    return;
+  }
+  const LOC = {fr:'fr-MA',en:'en-GB',es:'es-ES',ar:'ar-MA',zgh:'fr-MA'}[currentLang]||'fr-MA';
+  const timeStr = (d)=>d.toLocaleString(LOC,{weekday:'short',hour:'2-digit',minute:'2-digit',timeZone:'Africa/Casablanca'});
+  const hStr = (v)=>(v>=0?'+':'−')+Math.abs(v).toFixed(2)+' m';
   el.innerHTML = `
     <p style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:10px">
       ${loc.name} — ${isMed?(t('tide_med_label')||'Méditerranée (faible marnage)'):(t('tide_atl_label')||'Atlantique (grand marnage)')}
@@ -2880,17 +2900,18 @@ async function loadTides(){
     <table class="tide-table">
       <thead><tr><th>${t('tide_time')}</th><th>${t('tide_height')}</th><th>${t('tide_type')}</th></tr></thead>
       <tbody>
-        ${rows.filter((_,i)=>i%2===0).map(r=>`
+        ${rows.map(r=>`
           <tr>
             <td>${timeStr(r.time)}</td>
-            <td class="${r.isHigh?'tide-high':'tide-low'}">${r.height}m</td>
+            <td class="${r.isHigh?'tide-high':'tide-low'}">${hStr(r.height)}</td>
             <td class="${r.isHigh?'tide-high':'tide-low'}">${r.isHigh?'▲ HM':'▼ BM'}</td>
           </tr>
         `).join('')}
       </tbody>
     </table>
     <p style="font-size:9px;font-family:var(--font-mono);color:var(--text-dim);margin-top:8px">
-      ${t('tide_source')||'Source: Open-Meteo Marine'} · <a href="https://data.shom.fr" target="_blank" style="color:var(--teal)">SHOM →</a>
+      ${t('tide_disclaimer')||'Model estimate. Not for navigation.'}<br>
+      ${t('tide_source')||'Source: Open-Meteo Marine'} · <a href="https://data.shom.fr" target="_blank" rel="noopener" style="color:var(--teal)">SHOM →</a>
     </p>
   `;
 }
@@ -2946,32 +2967,19 @@ async function loadHomeConditionsPreview(){
 }
 // ── NEWSLETTER ──
 function subscribeNewsletter(){
-  const email = document.getElementById('newsletter-email').value;
-  if(!email||!email.includes('@')){
-    const input = document.getElementById('newsletter-email');
+  const input = document.getElementById('newsletter-email');
+  const email = (input&&input.value||'').trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     if(input){input.style.borderColor='var(--crimson)';setTimeout(()=>input.style.borderColor='',1500);}
     return;
   }
-  // Send to Beehiiv via their embed API
-  // Replace BEEHIIV_PUB_ID with your actual publication ID from beehiiv.com/settings
-  const BEEHIIV_PUB_ID = 'YOUR_PUB_ID'; // TODO: replace with real ID from beehiiv.com
+  // Beehiiv's v2 API needs a secret key, so it cannot be called from the browser.
+  // Hand off to the public Beehiiv signup page, which confirms the subscription.
+  window.open('https://iselman.beehiiv.com/subscribe?email='+encodeURIComponent(email)+'&utm_source=iselman_app&utm_medium=pwa','_blank','noopener');
+  input.value='';
   const btn = document.getElementById('newsletter-btn');
-  if(btn){btn.textContent='...';btn.disabled=true;}
-  fetch(`https://api.beehiiv.com/v2/publications/${BEEHIIV_PUB_ID}/subscriptions`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email,utm_source:'iselman_app',utm_medium:'pwa'})
-  }).then(r=>{
-    document.getElementById('newsletter-email').value='';
-    if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
-      setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
-  }).catch(()=>{
-    // Fallback: open Beehiiv signup page
-    window.open('https://iselman.beehiiv.com/subscribe?email='+encodeURIComponent(email),'_blank');
-    document.getElementById('newsletter-email').value='';
-    if(btn){btn.textContent='✓';btn.style.background='var(--teal)';btn.disabled=false;
-      setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
-  });
+  if(btn){btn.textContent='✓';btn.style.background='var(--teal)';
+    setTimeout(()=>{btn.textContent=t('newsletter_btn');btn.style.background='var(--gold)'},2500);}
 }
 
 // ── INIT ──
