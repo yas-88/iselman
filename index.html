@@ -23,7 +23,9 @@
 <title>Iselman ⵉⵙⴻⵍⵎⴰⵏ · Guide Pêche Maroc</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Noto+Sans+Tifinagh&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Noto+Sans+Tifinagh&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Noto+Sans+Tifinagh&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,400&family=IBM+Plex+Sans+Arabic:wght@300;400;600&family=Noto+Sans+Tifinagh&display=swap" rel="stylesheet"></noscript>
 <style>
 :root {
   --bg: #0c0d0b;
@@ -43,8 +45,8 @@
   --blue-dim: rgba(42,109,181,0.15);
   --text: #e8e4da;
   --text-rgb: 232,228,218;
-  --text-muted: #8a8578;
-  --text-dim: #5a5750;
+  --text-muted: #a39e92;
+  --text-dim: #8a867c;
   --font-display: 'Bebas Neue', 'Impact', sans-serif;
   --font-body: 'IBM Plex Sans', system-ui, sans-serif;
   --font-arabic: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', system-ui, sans-serif;
@@ -61,8 +63,8 @@
   --surface2: #f0ede4;
   --text: #141510;
   --text-rgb: 20,21,16;
-  --text-muted: #6b6658;
-  --text-dim: #9c9686;
+  --text-muted: #5e594c;
+  --text-dim: #6e695d;
   --gold-text: #7a5f24;
   --teal: #1f6b5e;
 }
@@ -641,7 +643,7 @@ html,body{overscroll-behavior-y:contain}
   text-decoration:none;font-family:var(--font-mono);
   cursor:pointer;transition:opacity 0.15s;
 }
-.guide-contact.disabled{background:var(--surface2);color:var(--text-dim);cursor:default;pointer-events:none;opacity:0.7}
+.guide-contact.disabled{background:var(--surface2);color:var(--text-dim);cursor:default;pointer-events:none}
 .guide-coming-soon{font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.04em;margin-left:6px;vertical-align:middle}
 
 /* ── LICENSE BLOCK ── */
@@ -724,7 +726,7 @@ html,body{overscroll-behavior-y:contain}
 </div>
 
 <!-- MAIN CONTENT -->
-<div id="main-content">
+<main id="main-content">
 
   <!-- ══ HOME ══ -->
   <div class="page active" id="page-home">
@@ -734,7 +736,7 @@ html,body{overscroll-behavior-y:contain}
         <div class="hero-logo-text">
           <div class="hero-logo-meta">
             <div class="hero-app-name">ISELMAN</div>
-            <span class="hero-version">V2.8 · 2026</span>
+            <span class="hero-version">V2.9 · 2026</span>
           </div>
           <div class="hero-tifinagh">ⵉⵙⴻⵍⵎⴰⵏ</div>
           <p class="hero-tagline" id="hero-tagline" style="margin-top:4px">Guide de pêche du Maroc — Atlantique · Méditerranée · Eaux douces</p>
@@ -745,13 +747,13 @@ html,body{overscroll-behavior-y:contain}
     <div style="padding:8px 16px 4px">
       <div class="section-title" id="big5-title" style="margin-bottom:8px">LES 5 DU MOMENT</div>
     </div>
-    <div class="big5-grid" id="big5-grid"></div>
+    <div class="big5-grid" id="big5-grid" style="min-height:118px"></div>
 
     <div class="divider"></div>
     <div style="padding:12px 16px 4px">
       <div class="section-title" id="home-conditions-title">CONDITIONS LIVE</div>
     </div>
-    <div id="home-conditions-preview" style="padding:0 16px 8px">
+    <div id="home-conditions-preview" style="padding:0 16px 8px;min-height:174px">
       <div class="loading"><div class="loading-spinner"></div><span id="loading-text">Chargement...</span></div>
     </div>
 
@@ -759,7 +761,7 @@ html,body{overscroll-behavior-y:contain}
     <div style="padding:12px 16px 4px">
       <div class="section-title" id="seasonal-title">CALENDRIER SAISONNIER</div>
     </div>
-    <div id="seasonal-cal" style="padding:0 4px 4px"></div>
+    <div id="seasonal-cal" style="padding:0 4px 4px;min-height:196px"></div>
 
     <div class="guides-band">
       <div class="guides-band-header">
@@ -1008,7 +1010,7 @@ html,body{overscroll-behavior-y:contain}
     <div style="width:40px;height:1px;background:var(--gold);opacity:0.3;margin:12px auto"></div>
     <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:0.08em;line-height:1.8;text-transform:uppercase">
       RESEARCHED · WRITTEN · DESIGNED<br>
-      <span id="footer-version">ISELMAN ⵉⵙⴻⵍⵎⴰⵏ · V2.8</span><br>
+      <span id="footer-version">ISELMAN ⵉⵙⴻⵍⵎⴰⵏ · V2.9</span><br>
       © 2026 · ALL RIGHTS RESERVED
     </div>
     <div style="margin-top:12px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
@@ -1017,7 +1019,7 @@ html,body{overscroll-behavior-y:contain}
     </div>
   </div>
 
-</div><!-- end #main-content -->
+</main><!-- end #main-content -->
 
 <!-- BOTTOM NAV -->
 <nav id="bottom-nav">
@@ -2980,6 +2982,7 @@ async function loadHomeConditionsPreview(){
       </div>
     `;
   } catch(e){
+    el.style.minHeight = '0';
     el.innerHTML = `<p style="font-size:12px;font-family:var(--font-mono);color:var(--text-dim);padding:8px 0">Hors ligne — ouvrez l'onglet Météo</p>`;
   }
 }
