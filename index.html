@@ -38,6 +38,7 @@
   --gold-dim: rgba(201,164,74,0.15);
   --gold-glow: rgba(201,164,74,0.08);
   --teal: #2a8f7e;
+  --teal-text: #40ab97;
   --teal-dim: rgba(42,143,126,0.15);
   --crimson: #a83232;
   --crimson-dim: rgba(168,50,50,0.15);
@@ -67,6 +68,7 @@
   --text-dim: #6e695d;
   --gold-text: #7a5f24;
   --teal: #1f6b5e;
+  --teal-text: #1f6b5e;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -585,7 +587,7 @@ html,body{overscroll-behavior-y:contain}
   display:flex;align-items:center;gap:8px;
   background:var(--teal-dim);border:1px solid rgba(42,143,126,0.3);
   border-radius:var(--radius);padding:12px 16px;margin:8px 16px;
-  cursor:pointer;color:var(--teal);font-size:13px;font-weight:600;
+  cursor:pointer;color:var(--teal-text);font-size:13px;font-weight:600;
   font-family:var(--font-body);transition:background 0.18s;
 }
 .near-me-btn:hover{background:rgba(42,143,126,0.25)}
@@ -1111,7 +1113,7 @@ const I18N = {
     bite_excellent:'Excellent — conditions idéales',bite_good:'Bon — conditions favorables',
     bite_fair:'Moyen — tentez votre chance',bite_poor:'Faible — conditions difficiles',
     moon_new:'Nouvelle lune',moon_waxing:'Premier quartier',moon_full:'Pleine lune',moon_waning:'Dernier quartier',
-    tide_source:'Source: Open-Meteo Marine',tide_disclaimer:'Estimation modèle (niveau moyen, maille ~8 km). Pas pour la navigation : vérifiez l\'annuaire des marées local.',tide_unavailable:'Marées indisponibles hors ligne. Reconnectez-vous pour actualiser.',
+    tide_source:'Source: Open-Meteo Marine',refresh_label:'Actualiser',tide_disclaimer:'Estimation modèle (niveau moyen, maille ~8 km). Pas pour la navigation : vérifiez l\'annuaire des marées local.',tide_unavailable:'Marées indisponibles hors ligne. Reconnectez-vous pour actualiser.',
     best_time:'Aube & crépuscule',
     season_peak:'Pic',season_good:'Bon',season_slow:'Faible',
     overlay_info:'INFO',bait_rig_title:'Appâts & Montage',legal_size_title:'Taille légale & Limite',nav_conditions_title:'CONDITIONS',nav_species_title:'ESPÈCES',
@@ -1168,7 +1170,7 @@ const I18N = {
     bite_excellent:'Excellent — ideal conditions',bite_good:'Good — favourable conditions',
     bite_fair:'Fair — worth a try',bite_poor:'Poor — tough conditions',
     moon_new:'New moon',moon_waxing:'First quarter',moon_full:'Full moon',moon_waning:'Last quarter',
-    tide_source:'Source: Open-Meteo Marine',tide_disclaimer:'Model estimate (mean sea level, ~8 km grid). Not for navigation: check local tide tables.',tide_unavailable:'Tides unavailable offline. Reconnect to refresh.',
+    tide_source:'Source: Open-Meteo Marine',refresh_label:'Refresh',tide_disclaimer:'Model estimate (mean sea level, ~8 km grid). Not for navigation: check local tide tables.',tide_unavailable:'Tides unavailable offline. Reconnect to refresh.',
     best_time:'Dawn & dusk',
     season_peak:'Peak',season_good:'Good',season_slow:'Slow',
     overlay_info:'INFO',bait_rig_title:'Bait & Rig',legal_size_title:'Legal Size & Bag Limit',
@@ -1225,7 +1227,7 @@ const I18N = {
     bite_excellent:'Excelente — condiciones ideales',bite_good:'Bueno — condiciones favorables',
     bite_fair:'Regular — vale la pena intentar',bite_poor:'Malo — condiciones difíciles',
     moon_new:'Luna nueva',moon_waxing:'Cuarto creciente',moon_full:'Luna llena',moon_waning:'Cuarto menguante',
-    tide_source:'Fuente: Open-Meteo Marine',tide_disclaimer:'Estimación de modelo (nivel medio, malla ~8 km). No apto para navegación: consulte las tablas de mareas locales.',tide_unavailable:'Mareas no disponibles sin conexión. Vuelva a conectarse para actualizar.',
+    tide_source:'Fuente: Open-Meteo Marine',refresh_label:'Actualizar',tide_disclaimer:'Estimación de modelo (nivel medio, malla ~8 km). No apto para navegación: consulte las tablas de mareas locales.',tide_unavailable:'Mareas no disponibles sin conexión. Vuelva a conectarse para actualizar.',
     best_time:'Amanecer y atardecer',
     season_peak:'Pico',season_good:'Bueno',season_slow:'Bajo',
     overlay_info:'INFO',bait_rig_title:'Cebo & Montaje',legal_size_title:'Talla & Cupo',
@@ -1282,7 +1284,7 @@ const I18N = {
     bite_excellent:'ممتاز — ظروف مثالية',bite_good:'جيد — ظروف مواتية',
     bite_fair:'متوسط — يستحق المحاولة',bite_poor:'ضعيف — ظروف صعبة',
     moon_new:'محاق',moon_waxing:'الربع الأول',moon_full:'بدر',moon_waning:'الربع الأخير',
-    tide_source:'المصدر: Open-Meteo Marine',tide_disclaimer:'تقدير نموذجي (متوسط مستوى البحر، شبكة ~8 كم). غير مخصص للملاحة: راجع جداول المد والجزر المحلية.',tide_unavailable:'بيانات المد غير متاحة دون اتصال. أعد الاتصال للتحديث.',
+    tide_source:'المصدر: Open-Meteo Marine',refresh_label:'تحديث',tide_disclaimer:'تقدير نموذجي (متوسط مستوى البحر، شبكة ~8 كم). غير مخصص للملاحة: راجع جداول المد والجزر المحلية.',tide_unavailable:'بيانات المد غير متاحة دون اتصال. أعد الاتصال للتحديث.',
     best_time:'الفجر والغروب',
     season_peak:'ذروة',season_good:'جيد',season_slow:'ضعيف',
     overlay_info:'معلومات',bait_rig_title:'الطعم والتجهيز',legal_size_title:'الحجم القانوني والحد',
@@ -1338,7 +1340,7 @@ const I18N = {
     bite_excellent:'ⴰⵎⵙⴽⴰⵔ — ⵜⴰⵏⵣⵣⴰⵢⵜ ⵜⴰⵎⵥⵍⴰⵢⵜ',bite_good:'ⵉⴼⴼⵓⵍⴽⵉ',
     bite_fair:'ⴰⵎⵣⵢⴰⵏ',bite_poor:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     moon_new:'ⴰⵟⵟⴰⵙ',moon_waxing:'ⵜⴰⵙⴽⴽⵉⵡⵜ',moon_full:'ⴰⵡⵔⴰⴽ ⴰⵎⵇⵇⵔⴰⵏ',moon_waning:'ⵜⴰⴼⵓⵍⵍⵓⵜ',
-    tide_source:'Open-Meteo Marine',tide_disclaimer:'Model estimate (mean sea level, ~8 km grid). Not for navigation: check local tide tables.',tide_unavailable:'Tides unavailable offline. Reconnect to refresh.',
+    tide_source:'Open-Meteo Marine',refresh_label:'Refresh',tide_disclaimer:'Model estimate (mean sea level, ~8 km grid). Not for navigation: check local tide tables.',tide_unavailable:'Tides unavailable offline. Reconnect to refresh.',
     best_time:'ⵜⴰⴼⵓⵍⴽⵉ ⴷ ⵜⴰⴼⵓⵍⵍⵓⵜ',
     season_peak:'ⵜⵉⵣⵉ',season_good:'ⵉⴼⴼⵓⵍⴽⵉ',season_slow:'ⵢⴰⵎⴷ ⴰⵏⵏⴰⵢ',
     overlay_info:'ⵉⵙⴰⵍⴰⵏ',bait_rig_title:'ⴰⵎⵏⴹⴰⵡ & ⵜⵓⴽⴽⵉⵡⵜ',legal_size_title:'ⵜⴰⵏⵏⵉⵢⵜ & ⵜⴰⵕⵚⵓⵏⵜ',
@@ -1386,6 +1388,8 @@ function initTheme(){
   setTheme(saved==='light' ? 'light' : 'dark');
 }
 function applyTranslations(){
+  const rbtn = document.getElementById('refresh-btn');
+  if(rbtn){ const lbl = t('refresh_label')||'Refresh'; rbtn.setAttribute('aria-label',lbl); rbtn.setAttribute('title',lbl); }
   const ids = [
     'hero-tagline','big5-title','home-conditions-title','seasonal-title',
     'newsletter-title','newsletter-sub','newsletter-btn','guides-title',
